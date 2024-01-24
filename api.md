@@ -1,3 +1,5 @@
+![Smart](/docs/file/logo.png)
+
 # 概述
 
 轻量易用的授权基座smart，提供一个非官方RBAC授权模型的基础开箱即用中台管理服务。
@@ -16,9 +18,7 @@
 
 该接口文档提供Swagger[支持调试]和ReDoc[阅读增强]两个版本。
 
-[Swagger[支持调试]：http://localhost:8000/docs/swagger/index.html](http://localhost:8000/docs/swagger/index.html)
-
-[ReDoc[阅读增强]：http://localhost:8000/docs/redoc/index.html](http://localhost:8000/docs/redoc/index.html)
+[Swagger[支持调试]：/docs/swagger/index.html](http://localhost:8000/docs/swagger/index.html) 丨 [ReDoc[阅读增强]：/docs/redoc/index.html](http://localhost:8000/docs/redoc/index.html)
 
 ## 生成说明
 

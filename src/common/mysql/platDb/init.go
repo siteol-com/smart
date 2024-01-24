@@ -1,4 +1,4 @@
-package dbPlat
+package platDb
 
 import (
 	"fmt"

@@ -31,7 +31,7 @@ import (
 // @in 							header
 // @name 						Token
 
-// @x-logo {"url" :"/docs/sc/logo.png","altText":"smart"}
+// @x-logo {"url" :"/docs/file/logo.png","altText":"smart"}
 
 // @tag.name 开放接口
 // @tag.description 基础开发接口

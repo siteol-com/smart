@@ -1,4 +1,4 @@
-package dbPlat
+package platDb
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 
 const (
 	temp = `
-package dbPlat
+package platDb
 
 import (
 	"gorm.io/gorm"
@@ -63,7 +63,7 @@ var tableArray = []string{
 }
 
 // 包位置
-var packPath = "dbPlat"
+var packPath = "platDb"
 
 // 库名
 var dbName = "smart"
