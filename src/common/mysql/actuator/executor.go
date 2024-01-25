@@ -50,10 +50,18 @@ func (t Table[T]) FindByIds(ids []uint64) (res []*T, err error) {
 	return
 }
 
-// FindByObject 查询表指定ID的数据集
+// FindByObject 查询表指定对象的数据集
 func (t Table[T]) FindByObject(req any) (res []*T, err error) {
 	var exe T
 	r := exe.DataBase().Where(req).Find(&res)
+	err = r.Error
+	return
+}
+
+// FindByObjectSort 查询表指定对象，默认使用sort字段排序的数据集
+func (t Table[T]) FindByObjectSort(req any) (res []*T, err error) {
+	var exe T
+	r := exe.DataBase().Where(req).Order("sort").Find(&res)
 	err = r.Error
 	return
 }

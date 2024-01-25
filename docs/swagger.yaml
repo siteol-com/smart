@@ -2,6 +2,36 @@ basePath: /
 consumes:
 - application/json
 definitions:
+  model.DictReadReq:
+    properties:
+      groupKeys:
+        description: 需要查询的字典分组
+        example:
+        - serviceCode
+        - responseType
+        items:
+          type: string
+        type: array
+    required:
+    - groupKeys
+    type: object
+  model.DictReadRes:
+    properties:
+      list:
+        additionalProperties:
+          items:
+            $ref: '#/definitions/model.SelectRes'
+          type: array
+        description: 字典下拉列表 {'serviceCode':"[{'label':'基础','value':'1'}]"}
+        type: object
+      map:
+        additionalProperties:
+          additionalProperties:
+            type: string
+          type: object
+        description: 字典翻译Map {'serviceCode':{'1':'基础'}}
+        type: object
+    type: object
   model.DocsAuthLg:
     properties:
       code:
@@ -72,6 +102,34 @@ definitions:
         example: xx字段应该为必填
         type: string
     type: object
+  model.ResBody:
+    properties:
+      code:
+        description: 响应码
+        example: S0000/F0000
+        type: string
+      data:
+        description: 响应数据
+      msg:
+        description: 响应消息
+        example: 操作成功/失败
+        type: string
+      unPop:
+        description: 免弹窗提示
+        example: true
+        type: boolean
+    type: object
+  model.SelectRes:
+    properties:
+      label:
+        description: 展示名
+        example: 展示名
+        type: string
+      value:
+        description: 展示值
+        example: 展示值
+        type: string
+    type: object
 host: localhost:8000
 info:
   contact:
@@ -132,6 +190,70 @@ paths:
       summary: 通用API示例
       tags:
       - 开放接口
+  /plat/dict/read:
+    post:
+      consumes:
+      - application/json
+      description: 获取字典下拉列表以及关联键值Map
+      operationId: ReadDict读取字典
+      parameters:
+      - description: 语言，不传默认为zh-CN
+        in: header
+        name: Lang
+        type: string
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.DictReadReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.ResBody'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.DictReadRes'
+              type: object
+      security:
+      - Token: []
+      summary: 读取字典
+      tags:
+      - 数据字典
+  /plat/dictGroup/list:
+    post:
+      consumes:
+      - application/json
+      description: 获取字典分组列表，改列表为内置列表
+      operationId: ListDictGroup字典分组列表
+      parameters:
+      - description: 语言，不传默认为zh-CN
+        in: header
+        name: Lang
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.ResBody'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.SelectRes'
+                  type: array
+              type: object
+      security:
+      - Token: []
+      summary: 字典分组列表
+      tags:
+      - 数据字典
 securityDefinitions:
   Token:
     in: header

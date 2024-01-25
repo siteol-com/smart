@@ -83,9 +83,163 @@
                     }
                 }
             }
+        },
+        "/plat/dict/read": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "获取字典下拉列表以及关联键值Map",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据字典"
+                ],
+                "summary": "读取字典",
+                "operationId": "ReadDict读取字典",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "语言，不传默认为zh-CN",
+                        "name": "Lang",
+                        "in": "header"
+                    },
+                    {
+                        "description": "请求",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DictReadReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "响应成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/model.ResBody"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.DictReadRes"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/plat/dictGroup/list": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "获取字典分组列表，改列表为内置列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据字典"
+                ],
+                "summary": "字典分组列表",
+                "operationId": "ListDictGroup字典分组列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "语言，不传默认为zh-CN",
+                        "name": "Lang",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "响应成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/model.ResBody"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.SelectRes"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "model.DictReadReq": {
+            "type": "object",
+            "required": [
+                "groupKeys"
+            ],
+            "properties": {
+                "groupKeys": {
+                    "description": "需要查询的字典分组",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "serviceCode",
+                        "responseType"
+                    ]
+                }
+            }
+        },
+        "model.DictReadRes": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "description": "字典下拉列表 {'serviceCode':\"[{'label':'基础','value':'1'}]\"}",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/model.SelectRes"
+                        }
+                    }
+                },
+                "map": {
+                    "description": "字典翻译Map {'serviceCode':{'1':'基础'}}",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "model.DocsAuthLg": {
             "type": "object",
             "properties": {
@@ -178,6 +332,44 @@
                     "description": "响应消息",
                     "type": "string",
                     "example": "xx字段应该为必填"
+                }
+            }
+        },
+        "model.ResBody": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "响应码",
+                    "type": "string",
+                    "example": "S0000/F0000"
+                },
+                "data": {
+                    "description": "响应数据"
+                },
+                "msg": {
+                    "description": "响应消息",
+                    "type": "string",
+                    "example": "操作成功/失败"
+                },
+                "unPop": {
+                    "description": "免弹窗提示",
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "model.SelectRes": {
+            "type": "object",
+            "properties": {
+                "label": {
+                    "description": "展示名",
+                    "type": "string",
+                    "example": "展示名"
+                },
+                "value": {
+                    "description": "展示值",
+                    "type": "string",
+                    "example": "展示值"
                 }
             }
         }

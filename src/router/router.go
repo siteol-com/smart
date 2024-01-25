@@ -20,7 +20,7 @@ func NewRouter() *gin.Engine {
 	routers.DocsRouter(router)
 	//// 开放路由
 	//subRouter2.OpenRouter(router)
-	//// 平台路由
-	//subRouter2.PlatFormRouter(router)
+	// 平台路由
+	routers.PlatRouter(router)
 	return router
 }

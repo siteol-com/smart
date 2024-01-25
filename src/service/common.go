@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"siteol.com/smart/src/common/constant"
@@ -22,6 +23,16 @@ func ValidateReqObj(c *gin.Context, req any) (traceID string, reqObj any, err er
 		JsonRes(c, res)
 	}
 	return
+}
+
+// GetLocal 从上下文获取请求的语言
+func GetLocal(c *gin.Context) string {
+	local := c.GetString(constant.ContextLang)
+	lineIndex := strings.Index(local, "-")
+	if lineIndex > 0 {
+		local = local[:lineIndex]
+	}
+	return local
 }
 
 // GetRouterConf 从上下文获取登录用户授权机构体

@@ -37,10 +37,10 @@ func ReturnMsgTrans(res *model.ResBody, c *gin.Context, router *model.CacheRoute
 
 // tableMsgTrans 执行Msg翻译
 func tableMsgTrans(res *model.ResBody, lang, traceID string) {
-	// 获取翻译缓存
+	// 获取翻译缓存 TODO
 	tranStr, err := redis.Get(constant.ContextLang)
 	if err != nil {
-		log.ErrorTF(traceID, "GetTransLangCacheMap Fail . Err Is : %v", err)
+		log.WarnTF(traceID, "GetTransLangCacheMap Fail . Err Is : %v", err)
 		// 出错不翻译
 		return
 
