@@ -1,4 +1,4 @@
-package model
+package baseModel
 
 import (
 	"net/http"

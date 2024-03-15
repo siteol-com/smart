@@ -3,7 +3,7 @@ package middleware
 import (
 	"runtime/debug"
 	"siteol.com/smart/src/common/log"
-	"siteol.com/smart/src/common/model"
+	"siteol.com/smart/src/common/model/baseModel"
 	"siteol.com/smart/src/service"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +14,7 @@ func Recover(c *gin.Context) {
 	defer func() {
 		if err := recover(); err != nil {
 			log.ErrorF("panic:%s, stack:%s", err, string(debug.Stack()))
-			service.JsonRes(c, model.SysErr)
+			service.JsonRes(c, baseModel.SysErr)
 			c.Abort()
 		}
 	}()

@@ -2,6 +2,7 @@ package actuator
 
 import (
 	"fmt"
+	"siteol.com/smart/src/common/model/baseModel"
 
 	"gorm.io/gorm"
 )
@@ -66,6 +67,16 @@ func (t Table[T]) FindByObjectSort(req any) (res []*T, err error) {
 	return
 }
 
+// CountByQuery 查询表指定对象，默认使用sort字段排序的数据集
+func (t Table[T]) CountByQuery(query *Query) (total int64, err error) {
+	var exe T
+	// 提交表名
+	query.Table = exe.TableName()
+	// 先查询数量
+	total, err = query.countByQuery(exe.DataBase())
+	return
+}
+
 // Page 平台的公共分页查询方法
 func (t Table[T]) Page(query *Query) (total int64, list []*T, err error) {
 	var exe T
@@ -122,4 +133,23 @@ func (t Table[T]) DeleteByIds(ids []uint64) (err error) {
 	r := exe.DataBase().Exec(fmt.Sprintf("DELETE FROM %s WHERE `id`IN ?", exe.TableName()), ids)
 	err = r.Error
 	return
+}
+
+// SortWithTransaction 事务+排序
+func (t Table[T]) SortWithTransaction(req []*baseModel.SortReq) error {
+	var exe T
+	db := exe.DataBase()
+	mod := new(T)
+	// 启用事务
+	return db.Transaction(func(tx *gorm.DB) error {
+		for _, item := range req {
+			// 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
+			if err := tx.Model(mod).Where("id = ?", item.ID).Update("sort", item.Sort).Error; err != nil {
+				// 返回任何错误都会回滚事务
+				return err
+			}
+		}
+		// 返回 nil 提交事务
+		return nil
+	})
 }

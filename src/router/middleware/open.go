@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
-	"siteol.com/smart/src/common/model"
+	"siteol.com/smart/src/common/model/baseModel"
 	"siteol.com/smart/src/common/utils"
 	"siteol.com/smart/src/service"
 )
@@ -25,7 +25,7 @@ func OpenMiddleWare(c *gin.Context) {
 	defer func() {
 		// TODO 中间件拒绝的特殊处理
 		if middleRes {
-			service.JsonRes(c, model.SysErr)
+			service.JsonRes(c, baseModel.SysErr)
 		}
 	}()
 	// 读取鉴权信息

@@ -2,6 +2,229 @@ basePath: /
 consumes:
 - application/json
 definitions:
+  baseModel.IdReq:
+    properties:
+      id:
+        description: 数据ID
+        example: 1
+        type: integer
+    type: object
+  baseModel.PageRes:
+    properties:
+      list:
+        description: 分页数据
+      total:
+        description: 数据总量
+        type: integer
+    type: object
+  baseModel.ResBody:
+    properties:
+      code:
+        description: 响应码
+        example: S0000/F0000
+        type: string
+      data:
+        description: 响应数据
+      msg:
+        description: 响应消息
+        example: 操作成功/失败
+        type: string
+      unPop:
+        description: 免弹窗提示
+        example: true
+        type: boolean
+    type: object
+  baseModel.SelectRes:
+    properties:
+      label:
+        description: 展示名
+        example: 展示名
+        type: string
+      value:
+        description: 展示值
+        example: 展示值
+        type: string
+    type: object
+  baseModel.SortReq:
+    properties:
+      id:
+        description: 数据ID
+        example: 1
+        type: integer
+      sort:
+        description: 序号
+        example: 1
+        type: integer
+    required:
+    - id
+    type: object
+  baseModel.SortRes:
+    properties:
+      id:
+        description: 默认数据ID
+        example: 1
+        type: integer
+      name:
+        description: 权限名称，界面展示，建议与界面导航一致
+        example: 账号管理
+        type: string
+      sort:
+        description: 权限排序
+        example: 1
+        type: integer
+    type: object
+  model.DictAddReq:
+    properties:
+      choose:
+        description: 是否可被选择 0可选择 1不可选择
+        example: "0"
+        type: string
+      groupKey:
+        description: 字典分组KEY
+        example: serviceCode
+        type: string
+      label:
+        description: 字段名称
+        example: 平台基础
+        type: string
+      labelEn:
+        description: 字段名称（英文）
+        example: PlatBase
+        type: string
+      remark:
+        description: 字典描述
+        example: 业务类型字典
+        type: string
+      val:
+        description: 字典值（字符型）
+        example: "1"
+        type: string
+    required:
+    - choose
+    - groupKey
+    - label
+    - labelEn
+    - val
+    type: object
+  model.DictBroReq:
+    properties:
+      groupKey:
+        description: 字典分组KEY
+        example: serviceCode
+        type: string
+    required:
+    - groupKey
+    type: object
+  model.DictEditReq:
+    properties:
+      choose:
+        description: 是否可被选择 0可选择 1不可选择
+        example: "0"
+        type: string
+      id:
+        description: 数据ID
+        example: 1
+        type: integer
+      label:
+        description: 字段名称
+        example: 平台基础
+        type: string
+      labelEn:
+        description: 字段名称（英文）
+        example: PlatBase
+        type: string
+      remark:
+        description: 字典描述
+        example: 业务类型字典
+        type: string
+    required:
+    - choose
+    - id
+    - label
+    - labelEn
+    type: object
+  model.DictGroupReadRes:
+    properties:
+      list:
+        description: 字典分组下拉列表 [{'label':'业务模块','value':'serviceCode'}]
+        items:
+          $ref: '#/definitions/baseModel.SelectRes'
+        type: array
+      map:
+        additionalProperties:
+          type: string
+        description: 字典分组翻译Map
+        example:
+          '{''serviceCode''': '''业务模块''}'
+        type: object
+    type: object
+  model.DictNextValReq:
+    properties:
+      groupKey:
+        description: 字典分组KEY
+        example: serviceCode
+        type: string
+    required:
+    - groupKey
+    type: object
+  model.DictPageReq:
+    properties:
+      current:
+        description: 当前页
+        example: 1
+        type: integer
+      groupKey:
+        description: 需要查询的字典分组
+        example: serviceCode
+        type: string
+      label:
+        description: 字典展示文言，跟随请求语言模糊检索
+        example: 成功
+        type: string
+      pageSize:
+        description: 单页数量
+        example: 10
+        type: integer
+    type: object
+  model.DictPageRes:
+    properties:
+      choose:
+        description: 是否可被选择 0可选择 1不可选择
+        example: "1"
+        type: string
+      groupKey:
+        description: 字典分组KEY
+        example: serviceCode
+        type: string
+      id:
+        description: 数据ID
+        example: 1
+        type: integer
+      label:
+        description: 字段名称
+        example: 平台
+        type: string
+      labelEn:
+        description: 字段名称（英文）
+        example: Plat
+        type: string
+      mark:
+        description: 变更标识 0可变更 1禁止变更
+        example: "1"
+        type: string
+      remark:
+        description: 字典描述
+        example: 业务编码：平台
+        type: string
+      sort:
+        description: 字典排序
+        example: 0
+        type: integer
+      val:
+        description: 字典值（字符型）
+        example: "1"
+        type: string
+    type: object
   model.DictReadReq:
     properties:
       groupKeys:
@@ -20,7 +243,7 @@ definitions:
       list:
         additionalProperties:
           items:
-            $ref: '#/definitions/model.SelectRes'
+            $ref: '#/definitions/baseModel.SelectRes'
           type: array
         description: 字典下拉列表 {'serviceCode':"[{'label':'基础','value':'1'}]"}
         type: object
@@ -102,32 +325,46 @@ definitions:
         example: xx字段应该为必填
         type: string
     type: object
-  model.ResBody:
+  platDb.Dict:
     properties:
-      code:
-        description: 响应码
-        example: S0000/F0000
+      choose:
+        description: 是否可被选择 0可选择 1不可选择
         type: string
-      data:
-        description: 响应数据
-      msg:
-        description: 响应消息
-        example: 操作成功/失败
+      createAt:
+        description: 创建时间
         type: string
-      unPop:
-        description: 免弹窗提示
-        example: true
-        type: boolean
-    type: object
-  model.SelectRes:
-    properties:
+      groupKey:
+        description: 字典分组KEY
+        type: string
+      id:
+        description: 数据ID
+        type: integer
       label:
-        description: 展示名
-        example: 展示名
+        description: 字段名称
         type: string
-      value:
-        description: 展示值
-        example: 展示值
+      labelEn:
+        description: 字段名称（英文）
+        type: string
+      mark:
+        description: 变更标识 0可变更/登陆成功 1禁止变更/登陆失败
+        type: string
+      pid:
+        description: 父级字典ID 默认 1（根数据）
+        type: integer
+      remark:
+        description: 字典描述
+        type: string
+      sort:
+        description: 字典排序
+        type: integer
+      status:
+        description: 状态 0正常 1锁定 2封存
+        type: string
+      updateAt:
+        description: 更新时间
+        type: string
+      val:
+        description: 字典值（字符型）
         type: string
     type: object
 host: localhost:8000
@@ -190,12 +427,244 @@ paths:
       summary: 通用API示例
       tags:
       - 开放接口
+  /plat/dict/add:
+    post:
+      consumes:
+      - application/json
+      description: 在字典分组下新建字典
+      operationId: AddDict 字典新建
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.DictAddReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      security:
+      - Token: []
+      summary: 字典新建
+      tags:
+      - 数据字典
+  /plat/dict/bro:
+    post:
+      consumes:
+      - application/json
+      description: 获取字典排序数据
+      operationId: BroDict 字典排序数据
+      parameters:
+      - description: 语言，不传默认为zh-CN
+        in: header
+        name: Lang
+        type: string
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.DictBroReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  $ref: '#/definitions/baseModel.SortRes'
+              type: object
+      security:
+      - Token: []
+      summary: 排序数据
+      tags:
+      - 数据字典
+  /plat/dict/del:
+    post:
+      consumes:
+      - application/json
+      description: 字典封存处理
+      operationId: DelDict 字典封存
+      parameters:
+      - description: 语言，不传默认为zh-CN
+        in: header
+        name: Lang
+        type: string
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/baseModel.IdReq'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      security:
+      - Token: []
+      summary: 字典封存
+      tags:
+      - 数据字典
+  /plat/dict/edit:
+    post:
+      consumes:
+      - application/json
+      description: 在字典分组下编辑字典
+      operationId: EditDict 字典编辑
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.DictEditReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      security:
+      - Token: []
+      summary: 字典编辑
+      tags:
+      - 数据字典
+  /plat/dict/get:
+    post:
+      consumes:
+      - application/json
+      description: 查询字典详情
+      operationId: GetDict 字典详情
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/baseModel.IdReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/baseModel.PageRes'
+                  - properties:
+                      list:
+                        $ref: '#/definitions/platDb.Dict'
+                    type: object
+              type: object
+      security:
+      - Token: []
+      summary: 字典详情
+      tags:
+      - 数据字典
+  /plat/dict/nextVal:
+    post:
+      consumes:
+      - application/json
+      description: 在字典分组下读取下一个Val的建议值
+      operationId: NextDictVal 字典NextVal建议
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.DictNextValReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  type: integer
+              type: object
+      security:
+      - Token: []
+      summary: 字典NextVal建议
+      tags:
+      - 数据字典
+  /plat/dict/page:
+    post:
+      consumes:
+      - application/json
+      description: 查询字典分页数据
+      operationId: PageDict 字典分页
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.DictPageReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/baseModel.PageRes'
+                  - properties:
+                      list:
+                        items:
+                          $ref: '#/definitions/model.DictPageRes'
+                        type: array
+                    type: object
+              type: object
+      security:
+      - Token: []
+      summary: 字典分页
+      tags:
+      - 数据字典
   /plat/dict/read:
     post:
       consumes:
       - application/json
       description: 获取字典下拉列表以及关联键值Map
-      operationId: ReadDict读取字典
+      operationId: ReadDict 读取字典
       parameters:
       - description: 语言，不传默认为zh-CN
         in: header
@@ -214,7 +683,7 @@ paths:
           description: 响应成功
           schema:
             allOf:
-            - $ref: '#/definitions/model.ResBody'
+            - $ref: '#/definitions/baseModel.ResBody'
             - properties:
                 data:
                   $ref: '#/definitions/model.DictReadRes'
@@ -224,12 +693,48 @@ paths:
       summary: 读取字典
       tags:
       - 数据字典
-  /plat/dictGroup/list:
+  /plat/dict/sort:
     post:
       consumes:
       - application/json
-      description: 获取字典分组列表，改列表为内置列表
-      operationId: ListDictGroup字典分组列表
+      description: 字典分组下字典排序处理
+      operationId: SortDict 字典排序处理
+      parameters:
+      - description: 语言，不传默认为zh-CN
+        in: header
+        name: Lang
+        type: string
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/baseModel.SortReq'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      security:
+      - Token: []
+      summary: 排序处理
+      tags:
+      - 数据字典
+  /plat/dictGroup/read:
+    post:
+      consumes:
+      - application/json
+      description: 获取字典分组下拉列表以及关联键值Map
+      operationId: ReadDictGroup 字典分组读取
       parameters:
       - description: 语言，不传默认为zh-CN
         in: header
@@ -242,16 +747,14 @@ paths:
           description: 响应成功
           schema:
             allOf:
-            - $ref: '#/definitions/model.ResBody'
+            - $ref: '#/definitions/baseModel.ResBody'
             - properties:
                 data:
-                  items:
-                    $ref: '#/definitions/model.SelectRes'
-                  type: array
+                  $ref: '#/definitions/model.DictGroupReadRes'
               type: object
       security:
       - Token: []
-      summary: 字典分组列表
+      summary: 字典分组读取
       tags:
       - 数据字典
 securityDefinitions:

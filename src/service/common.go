@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"siteol.com/smart/src/common/model/baseModel"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -47,7 +48,7 @@ func GetRouterConf(c *gin.Context) *model.CacheRouter {
 }
 
 // JsonRes 执行Json响应
-func JsonRes(c *gin.Context, res *model.ResBody) {
+func JsonRes(c *gin.Context, res *baseModel.ResBody) {
 	// traceID 日志追踪
 	traceID := c.GetString(constant.ContextTraceID)
 	// 获取路由配置

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"siteol.com/smart/src/common/model/baseModel"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,7 @@ import (
 )
 
 // ReturnMsgTrans 执行响应码 => 响应文言 翻译
-func ReturnMsgTrans(res *model.ResBody, c *gin.Context, router *model.CacheRouter, traceID string) {
+func ReturnMsgTrans(res *baseModel.ResBody, c *gin.Context, router *model.CacheRouter, traceID string) {
 	// 语言类型
 	lang := c.GetString(constant.ContextLang)
 	// 非400校验错误执行翻译
@@ -36,7 +37,7 @@ func ReturnMsgTrans(res *model.ResBody, c *gin.Context, router *model.CacheRoute
 }
 
 // tableMsgTrans 执行Msg翻译
-func tableMsgTrans(res *model.ResBody, lang, traceID string) {
+func tableMsgTrans(res *baseModel.ResBody, lang, traceID string) {
 	// 获取翻译缓存 TODO
 	tranStr, err := redis.Get(constant.ContextLang)
 	if err != nil {

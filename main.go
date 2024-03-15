@@ -17,26 +17,26 @@ import (
 	"siteol.com/smart/src/router"
 )
 
-// @title			smart
-// @version         1.0
-// @description.markdown
-// @contact.name 	smart
-// @contact.url		https://smart.siteol.com
-// @contact.email	dev@siteol.com
-// @host			localhost:8000
-// @BasePath  		/
-// @accept			json
+//	@title		smart
+//	@version	1.0
+//	@description.markdown
+//	@contact.name	smart
+//	@contact.url	https://smart.siteol.com
+//	@contact.email	dev@siteol.com
+//	@host			localhost:8000
+//	@BasePath		/
+//	@accept			json
 
-// @securityDefinitions.apikey 	Token
-// @in 							header
-// @name 						Token
+//	@securityDefinitions.apikey	Token
+//	@in							header
+//	@name						Token
 
-// @x-logo {"url" :"/docs/file/logo.png","altText":"smart"}
+//	@x-logo	{"url" :"/docs/file/logo.png","altText":"smart"}
 
-// @tag.name 开放接口
-// @tag.description 基础开发接口
+//	@tag.name			开放接口
+//	@tag.description	基础开发接口
 
-// @x-tagGroups [{ "name": "基础", "tags": ["开放接口"]},{ "name": "平台", "tags": ["租户管理","集团部门","角色配置","登陆账号","访问权限","路由接口","响应文言","数据字典"]}]
+//	@x-tagGroups	[{ "name": "基础", "tags": ["开放接口"]},{ "name": "平台", "tags": ["租户管理","集团部门","角色配置","登陆账号","访问权限","路由接口","响应文言","数据字典"]}]
 
 // 主函数
 func main() {

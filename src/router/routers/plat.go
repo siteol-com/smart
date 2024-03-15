@@ -13,13 +13,20 @@ func PlatRouter(router *gin.Engine) {
 		// 字典分组相关
 		dictGroupRouter := platRouter.Group("/dictGroup", middleware.OpenMiddleWare)
 		{
-			dictGroupRouter.POST("/list", platHander.ListDictGroup)
+			dictGroupRouter.POST("/read", platHander.ReadDictGroup)
 		}
-
 		// 字典相关
 		dictRouter := platRouter.Group("/dict", middleware.OpenMiddleWare)
 		{
 			dictRouter.POST("/read", platHander.ReadDict)
+			dictRouter.POST("/nextVal", platHander.NextDictVal)
+			dictRouter.POST("/add", platHander.AddDict)
+			dictRouter.POST("/page", platHander.PageDict)
+			dictRouter.POST("/get", platHander.GetDict)
+			dictRouter.POST("/edit", platHander.EditDict)
+			dictRouter.POST("/bro", platHander.BroDict)
+			dictRouter.POST("/sort", platHander.SortDict)
+			dictRouter.POST("/del", platHander.DelDict)
 		}
 	}
 }

@@ -3,16 +3,16 @@ package validate
 import (
 	"errors"
 	"net/http"
+	"siteol.com/smart/src/common/model/baseModel"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
-	"siteol.com/smart/src/common/model"
 )
 
 // Readable 请求数据解析和校验错误返回
-func Readable(c *gin.Context, req any) (*model.ResBody, any) {
+func Readable(c *gin.Context, req any) (*baseModel.ResBody, any) {
 	traceID := c.GetString(constant.ContextTraceID)
 	var err error
 	// 根据请求采用不同绑定
@@ -25,7 +25,7 @@ func Readable(c *gin.Context, req any) (*model.ResBody, any) {
 	if err != nil {
 		errResult := readableError(err, c.GetString(constant.ContextLang), traceID)
 		// 响应400错误（已翻译）
-		return model.Validate(errResult), nil
+		return baseModel.Validate(errResult), nil
 	}
 	return nil, req
 }
