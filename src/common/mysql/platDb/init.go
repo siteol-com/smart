@@ -13,7 +13,7 @@ import (
 var platDb *gorm.DB
 
 // InitPlatFromDb 初始化平台数据库
-func InitPlatFromDb() {
+func InitPlatFromDb(traceId string) {
 	// 采用默认配置打开数据可（默认禁用事务）
 	db, err := gorm.Open(mysql.Open(config.JsonConfig.MySQL.Plat), &gorm.Config{SkipDefaultTransaction: true})
 	if err != nil {
@@ -21,7 +21,7 @@ func InitPlatFromDb() {
 		return
 	}
 	platDb = db
-	log.InfoTF(fmt.Sprintf("%s%s", config.SysNode, "INIT"), "Init PlatDb Success . ")
+	log.InfoTF(traceId, "Init PlatDb Success . ")
 }
 
 // Common 平台通用信息体

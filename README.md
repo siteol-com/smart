@@ -47,6 +47,10 @@
 
 go install github.com/swaggo/swag/cmd/swag@latest
 
+- 格式化注释代码
+
+swag fmt
+
 - 初始化swagger.yaml文件
 
 swag init

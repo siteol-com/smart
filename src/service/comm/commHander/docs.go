@@ -10,22 +10,21 @@ import (
 	"strings"
 )
 
-// Sample godoc
-//
-//	@id				Sample示例
-//	@Summary		通用API示例
-//	@Description	系统API基本示例
-//	@Router			/docs/sample [post]
-//	@Tags			开放接口
-//	@Accept			json
-//	@Produce		json
-//	@Security		Token
-//	@Param			req	body		model.DocsReq		true	"示例请求"
-//	@Success		200	{object}	model.DocsOk		"业务受理成功"
-//	@Failure		400	{object}	model.DocsVail		"数据校验失败"
-//	@Failure		401	{object}	model.DocsAuthLg	"当前尚未登陆"
-//	@Failure		403	{object}	model.DocsAuthNg	"权限校验失败"
-//	@Failure		500	{object}	model.DocsErr		"服务系统异常"
+// Sample 		godoc
+// @id			Sample示例
+// @Summary		通用API示例
+// @Description	系统API基本示例
+// @Router		/docs/sample [post]
+// @Tags		开放接口
+// @Accept		json
+// @Produce		json
+// @Security	Token
+// @Param		req	body		model.DocsReq	true	"示例请求"
+// @Success		200	{object}	model.DocsOk			"业务受理成功"
+// @Failure		400	{object}	model.DocsVail			"数据校验失败"
+// @Failure		401	{object}	model.DocsAuthLg		"当前尚未登陆"
+// @Failure		403	{object}	model.DocsAuthNg		"权限校验失败"
+// @Failure		500	{object}	model.DocsErr			"服务系统异常"
 func Sample(c *gin.Context) {
 	_, req, err := service.ValidateReqObj(c, &model.DocsReq{})
 	if err != nil {
@@ -74,7 +73,7 @@ func DocsFile(c *gin.Context) {
 	case ".css":
 		contextType = "text/css"
 	}
-	data, err := os.ReadFile("docs" + fileInfo)
+	data, err := os.ReadFile("docs/file/" + fileInfo)
 	if err != nil {
 		c.JSON(http.StatusNotFound, nil)
 	} else {

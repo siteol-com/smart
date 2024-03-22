@@ -48,18 +48,19 @@ var commonColumn = map[string]bool{"mark": true, "status": true, "create_at": tr
 
 // 计划生成的表名 - 平台表
 var tableArray = []string{
-	"account",
-	"account_role",
-	"dept",
-	"dict",
-	"dict_group",
-	"login_record",
-	"permission",
-	"permission_router",
-	"response_code",
-	"role",
-	"role_permission",
-	"router",
+	//"account",
+	//"account_role",
+	//"dept",
+	//"dict",
+	//"dict_group",
+	//"login_record",
+	//"permission",
+	//"permission_router",
+	//"response_code",
+	//"role",
+	//"role_permission",
+	//"router",
+	"sys_config",
 }
 
 // 包位置
@@ -69,7 +70,7 @@ var packPath = "platDb"
 var dbName = "smart"
 
 func TestDBPlatMaker(t *testing.T) {
-	InitPlatFromDb()
+	InitPlatFromDb("Test")
 	path := fmt.Sprintf("src/common/mysql/%s/", packPath)
 	// 切换到管理库
 	platDb.Exec("use information_schema;")
@@ -97,7 +98,7 @@ func TestDBPlatMaker(t *testing.T) {
 		// 组装字段
 		for rows.Next() {
 			var a, b, c string
-			rows.Scan(&a, &b, &c)
+			_ = rows.Scan(&a, &b, &c)
 			// 公共字段
 			if commonColumn[a] {
 				commonHave = true

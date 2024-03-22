@@ -41,7 +41,7 @@ func NextDictVal(traceID string, req *model.DictNextValReq) *baseModel.ResBody {
 	total, err := platDb.DictTable.CountByQuery(query)
 	if err != nil {
 		log.ErrorTF(traceID, "NextDictVal Fail . Err Is : %v", err)
-		return baseModel.Fail(constant.DictGetNG, nil)
+		return baseModel.Fail(constant.DictGetNG)
 	}
 	return baseModel.SuccessUnPop(total)
 }
@@ -87,7 +87,7 @@ func PageDict(traceID string, req *model.DictPageReq) *baseModel.ResBody {
 	total, list, err := platDb.DictTable.Page(query)
 	if err != nil {
 		log.ErrorTF(traceID, "PageDict Fail . Err Is : %v", err)
-		return baseModel.Fail(constant.DictGetNG, nil)
+		return baseModel.Fail(constant.DictGetNG)
 	}
 	return baseModel.SuccessUnPop(baseModel.SetPageRes(model.ToDictPageRes(list), total))
 }
@@ -97,9 +97,9 @@ func GetDict(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 	res, err := platDb.DictTable.FindOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetDict Fail . Err Is : %v", err)
-		return baseModel.Fail(constant.DictGetNG, nil)
+		return baseModel.Fail(constant.DictGetNG)
 	}
-	return baseModel.SuccessUnPop(res)
+	return baseModel.SuccessUnPop(model.ToDictGetRes(&res))
 }
 
 // EditDict 编辑字典
@@ -107,12 +107,12 @@ func EditDict(traceID string, req *model.DictEditReq) *baseModel.ResBody {
 	dbReq, err := platDb.DictTable.FindOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetDict Fail . Err Is : %v", err)
-		return baseModel.Fail(constant.DictGetNG, nil)
+		return baseModel.Fail(constant.DictGetNG)
 	}
 	// 字段禁止编辑
 	if dbReq.Mark == constant.StatusLock {
 		log.ErrorTF(traceID, "EditDict %d Fail . Can not Edit", dbReq.Id)
-		return baseModel.Fail(constant.DictMarkNG, nil)
+		return baseModel.Fail(constant.DictMarkNG)
 	}
 	// 对象更新
 	req.ToDbReq(&dbReq)
@@ -127,11 +127,11 @@ func EditDict(traceID string, req *model.DictEditReq) *baseModel.ResBody {
 
 // BroDict 字典分组列表
 func BroDict(traceID string, req *model.DictBroReq) *baseModel.ResBody {
-	// 如果查询key不为空
-	dictList, err := platDb.DictTable.FindByObjectSort(&platDb.Dict{GroupKey: req.GroupKey})
+	// 如果查询key不为空（只查询启用的数据）
+	dictList, err := platDb.DictTable.FindByObjectSort(&platDb.Dict{GroupKey: req.GroupKey, Common: platDb.Common{Status: constant.StatusOpen}})
 	if err != nil {
 		log.WarnTF(traceID, "BroDict Fail . GroupKey Query By : %s , Err is : %v", req.GroupKey, err)
-		return baseModel.Fail(constant.DictGetNG, nil)
+		return baseModel.Fail(constant.DictGetNG)
 	}
 	return baseModel.SuccessUnPop(dictListToBro(dictList, req.Local))
 }
@@ -144,7 +144,7 @@ func SortDict(traceID string, req []*baseModel.SortReq) *baseModel.ResBody {
 	err := platDb.DictTable.SortWithTransaction(req)
 	if err != nil {
 		log.ErrorTF(traceID, "SortDict Fail .  Err is : %s", err)
-		return baseModel.Fail(constant.DictSortNG, nil)
+		return baseModel.Fail(constant.DictSortNG)
 	}
 	return baseModel.Success(constant.DictSortSS, true)
 }
@@ -154,12 +154,12 @@ func DelDict(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 	dbReq, err := platDb.DictTable.FindOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetDict Fail . Err Is : %v", err)
-		return baseModel.Fail(constant.DictGetNG, nil)
+		return baseModel.Fail(constant.DictGetNG)
 	}
 	// 字段禁止编辑
 	if dbReq.Mark == constant.StatusLock {
 		log.ErrorTF(traceID, "EditDel %d Fail . Can not Edit", dbReq.Id)
-		return baseModel.Fail(constant.DictMarkNG, nil)
+		return baseModel.Fail(constant.DictMarkNG)
 	}
 	dbReq.Status = constant.StatusClose
 	err = platDb.DictTable.UpdateOne(dbReq)
@@ -232,7 +232,7 @@ func checkDictDBErr(err error) *baseModel.ResBody {
 	if strings.Contains(errStr, constant.DBDuplicateErr) {
 		if strings.Contains(errStr, "dict_uni") {
 			// 字典分组下字典值唯一
-			return baseModel.Fail(constant.DictUniNG, nil)
+			return baseModel.Fail(constant.DictUniNG)
 		}
 	}
 	// 默认业务异常

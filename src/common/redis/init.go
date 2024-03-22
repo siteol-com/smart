@@ -1,7 +1,6 @@
 package redis
 
 import (
-	"fmt"
 	"os"
 
 	"siteol.com/smart/src/common/log"
@@ -13,7 +12,7 @@ import (
 var cluster *redis.Client
 
 // Init Redis初始化
-func Init() {
+func Init(traceId string) {
 	// redis
 	cluster = redis.NewClient(&redis.Options{
 		Addr:     config.JsonConfig.Redis.Addr,
@@ -22,9 +21,9 @@ func Init() {
 	})
 	err := cluster.Ping().Err()
 	if err != nil {
-		log.ErrorTF(fmt.Sprintf("%s%s", config.SysNode, "INIT"), "Init Redis Fail . Err : %s", err)
+		log.ErrorTF(traceId, "Init Redis Fail . Err : %s", err)
 		os.Exit(1)
 	} else {
-		log.InfoTF(fmt.Sprintf("%s%s", config.SysNode, "INIT"), "Init Redis success")
+		log.InfoTF(traceId, "Init Redis success .")
 	}
 }

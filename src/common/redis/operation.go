@@ -14,8 +14,8 @@ import (
 var ErrNotFound = errors.New("not found")
 var DuplicateKeys = errors.New("Duplicate Keys")
 
-// Set 基础的缓存设置
-func Set(key string, obj any, seconds int) (err error) {
+// Set 基础的缓存设置 超时为0表示永不超时
+func Set(key string, obj any, millisecond int) (err error) {
 	var value string
 	switch v := obj.(type) {
 	case string:
@@ -33,12 +33,12 @@ func Set(key string, obj any, seconds int) (err error) {
 		}
 		value = string(bs)
 	}
-	err = cluster.Set(key, value, time.Second*time.Duration(seconds)).Err()
+	err = cluster.Set(key, value, time.Millisecond*time.Duration(millisecond)).Err()
 	return
 }
 
-// SetNX 分布式设值
-func SetNX(key string, obj any, seconds int) (err error) {
+// SetNX 分布式设值 超时为0表示永不超时
+func SetNX(key string, obj any, millisecond int) (err error) {
 	var value string
 	switch v := obj.(type) {
 	case string:
@@ -56,7 +56,7 @@ func SetNX(key string, obj any, seconds int) (err error) {
 		}
 		value = string(bs)
 	}
-	res, err := cluster.SetNX(key, value, time.Second*time.Duration(seconds)).Result()
+	res, err := cluster.SetNX(key, value, time.Millisecond*time.Duration(millisecond)).Result()
 	if err != nil {
 		log.Error(err)
 		return err

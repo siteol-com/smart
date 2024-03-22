@@ -4,7 +4,7 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "![Smart](/docs/file/logo.png)\r\n\r\n# 概述\r\n\r\n轻量易用的授权基座smart，提供一个非官方RBAC授权模型的基础开箱即用中台管理服务。\r\n\r\n支持响应码自定义国际化、高粒度权限分配、接口路由配置和实时生效，同时支持部门数据权限横向访问限制。\r\n\r\n本系统的全部接口采用【POST】【application/json】方式传输数据。\r\n\r\n除开放接口以外的其他接口均需要通过【ApiKeyAuth:请求头[Token]】完成鉴权。\r\n\r\n系统技术栈：Golang、VueNext、MySQL、Redis、Gin、ArcoDesign\r\n\r\n# 接口文档\r\n\r\n轻度依赖集成，通过静态HTML加载yaml文件进行打开接口文档。\r\n\r\n该接口文档提供Swagger[支持调试]和ReDoc[阅读增强]两个版本。\r\n\r\n[Swagger[支持调试]：/docs/swagger/index.html](http://localhost:8000/docs/swagger/index.html) 丨 [ReDoc[阅读增强]：/docs/redoc/index.html](http://localhost:8000/docs/redoc/index.html)\r\n\r\n## 生成说明\r\n\r\n- 首次集成\r\n\r\ngo install github.com/swaggo/swag/cmd/swag@latest\r\n\r\n- 初始化swagger.yaml文件\r\n\r\nswag init\r\n\r\n- 如果像本工程一样依赖了api.md文件描述项目\r\n\r\nswag init --md .\r\n\r\n- 删除多余的生成\r\n\r\nrm .\\docs\\docs.go\r\n\r\n删除docs.go是因为本项目中并未采用下述依赖来集成。\r\n\r\n而是通过HTML模板+JS+YAML引入集成，移除docs.go用于避免依赖编译报错。\r\n\r\n- github.com/swaggo/swag\r\n- github.com/swaggo/gin-swagger\r\n- github.com/swaggo/files\r\n\r\n源帮助页：[https://github.com/swaggo/swag/blob/master/README_zh-CN.md](https://github.com/swaggo/swag/blob/master/README_zh-CN.md)\r\n",
+        "description": "![Smart](/docs/file/logo.png)\r\n\r\n# 概述\r\n\r\n轻量易用的授权基座smart，提供一个非官方RBAC授权模型的基础开箱即用中台管理服务。\r\n\r\n支持响应码自定义国际化、高粒度权限分配、接口路由配置和实时生效，同时支持部门数据权限横向访问限制。\r\n\r\n本系统的全部接口采用【POST】【application/json】方式传输数据。\r\n\r\n除开放接口以外的其他接口均需要通过【ApiKeyAuth:请求头[Token]】完成鉴权。\r\n\r\n系统技术栈：Golang、VueNext、MySQL、Redis、Gin、ArcoDesign\r\n\r\n# 接口文档\r\n\r\n轻度依赖集成，通过静态HTML加载yaml文件进行打开接口文档。\r\n\r\n该接口文档提供Swagger[支持调试]和ReDoc[阅读增强]两个版本。\r\n\r\n[Swagger[支持调试]：/docs/swagger/index.html](http://localhost:8000/docs/swagger/index.html) 丨 [ReDoc[阅读增强]：/docs/redoc/index.html](http://localhost:8000/docs/redoc/index.html)\r\n\r\n## 生成说明\r\n\r\n- 首次集成\r\n\r\ngo install github.com/swaggo/swag/cmd/swag@latest\r\n\r\n- 格式化注释代码\r\n\r\nswag fmt\r\n\r\n- 初始化swagger.yaml文件\r\n\r\nswag init\r\n\r\n- 如果像本工程一样依赖了api.md文件描述项目\r\n\r\nswag init --md .\r\n\r\n\r\n- 删除多余的生成\r\n\r\nrm .\\docs\\docs.go\r\n\r\n删除docs.go是因为本项目中并未采用下述依赖来集成。\r\n\r\n而是通过HTML模板+JS+YAML引入集成，移除docs.go用于避免依赖编译报错。\r\n\r\n- github.com/swaggo/swag\r\n- github.com/swaggo/gin-swagger\r\n- github.com/swaggo/files\r\n\r\n源帮助页：[https://github.com/swaggo/swag/blob/master/README_zh-CN.md](https://github.com/swaggo/swag/blob/master/README_zh-CN.md)\r\n",
         "title": "smart",
         "contact": {
             "name": "smart",
@@ -349,19 +349,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "allOf": [
-                                                {
-                                                    "$ref": "#/definitions/baseModel.PageRes"
-                                                },
-                                                {
-                                                    "type": "object",
-                                                    "properties": {
-                                                        "list": {
-                                                            "$ref": "#/definitions/platDb.Dict"
-                                                        }
-                                                    }
-                                                }
-                                            ]
+                                            "$ref": "#/definitions/model.DictGetRes"
                                         }
                                     }
                                 }
@@ -657,6 +645,110 @@
                     }
                 }
             }
+        },
+        "/plat/sysConfig/edit": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "在系统配置分组下编辑系统配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据系统配置"
+                ],
+                "summary": "系统配置编辑",
+                "operationId": "EditSysConfig 系统配置编辑",
+                "parameters": [
+                    {
+                        "description": "请求",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.SysConfigEditReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "响应成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/baseModel.ResBody"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/plat/sysConfig/get": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "查询系统配置详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据系统配置"
+                ],
+                "summary": "系统配置详情",
+                "operationId": "GetSysConfig 系统配置详情",
+                "parameters": [
+                    {
+                        "description": "请求",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/baseModel.IdReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "响应成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/baseModel.ResBody"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.SysConfigGetRes"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -678,7 +770,8 @@
                 },
                 "total": {
                     "description": "数据总量",
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 100
                 }
             }
         },
@@ -696,7 +789,7 @@
                 "msg": {
                     "description": "响应消息",
                     "type": "string",
-                    "example": "操作成功/失败"
+                    "example": "Success/Fail"
                 },
                 "unPop": {
                     "description": "免弹窗提示",
@@ -711,12 +804,12 @@
                 "label": {
                     "description": "展示名",
                     "type": "string",
-                    "example": "展示名"
+                    "example": "Name"
                 },
                 "value": {
                     "description": "展示值",
                     "type": "string",
-                    "example": "展示值"
+                    "example": "Value"
                 }
             }
         },
@@ -749,7 +842,7 @@
                 "name": {
                     "description": "权限名称，界面展示，建议与界面导航一致",
                     "type": "string",
-                    "example": "账号管理"
+                    "example": "Account"
                 },
                 "sort": {
                     "description": "权限排序",
@@ -771,6 +864,10 @@
                 "choose": {
                     "description": "是否可被选择 0可选择 1不可选择",
                     "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
                     "example": "0"
                 },
                 "groupKey": {
@@ -781,7 +878,7 @@
                 "label": {
                     "description": "字段名称",
                     "type": "string",
-                    "example": "平台基础"
+                    "example": "PlatBase"
                 },
                 "labelEn": {
                     "description": "字段名称（英文）",
@@ -791,7 +888,7 @@
                 "remark": {
                     "description": "字典描述",
                     "type": "string",
-                    "example": "业务类型字典"
+                    "example": "Business type dictionary"
                 },
                 "val": {
                     "description": "字典值（字符型）",
@@ -825,6 +922,10 @@
                 "choose": {
                     "description": "是否可被选择 0可选择 1不可选择",
                     "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
                     "example": "0"
                 },
                 "id": {
@@ -835,7 +936,7 @@
                 "label": {
                     "description": "字段名称",
                     "type": "string",
-                    "example": "平台基础"
+                    "example": "PlatBase"
                 },
                 "labelEn": {
                     "description": "字段名称（英文）",
@@ -845,7 +946,47 @@
                 "remark": {
                     "description": "字典描述",
                     "type": "string",
-                    "example": "业务类型字典"
+                    "example": "Business type dictionary"
+                }
+            }
+        },
+        "model.DictGetRes": {
+            "type": "object",
+            "properties": {
+                "choose": {
+                    "description": "是否可被选择 0可选择 1不可选择",
+                    "type": "string",
+                    "example": "0"
+                },
+                "groupKey": {
+                    "description": "字典分组KEY",
+                    "type": "string",
+                    "example": "serviceCode"
+                },
+                "id": {
+                    "description": "数据ID",
+                    "type": "integer",
+                    "example": 1
+                },
+                "label": {
+                    "description": "字段名称",
+                    "type": "string",
+                    "example": "PlatBase"
+                },
+                "labelEn": {
+                    "description": "字段名称（英文）",
+                    "type": "string",
+                    "example": "PlatBase"
+                },
+                "remark": {
+                    "description": "字典描述",
+                    "type": "string",
+                    "example": "Business type dictionary"
+                },
+                "val": {
+                    "description": "字典值（字符型）",
+                    "type": "string",
+                    "example": "1"
                 }
             }
         },
@@ -866,7 +1007,7 @@
                         "type": "string"
                     },
                     "example": {
-                        "{'serviceCode'": "'业务模块'}"
+                        "{'serviceCode'": "'Business module'}"
                     }
                 }
             }
@@ -900,7 +1041,7 @@
                 "label": {
                     "description": "字典展示文言，跟随请求语言模糊检索",
                     "type": "string",
-                    "example": "成功"
+                    "example": "Success"
                 },
                 "pageSize": {
                     "description": "单页数量",
@@ -930,7 +1071,7 @@
                 "label": {
                     "description": "字段名称",
                     "type": "string",
-                    "example": "平台"
+                    "example": "Plat"
                 },
                 "labelEn": {
                     "description": "字段名称（英文）",
@@ -945,7 +1086,7 @@
                 "remark": {
                     "description": "字典描述",
                     "type": "string",
-                    "example": "业务编码：平台"
+                    "example": "Business code: Platform"
                 },
                 "sort": {
                     "description": "字典排序",
@@ -1014,7 +1155,7 @@
                 "msg": {
                     "description": "响应消息",
                     "type": "string",
-                    "example": "当前尚未登陆"
+                    "example": "Not currently logged in"
                 }
             }
         },
@@ -1029,7 +1170,7 @@
                 "msg": {
                     "description": "响应消息",
                     "type": "string",
-                    "example": "当前接口禁止访问"
+                    "example": "Access to the current interface is prohibited"
                 }
             }
         },
@@ -1044,7 +1185,7 @@
                 "msg": {
                     "description": "响应消息",
                     "type": "string",
-                    "example": "系统异常"
+                    "example": "System exception"
                 }
             }
         },
@@ -1059,12 +1200,12 @@
                 "data": {
                     "description": "响应数据",
                     "type": "string",
-                    "example": "响应数据"
+                    "example": "Response data"
                 },
                 "msg": {
                     "description": "响应消息",
                     "type": "string",
-                    "example": "操作成功/失败"
+                    "example": "Success/Fail"
                 },
                 "unPop": {
                     "description": "免弹窗提示",
@@ -1094,64 +1235,143 @@
                 "msg": {
                     "description": "响应消息",
                     "type": "string",
-                    "example": "xx字段应该为必填"
+                    "example": "xx Field should be required"
                 }
             }
         },
-        "platDb.Dict": {
+        "model.SysConfigEditReq": {
+            "type": "object",
+            "required": [
+                "loginFailSwitch",
+                "loginSwitch",
+                "logoutSwitch"
+            ],
+            "properties": {
+                "loginFailLockNum": {
+                    "description": "登陆失败锁定数量，最小为1",
+                    "type": "integer",
+                    "example": 1
+                },
+                "loginFailLockUnit": {
+                    "description": "登陆失败锁定 1秒 2分 3时 4天",
+                    "type": "string",
+                    "example": "1"
+                },
+                "loginFailNum": {
+                    "description": "登陆失败最大尝试次数，最小为1",
+                    "type": "integer",
+                    "example": 1
+                },
+                "loginFailSwitch": {
+                    "description": "登陆失败限制开关，0限制 1不限制",
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
+                    "example": "0"
+                },
+                "loginFailTryNum": {
+                    "description": "登陆失败尝试次数",
+                    "type": "integer",
+                    "example": 1
+                },
+                "loginFailUnit": {
+                    "description": "登陆失败限制 1秒 2分 3时 4天",
+                    "type": "string",
+                    "example": "1"
+                },
+                "loginNum": {
+                    "description": "最大登陆并发量，最小为1",
+                    "type": "integer",
+                    "example": 1
+                },
+                "loginSwitch": {
+                    "description": "并发限制开关，0限制 1不限制",
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
+                    "example": "0"
+                },
+                "logoutNum": {
+                    "description": "登陆过期长度数量，最小为1",
+                    "type": "integer",
+                    "example": 1
+                },
+                "logoutSwitch": {
+                    "description": "登陆过期开关，0限制 1不限制",
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
+                    "example": "0"
+                },
+                "logoutUnit": {
+                    "description": "登陆过期单位，1秒 2分 3时 4天",
+                    "type": "string",
+                    "example": "1"
+                }
+            }
+        },
+        "model.SysConfigGetRes": {
             "type": "object",
             "properties": {
-                "choose": {
-                    "description": "是否可被选择 0可选择 1不可选择",
-                    "type": "string"
+                "loginFailLockNum": {
+                    "description": "登陆失败锁定数量，最小为1",
+                    "type": "integer",
+                    "example": 1
                 },
-                "createAt": {
-                    "description": "创建时间",
-                    "type": "string"
+                "loginFailLockUnit": {
+                    "description": "登陆失败锁定 1秒 2分 3时 4天",
+                    "type": "string",
+                    "example": "1"
                 },
-                "groupKey": {
-                    "description": "字典分组KEY",
-                    "type": "string"
+                "loginFailNum": {
+                    "description": "登陆失败最大尝试次数，最小为1",
+                    "type": "integer",
+                    "example": 1
                 },
-                "id": {
-                    "description": "数据ID",
+                "loginFailSwitch": {
+                    "description": "登陆失败限制开关，0限制 1不限制",
+                    "type": "string",
+                    "example": "0"
+                },
+                "loginFailTryNum": {
+                    "description": "登陆失败尝试次数",
                     "type": "integer"
                 },
-                "label": {
-                    "description": "字段名称",
-                    "type": "string"
+                "loginFailUnit": {
+                    "description": "登陆失败限制 1秒 2分 3时 4天",
+                    "type": "string",
+                    "example": "1"
                 },
-                "labelEn": {
-                    "description": "字段名称（英文）",
-                    "type": "string"
+                "loginNum": {
+                    "description": "最大登陆并发量，最小为1",
+                    "type": "integer",
+                    "example": 1
                 },
-                "mark": {
-                    "description": "变更标识 0可变更/登陆成功 1禁止变更/登陆失败",
-                    "type": "string"
+                "loginSwitch": {
+                    "description": "并发限制开关，0限制 1不限制",
+                    "type": "string",
+                    "example": "0"
                 },
-                "pid": {
-                    "description": "父级字典ID 默认 1（根数据）",
-                    "type": "integer"
+                "logoutNum": {
+                    "description": "登陆过期长度数量，最小为1",
+                    "type": "integer",
+                    "example": 1
                 },
-                "remark": {
-                    "description": "字典描述",
-                    "type": "string"
+                "logoutSwitch": {
+                    "description": "登陆过期开关，0限制 1不限制",
+                    "type": "string",
+                    "example": "0"
                 },
-                "sort": {
-                    "description": "字典排序",
-                    "type": "integer"
-                },
-                "status": {
-                    "description": "状态 0正常 1锁定 2封存",
-                    "type": "string"
-                },
-                "updateAt": {
-                    "description": "更新时间",
-                    "type": "string"
-                },
-                "val": {
-                    "description": "字典值（字符型）",
-                    "type": "string"
+                "logoutUnit": {
+                    "description": "登陆过期单位，1秒 2分 3时 4天",
+                    "type": "string",
+                    "example": "1"
                 }
             }
         }

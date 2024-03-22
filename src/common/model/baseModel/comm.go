@@ -7,8 +7,8 @@ type IdReq struct {
 
 // SelectRes 通用下拉响应
 type SelectRes struct {
-	Label string `json:"label" example:"展示名"` // 展示名
-	Value string `json:"value" example:"展示值"` // 展示值
+	Label string `json:"label" example:"Name"`  // 展示名
+	Value string `json:"value" example:"Value"` // 展示值
 }
 
 // SortReq 排序对象
@@ -19,7 +19,7 @@ type SortReq struct {
 
 // SortRes 通用排序前置响应列表
 type SortRes struct {
-	Id   uint64 `json:"id" example:"1"`      // 默认数据ID
-	Name string `json:"name" example:"账号管理"` // 权限名称，界面展示，建议与界面导航一致
-	Sort uint8  `json:"sort" example:"1"`    // 权限排序
+	Id   uint64 `json:"id" example:"1"`         // 默认数据ID
+	Name string `json:"name" example:"Account"` // 权限名称，界面展示，建议与界面导航一致
+	Sort uint8  `json:"sort" example:"1"`       // 权限排序
 }

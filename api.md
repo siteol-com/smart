@@ -1,4 +1,4 @@
-![Smart](/docs/file/logo.png)
+![Smart](http://localhost:8000/docs/file/logo.png)
 
 # 概述
 
@@ -26,6 +26,10 @@
 
 go install github.com/swaggo/swag/cmd/swag@latest
 
+- 格式化注释代码
+
+swag fmt
+
 - 初始化swagger.yaml文件
 
 swag init
@@ -33,6 +37,7 @@ swag init
 - 如果像本工程一样依赖了api.md文件描述项目
 
 swag init --md .
+
 
 - 删除多余的生成
 

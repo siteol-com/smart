@@ -28,5 +28,11 @@ func PlatRouter(router *gin.Engine) {
 			dictRouter.POST("/sort", platHander.SortDict)
 			dictRouter.POST("/del", platHander.DelDict)
 		}
+		// 系统配置相关
+		sysConfigRouter := platRouter.Group("/sysConfig", middleware.OpenMiddleWare)
+		{
+			sysConfigRouter.POST("/get", platHander.GetSysConfig)
+			sysConfigRouter.POST("/edit", platHander.EditSysConfig)
+		}
 	}
 }

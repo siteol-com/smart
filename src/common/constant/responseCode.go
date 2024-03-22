@@ -26,4 +26,8 @@ const (
 	DictUniNG      = "F0102" // 字典分组下字典值唯一
 	DictMarkNG     = "F0103" // 字典禁止编辑
 	DictSortNG     = "F0104" // 字典排序失败
+
+	SysConfigEditSS = "S0200" // 系统配置编辑成功
+	SysConfigGetNG  = "F0200" // 系统配置查询失败
+
 )

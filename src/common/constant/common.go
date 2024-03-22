@@ -14,4 +14,6 @@ const (
 	StatusClose = "2" // 移除 弃用 踢出
 
 	DBDuplicateErr = "Error 1062 (23000): Duplicate entry" // 唯一索引错误
+
+	CacheSysConf = ProjectName + "::sysConf"
 )

@@ -15,6 +15,7 @@ definitions:
         description: 分页数据
       total:
         description: 数据总量
+        example: 100
         type: integer
     type: object
   baseModel.ResBody:
@@ -27,7 +28,7 @@ definitions:
         description: 响应数据
       msg:
         description: 响应消息
-        example: 操作成功/失败
+        example: Success/Fail
         type: string
       unPop:
         description: 免弹窗提示
@@ -38,11 +39,11 @@ definitions:
     properties:
       label:
         description: 展示名
-        example: 展示名
+        example: Name
         type: string
       value:
         description: 展示值
-        example: 展示值
+        example: Value
         type: string
     type: object
   baseModel.SortReq:
@@ -66,7 +67,7 @@ definitions:
         type: integer
       name:
         description: 权限名称，界面展示，建议与界面导航一致
-        example: 账号管理
+        example: Account
         type: string
       sort:
         description: 权限排序
@@ -77,6 +78,9 @@ definitions:
     properties:
       choose:
         description: 是否可被选择 0可选择 1不可选择
+        enum:
+        - "0"
+        - "1"
         example: "0"
         type: string
       groupKey:
@@ -85,7 +89,7 @@ definitions:
         type: string
       label:
         description: 字段名称
-        example: 平台基础
+        example: PlatBase
         type: string
       labelEn:
         description: 字段名称（英文）
@@ -93,7 +97,7 @@ definitions:
         type: string
       remark:
         description: 字典描述
-        example: 业务类型字典
+        example: Business type dictionary
         type: string
       val:
         description: 字典值（字符型）
@@ -119,6 +123,9 @@ definitions:
     properties:
       choose:
         description: 是否可被选择 0可选择 1不可选择
+        enum:
+        - "0"
+        - "1"
         example: "0"
         type: string
       id:
@@ -127,7 +134,7 @@ definitions:
         type: integer
       label:
         description: 字段名称
-        example: 平台基础
+        example: PlatBase
         type: string
       labelEn:
         description: 字段名称（英文）
@@ -135,13 +142,44 @@ definitions:
         type: string
       remark:
         description: 字典描述
-        example: 业务类型字典
+        example: Business type dictionary
         type: string
     required:
     - choose
     - id
     - label
     - labelEn
+    type: object
+  model.DictGetRes:
+    properties:
+      choose:
+        description: 是否可被选择 0可选择 1不可选择
+        example: "0"
+        type: string
+      groupKey:
+        description: 字典分组KEY
+        example: serviceCode
+        type: string
+      id:
+        description: 数据ID
+        example: 1
+        type: integer
+      label:
+        description: 字段名称
+        example: PlatBase
+        type: string
+      labelEn:
+        description: 字段名称（英文）
+        example: PlatBase
+        type: string
+      remark:
+        description: 字典描述
+        example: Business type dictionary
+        type: string
+      val:
+        description: 字典值（字符型）
+        example: "1"
+        type: string
     type: object
   model.DictGroupReadRes:
     properties:
@@ -155,7 +193,7 @@ definitions:
           type: string
         description: 字典分组翻译Map
         example:
-          '{''serviceCode''': '''业务模块''}'
+          '{''serviceCode''': '''Business module''}'
         type: object
     type: object
   model.DictNextValReq:
@@ -179,7 +217,7 @@ definitions:
         type: string
       label:
         description: 字典展示文言，跟随请求语言模糊检索
-        example: 成功
+        example: Success
         type: string
       pageSize:
         description: 单页数量
@@ -202,7 +240,7 @@ definitions:
         type: integer
       label:
         description: 字段名称
-        example: 平台
+        example: Plat
         type: string
       labelEn:
         description: 字段名称（英文）
@@ -214,7 +252,7 @@ definitions:
         type: string
       remark:
         description: 字典描述
-        example: 业务编码：平台
+        example: 'Business code: Platform'
         type: string
       sort:
         description: 字典排序
@@ -263,7 +301,7 @@ definitions:
         type: string
       msg:
         description: 响应消息
-        example: 当前尚未登陆
+        example: Not currently logged in
         type: string
     type: object
   model.DocsAuthNg:
@@ -274,7 +312,7 @@ definitions:
         type: string
       msg:
         description: 响应消息
-        example: 当前接口禁止访问
+        example: Access to the current interface is prohibited
         type: string
     type: object
   model.DocsErr:
@@ -285,7 +323,7 @@ definitions:
         type: string
       msg:
         description: 响应消息
-        example: 系统异常
+        example: System exception
         type: string
     type: object
   model.DocsOk:
@@ -296,11 +334,11 @@ definitions:
         type: string
       data:
         description: 响应数据
-        example: 响应数据
+        example: Response data
         type: string
       msg:
         description: 响应消息
-        example: 操作成功/失败
+        example: Success/Fail
         type: string
       unPop:
         description: 免弹窗提示
@@ -322,49 +360,113 @@ definitions:
         type: string
       msg:
         description: 响应消息
-        example: xx字段应该为必填
+        example: xx Field should be required
         type: string
     type: object
-  platDb.Dict:
+  model.SysConfigEditReq:
     properties:
-      choose:
-        description: 是否可被选择 0可选择 1不可选择
-        type: string
-      createAt:
-        description: 创建时间
-        type: string
-      groupKey:
-        description: 字典分组KEY
-        type: string
-      id:
-        description: 数据ID
+      loginFailLockNum:
+        description: 登陆失败锁定数量，最小为1
+        example: 1
         type: integer
-      label:
-        description: 字段名称
+      loginFailLockUnit:
+        description: 登陆失败锁定 1秒 2分 3时 4天
+        example: "1"
         type: string
-      labelEn:
-        description: 字段名称（英文）
-        type: string
-      mark:
-        description: 变更标识 0可变更/登陆成功 1禁止变更/登陆失败
-        type: string
-      pid:
-        description: 父级字典ID 默认 1（根数据）
+      loginFailNum:
+        description: 登陆失败最大尝试次数，最小为1
+        example: 1
         type: integer
-      remark:
-        description: 字典描述
+      loginFailSwitch:
+        description: 登陆失败限制开关，0限制 1不限制
+        enum:
+        - "0"
+        - "1"
+        example: "0"
         type: string
-      sort:
-        description: 字典排序
+      loginFailTryNum:
+        description: 登陆失败尝试次数
+        example: 1
         type: integer
-      status:
-        description: 状态 0正常 1锁定 2封存
+      loginFailUnit:
+        description: 登陆失败限制 1秒 2分 3时 4天
+        example: "1"
         type: string
-      updateAt:
-        description: 更新时间
+      loginNum:
+        description: 最大登陆并发量，最小为1
+        example: 1
+        type: integer
+      loginSwitch:
+        description: 并发限制开关，0限制 1不限制
+        enum:
+        - "0"
+        - "1"
+        example: "0"
         type: string
-      val:
-        description: 字典值（字符型）
+      logoutNum:
+        description: 登陆过期长度数量，最小为1
+        example: 1
+        type: integer
+      logoutSwitch:
+        description: 登陆过期开关，0限制 1不限制
+        enum:
+        - "0"
+        - "1"
+        example: "0"
+        type: string
+      logoutUnit:
+        description: 登陆过期单位，1秒 2分 3时 4天
+        example: "1"
+        type: string
+    required:
+    - loginFailSwitch
+    - loginSwitch
+    - logoutSwitch
+    type: object
+  model.SysConfigGetRes:
+    properties:
+      loginFailLockNum:
+        description: 登陆失败锁定数量，最小为1
+        example: 1
+        type: integer
+      loginFailLockUnit:
+        description: 登陆失败锁定 1秒 2分 3时 4天
+        example: "1"
+        type: string
+      loginFailNum:
+        description: 登陆失败最大尝试次数，最小为1
+        example: 1
+        type: integer
+      loginFailSwitch:
+        description: 登陆失败限制开关，0限制 1不限制
+        example: "0"
+        type: string
+      loginFailTryNum:
+        description: 登陆失败尝试次数
+        type: integer
+      loginFailUnit:
+        description: 登陆失败限制 1秒 2分 3时 4天
+        example: "1"
+        type: string
+      loginNum:
+        description: 最大登陆并发量，最小为1
+        example: 1
+        type: integer
+      loginSwitch:
+        description: 并发限制开关，0限制 1不限制
+        example: "0"
+        type: string
+      logoutNum:
+        description: 登陆过期长度数量，最小为1
+        example: 1
+        type: integer
+      logoutSwitch:
+        description: 登陆过期开关，0限制 1不限制
+        example: "0"
+        type: string
+      logoutUnit:
+        description: 登陆过期单位，1秒 2分 3时 4天
+        example: "1"
         type: string
     type: object
 host: localhost:8000
@@ -377,8 +479,8 @@ info:
     接口文档\r\n\r\n轻度依赖集成，通过静态HTML加载yaml文件进行打开接口文档。\r\n\r\n该接口文档提供Swagger[支持调试]和ReDoc[阅读增强]两个版本。\r\n\r\n[Swagger[支持调试]：/docs/swagger/index.html](http://localhost:8000/docs/swagger/index.html)
     丨 [ReDoc[阅读增强]：/docs/redoc/index.html](http://localhost:8000/docs/redoc/index.html)\r\n\r\n##
     生成说明\r\n\r\n- 首次集成\r\n\r\ngo install github.com/swaggo/swag/cmd/swag@latest\r\n\r\n-
-    初始化swagger.yaml文件\r\n\r\nswag init\r\n\r\n- 如果像本工程一样依赖了api.md文件描述项目\r\n\r\nswag
-    init --md .\r\n\r\n- 删除多余的生成\r\n\r\nrm .\\docs\\docs.go\r\n\r\n删除docs.go是因为本项目中并未采用下述依赖来集成。\r\n\r\n而是通过HTML模板+JS+YAML引入集成，移除docs.go用于避免依赖编译报错。\r\n\r\n-
+    格式化注释代码\r\n\r\nswag fmt\r\n\r\n- 初始化swagger.yaml文件\r\n\r\nswag init\r\n\r\n- 如果像本工程一样依赖了api.md文件描述项目\r\n\r\nswag
+    init --md .\r\n\r\n\r\n- 删除多余的生成\r\n\r\nrm .\\docs\\docs.go\r\n\r\n删除docs.go是因为本项目中并未采用下述依赖来集成。\r\n\r\n而是通过HTML模板+JS+YAML引入集成，移除docs.go用于避免依赖编译报错。\r\n\r\n-
     github.com/swaggo/swag\r\n- github.com/swaggo/gin-swagger\r\n- github.com/swaggo/files\r\n\r\n源帮助页：[https://github.com/swaggo/swag/blob/master/README_zh-CN.md](https://github.com/swaggo/swag/blob/master/README_zh-CN.md)\r\n"
   title: smart
   version: "1.0"
@@ -580,12 +682,7 @@ paths:
             - $ref: '#/definitions/baseModel.ResBody'
             - properties:
                 data:
-                  allOf:
-                  - $ref: '#/definitions/baseModel.PageRes'
-                  - properties:
-                      list:
-                        $ref: '#/definitions/platDb.Dict'
-                    type: object
+                  $ref: '#/definitions/model.DictGetRes'
               type: object
       security:
       - Token: []
@@ -757,6 +854,66 @@ paths:
       summary: 字典分组读取
       tags:
       - 数据字典
+  /plat/sysConfig/edit:
+    post:
+      consumes:
+      - application/json
+      description: 在系统配置分组下编辑系统配置
+      operationId: EditSysConfig 系统配置编辑
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.SysConfigEditReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      security:
+      - Token: []
+      summary: 系统配置编辑
+      tags:
+      - 数据系统配置
+  /plat/sysConfig/get:
+    post:
+      consumes:
+      - application/json
+      description: 查询系统配置详情
+      operationId: GetSysConfig 系统配置详情
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/baseModel.IdReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.SysConfigGetRes'
+              type: object
+      security:
+      - Token: []
+      summary: 系统配置详情
+      tags:
+      - 数据系统配置
 securityDefinitions:
   Token:
     in: header
