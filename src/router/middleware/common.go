@@ -18,6 +18,6 @@ func setLang(c *gin.Context) {
 // 设置路由上下文
 func setRouter(c *gin.Context, url string) {
 	// TODO 缓存处理
-	router := &model.CacheRouter{}
+	router := model.CacheRouterNormal
 	c.Set(constant.ContextRouterC, router)
 }

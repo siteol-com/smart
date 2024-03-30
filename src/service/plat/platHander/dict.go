@@ -86,8 +86,6 @@ func PageDict(c *gin.Context) {
 	traceID, reqObj, err := service.ValidateReqObj(c, &model.DictPageReq{})
 	if err == nil {
 		req := reqObj.(*model.DictPageReq)
-		// 语言读取
-		req.Local = service.GetLocal(c)
 		// 执行查询
 		service.JsonRes(c, platServer.PageDict(traceID, req))
 	}
@@ -102,7 +100,7 @@ func PageDict(c *gin.Context) {
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		req	body		baseModel.IdReq		true			"请求"
+// @Param		req	body		baseModel.IdReq		true					"请求"
 // @Success		200	{object}	baseModel.ResBody{data=model.DictGetRes}	"响应成功"
 func GetDict(c *gin.Context) {
 	traceID, reqObj, err := service.ValidateReqObj(c, &baseModel.IdReq{})

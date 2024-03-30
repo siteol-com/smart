@@ -1,5 +1,8 @@
 package constant
 
+// TransLangSupport 支持更多语言请添加
+var TransLangSupport = []string{"zh-CN", "en-US"}
+
 const (
 	ProjectName = "smart" // 项目名
 
@@ -8,6 +11,7 @@ const (
 	ContextLang    = "Lang"       // 语言
 	ContextTraceID = "TraceID"    // 日志链路跟踪ID
 	ContextRouterC = "RouterConf" // 路由配置对象
+	Context
 
 	StatusOpen  = "0" // 正常 启动 可变更
 	StatusLock  = "1" // 禁用 锁定 登出 不可变更
@@ -15,5 +19,6 @@ const (
 
 	DBDuplicateErr = "Error 1062 (23000): Duplicate entry" // 唯一索引错误
 
-	CacheSysConf = ProjectName + "::sysConf"
+	CacheSysConf  = ProjectName + "::SysConf"  // 系统配置缓存
+	CacheResTrans = ProjectName + "::ResTrans" // 响应码缓存
 )

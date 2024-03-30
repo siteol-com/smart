@@ -8,15 +8,15 @@ import (
 
 // PlatRouter 平台业务路由
 func PlatRouter(router *gin.Engine) {
-	platRouter := router.Group("/plat") // TODO 授权中间件
+	platRouter := router.Group("/plat", middleware.OpenMiddleWare) // TODO 授权中间件
 	{
 		// 字典分组相关
-		dictGroupRouter := platRouter.Group("/dictGroup", middleware.OpenMiddleWare)
+		dictGroupRouter := platRouter.Group("/dictGroup")
 		{
 			dictGroupRouter.POST("/read", platHander.ReadDictGroup)
 		}
 		// 字典相关
-		dictRouter := platRouter.Group("/dict", middleware.OpenMiddleWare)
+		dictRouter := platRouter.Group("/dict")
 		{
 			dictRouter.POST("/read", platHander.ReadDict)
 			dictRouter.POST("/nextVal", platHander.NextDictVal)
@@ -28,8 +28,18 @@ func PlatRouter(router *gin.Engine) {
 			dictRouter.POST("/sort", platHander.SortDict)
 			dictRouter.POST("/del", platHander.DelDict)
 		}
+		// 响应码相关
+		responseRouter := platRouter.Group("/response")
+		{
+			responseRouter.POST("/nextVal", platHander.NextResponseVal)
+			responseRouter.POST("/add", platHander.AddResponse)
+			responseRouter.POST("/page", platHander.PageResponse)
+			responseRouter.POST("/get", platHander.GetResponse)
+			responseRouter.POST("/edit", platHander.EditResponse)
+			responseRouter.POST("/del", platHander.DelResponse)
+		}
 		// 系统配置相关
-		sysConfigRouter := platRouter.Group("/sysConfig", middleware.OpenMiddleWare)
+		sysConfigRouter := platRouter.Group("/sysConfig")
 		{
 			sysConfigRouter.POST("/get", platHander.GetSysConfig)
 			sysConfigRouter.POST("/edit", platHander.EditSysConfig)

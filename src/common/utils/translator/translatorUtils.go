@@ -38,8 +38,8 @@ func ReturnMsgTrans(res *baseModel.ResBody, c *gin.Context, router *model.CacheR
 
 // tableMsgTrans 执行Msg翻译
 func tableMsgTrans(res *baseModel.ResBody, lang, traceID string) {
-	// 获取翻译缓存 TODO
-	tranStr, err := redis.Get(constant.ContextLang)
+	// 读取缓存
+	tranStr, err := redis.Get(constant.CacheResTrans)
 	if err != nil {
 		log.WarnTF(traceID, "GetTransLangCacheMap Fail . Err Is : %v", err)
 		// 出错不翻译
@@ -55,11 +55,22 @@ func tableMsgTrans(res *baseModel.ResBody, lang, traceID string) {
 	}
 	// 读取配置
 	codeMap, ok := transMap[res.Code]
+	// 未能匹配的响应码，复用基础文言
+	if !ok {
+		useCode := constant.Success
+		if strings.HasPrefix(res.Code, "F") {
+			useCode = constant.Fail
+		}
+		if strings.HasPrefix(res.Code, "E") {
+			useCode = constant.Error
+		}
+		codeMap, ok = transMap[useCode]
+	}
+	// 执行语言读取
 	if ok {
 		langTemple, lok := codeMap[lang]
 		if lok {
-			// 检查是否有变量
-			// 有进行变量替换
+			// 检查是否有变量，有则进行变量替换
 			if strings.Index(langTemple, "}}") > -1 {
 				res.Msg = TableValReplace(langTemple, res.Data)
 			} else {

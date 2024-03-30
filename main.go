@@ -37,7 +37,7 @@ import (
 // @tag.name		开放接口
 // @tag.description	基础开发接口
 
-// @x-tagGroups	[{ "name": "基础", "tags": ["开放接口"]},{ "name": "平台", "tags": ["租户管理","集团部门","角色配置","登陆账号","访问权限","路由接口","响应文言","数据字典"]}]
+// @x-tagGroups	[{ "name": "基础", "tags": ["开放接口"]},{ "name": "平台", "tags": ["租户管理","集团部门","角色配置","登陆账号","访问权限","路由接口","响应配置","数据字典"]}]
 
 // 主函数
 func main() {
@@ -82,12 +82,6 @@ func main() {
 func serviceInit(traceId string) {
 	// 主服务进行响应码初始化
 	if config.SysNode == "APP01" {
-		//err := platService.InitResponseCache(fmt.Sprintf("%s%s", config.SysNode, "INIT"))
-		//if err != nil {
-		//	log.ErrorTF(fmt.Sprintf("%s%s", config.SysNode, "INIT"), "InitResponseCache Fail . Err is : %v", err)
-		//	os.Exit(1)
-		//}
-
 		// 系统配置初始化
 		err := platServer.SyncSysConfigCache(traceId)
 		if err != nil {
@@ -95,5 +89,12 @@ func serviceInit(traceId string) {
 			os.Exit(1)
 		}
 		log.InfoTF(traceId, "InitSysConfigCache success .")
+		// 响应码配置初始化
+		err = platServer.SyncResponseCache(traceId)
+		if err != nil {
+			log.ErrorTF(traceId, "InitResponseCache Fail . Err is : %v", err)
+			os.Exit(1)
+		}
+		log.InfoTF(traceId, "InitResponseCache success .")
 	}
 }

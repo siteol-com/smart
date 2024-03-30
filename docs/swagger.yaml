@@ -174,7 +174,7 @@ definitions:
         type: string
       remark:
         description: 字典描述
-        example: Business type dictionary
+        example: Remark
         type: string
       val:
         description: 字典值（字符型）
@@ -215,10 +215,6 @@ definitions:
         description: 需要查询的字典分组
         example: serviceCode
         type: string
-      label:
-        description: 字典展示文言，跟随请求语言模糊检索
-        example: Success
-        type: string
       pageSize:
         description: 单页数量
         example: 10
@@ -228,7 +224,7 @@ definitions:
     properties:
       choose:
         description: 是否可被选择 0可选择 1不可选择
-        example: "1"
+        example: "0"
         type: string
       groupKey:
         description: 字典分组KEY
@@ -240,11 +236,11 @@ definitions:
         type: integer
       label:
         description: 字段名称
-        example: Plat
+        example: PlatBase
         type: string
       labelEn:
         description: 字段名称（英文）
-        example: Plat
+        example: PlatBase
         type: string
       mark:
         description: 变更标识 0可变更 1禁止变更
@@ -252,7 +248,7 @@ definitions:
         type: string
       remark:
         description: 字典描述
-        example: 'Business code: Platform'
+        example: Remark
         type: string
       sort:
         description: 字典排序
@@ -363,6 +359,164 @@ definitions:
         example: xx Field should be required
         type: string
     type: object
+  model.ResponseAddReq:
+    properties:
+      code:
+        description: 响应码，仅示例，实际入库实时计算
+        example: S101
+        type: string
+      enUs:
+        description: 英文响应文言
+        example: EnUs
+        type: string
+      remark:
+        description: 其他备注信息
+        example: Remark
+        type: string
+      serviceCode:
+        description: 业务ID，来源于字典，指定响应码归属业务
+        example: "0"
+        type: string
+      type:
+        description: 响应类型，该字段用于筛选，可配置S和F
+        example: S
+        type: string
+      zhCn:
+        description: 中文响应文言
+        example: ZhCn
+        type: string
+    required:
+    - enUs
+    - serviceCode
+    - type
+    - zhCn
+    type: object
+  model.ResponseEditReq:
+    properties:
+      enUs:
+        description: 英文响应文言
+        example: EnUs
+        type: string
+      id:
+        description: 数据ID
+        example: 1
+        type: integer
+      remark:
+        description: 其他备注信息
+        example: Remark
+        type: string
+      zhCn:
+        description: 中文响应文言
+        example: ZhCn
+        type: string
+    required:
+    - enUs
+    - id
+    - zhCn
+    type: object
+  model.ResponseGetRes:
+    properties:
+      code:
+        description: 响应码
+        example: "20101"
+        type: string
+      enUs:
+        description: 英文响应文言
+        example: EnUs
+        type: string
+      id:
+        description: 数据ID
+        example: 1
+        type: integer
+      remark:
+        description: 其他备注信息
+        example: Remark
+        type: string
+      serviceCode:
+        description: 业务ID，来源于字典，指定响应码归属业务
+        example: "1"
+        type: string
+      type:
+        description: 响应类型，该字段用于筛选，可配置S和F
+        example: S
+        type: string
+      zhCn:
+        description: 中文响应文言
+        example: ZhCn
+        type: string
+    type: object
+  model.ResponseNextValReq:
+    properties:
+      serviceCode:
+        description: 业务ID，来源于字典，指定响应码归属业务
+        example: "0"
+        type: string
+      type:
+        description: 响应类型，该字段用于筛选，可配置S和F
+        example: S
+        type: string
+    required:
+    - serviceCode
+    - type
+    type: object
+  model.ResponsePageReq:
+    properties:
+      code:
+        description: 响应码，支持模糊查询
+        example: "20"
+        type: string
+      current:
+        description: 当前页
+        example: 1
+        type: integer
+      pageSize:
+        description: 单页数量
+        example: 10
+        type: integer
+      serviceCode:
+        description: 业务ID，来源于字典，指定响应码归属业务
+        example: "0"
+        type: string
+      type:
+        description: 响应类型，该字段用于筛选，可配置S和F
+        example: S
+        type: string
+    type: object
+  model.ResponsePageRes:
+    properties:
+      code:
+        description: 响应码
+        example: "20101"
+        type: string
+      enUs:
+        description: 英文响应文言
+        example: EnUs
+        type: string
+      id:
+        description: 数据ID
+        example: 1
+        type: integer
+      mark:
+        description: 变更标识 0可变更 1禁止变更
+        example: "1"
+        type: string
+      remark:
+        description: 其他备注信息
+        example: Remark
+        type: string
+      serviceCode:
+        description: 业务ID，来源于字典，指定响应码归属业务
+        example: "1"
+        type: string
+      type:
+        description: 响应类型，该字段用于筛选，可配置S和F
+        example: S
+        type: string
+      zhCn:
+        description: 中文响应文言
+        example: ZhCn
+        type: string
+    type: object
   model.SysConfigEditReq:
     properties:
       loginFailLockNum:
@@ -443,6 +597,7 @@ definitions:
         type: string
       loginFailTryNum:
         description: 登陆失败尝试次数
+        example: 1
         type: integer
       loginFailUnit:
         description: 登陆失败限制 1秒 2分 3时 4天
@@ -475,7 +630,7 @@ info:
     email: dev@siteol.com
     name: smart
     url: https://smart.siteol.com
-  description: "![Smart](/docs/file/logo.png)\r\n\r\n# 概述\r\n\r\n轻量易用的授权基座smart，提供一个非官方RBAC授权模型的基础开箱即用中台管理服务。\r\n\r\n支持响应码自定义国际化、高粒度权限分配、接口路由配置和实时生效，同时支持部门数据权限横向访问限制。\r\n\r\n本系统的全部接口采用【POST】【application/json】方式传输数据。\r\n\r\n除开放接口以外的其他接口均需要通过【ApiKeyAuth:请求头[Token]】完成鉴权。\r\n\r\n系统技术栈：Golang、VueNext、MySQL、Redis、Gin、ArcoDesign\r\n\r\n#
+  description: "![Smart](http://localhost:8000/docs/file/logo.png)\r\n\r\n# 概述\r\n\r\n轻量易用的授权基座smart，提供一个非官方RBAC授权模型的基础开箱即用中台管理服务。\r\n\r\n支持响应码自定义国际化、高粒度权限分配、接口路由配置和实时生效，同时支持部门数据权限横向访问限制。\r\n\r\n本系统的全部接口采用【POST】【application/json】方式传输数据。\r\n\r\n除开放接口以外的其他接口均需要通过【ApiKeyAuth:请求头[Token]】完成鉴权。\r\n\r\n系统技术栈：Golang、VueNext、MySQL、Redis、Gin、ArcoDesign\r\n\r\n#
     接口文档\r\n\r\n轻度依赖集成，通过静态HTML加载yaml文件进行打开接口文档。\r\n\r\n该接口文档提供Swagger[支持调试]和ReDoc[阅读增强]两个版本。\r\n\r\n[Swagger[支持调试]：/docs/swagger/index.html](http://localhost:8000/docs/swagger/index.html)
     丨 [ReDoc[阅读增强]：/docs/redoc/index.html](http://localhost:8000/docs/redoc/index.html)\r\n\r\n##
     生成说明\r\n\r\n- 首次集成\r\n\r\ngo install github.com/swaggo/swag/cmd/swag@latest\r\n\r\n-
@@ -854,6 +1009,199 @@ paths:
       summary: 字典分组读取
       tags:
       - 数据字典
+  /plat/response/add:
+    post:
+      consumes:
+      - application/json
+      description: 新建响应码配置
+      operationId: AddResponse 响应码新建
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.ResponseAddReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      security:
+      - Token: []
+      summary: 响应码新建
+      tags:
+      - 响应配置
+  /plat/response/del:
+    post:
+      consumes:
+      - application/json
+      description: 响应码封存处理
+      operationId: DelResponse 响应码封存
+      parameters:
+      - description: 语言，不传默认为zh-CN
+        in: header
+        name: Lang
+        type: string
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/baseModel.IdReq'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      security:
+      - Token: []
+      summary: 响应码封存
+      tags:
+      - 响应配置
+  /plat/response/edit:
+    post:
+      consumes:
+      - application/json
+      description: 在响应码分组下编辑响应码
+      operationId: EditResponse 响应码编辑
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.ResponseEditReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      security:
+      - Token: []
+      summary: 响应码编辑
+      tags:
+      - 响应配置
+  /plat/response/get:
+    post:
+      consumes:
+      - application/json
+      description: 查询响应码详情
+      operationId: GetResponse 响应码详情
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/baseModel.IdReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.ResponseGetRes'
+              type: object
+      security:
+      - Token: []
+      summary: 响应码详情
+      tags:
+      - 响应配置
+  /plat/response/nextVal:
+    post:
+      consumes:
+      - application/json
+      description: 在业务分组下读取下一个响应码的建议值
+      operationId: NextResponseVal 响应码NextVal建议
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.ResponseNextValReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  type: integer
+              type: object
+      security:
+      - Token: []
+      summary: 响应码NextVal建议
+      tags:
+      - 数据字典
+  /plat/response/page:
+    post:
+      consumes:
+      - application/json
+      description: 查询响应码分页数据
+      operationId: PageResponse 响应码分页
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.ResponsePageReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/baseModel.PageRes'
+                  - properties:
+                      list:
+                        items:
+                          $ref: '#/definitions/model.ResponsePageRes'
+                        type: array
+                    type: object
+              type: object
+      security:
+      - Token: []
+      summary: 响应码分页
+      tags:
+      - 响应配置
   /plat/sysConfig/edit:
     post:
       consumes:
@@ -935,5 +1283,5 @@ x-tagGroups:
   - 登陆账号
   - 访问权限
   - 路由接口
-  - 响应文言
+  - 响应配置
   - 数据字典

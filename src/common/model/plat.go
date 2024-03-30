@@ -1,6 +1,8 @@
 package model
 
-import "siteol.com/smart/src/common/model/baseModel"
+import (
+	"siteol.com/smart/src/common/model/baseModel"
+)
 
 // DictGroupReadRes 字典分组读取响应
 type DictGroupReadRes struct {
@@ -55,34 +57,26 @@ type DictEditReq struct {
 
 // DictGetRes 字典查询结果
 type DictGetRes struct {
-	Id       uint64 `json:"id" example:"1"`                            // 数据ID
-	GroupKey string `json:"groupKey" example:"serviceCode"`            // 字典分组KEY
-	Val      string `json:"val" example:"1"`                           // 字典值（字符型）
-	Label    string `json:"label" example:"PlatBase"`                  // 字段名称
-	LabelEn  string `json:"labelEn" example:"PlatBase"`                // 字段名称（英文）
-	Choose   string `json:"choose" example:"0"`                        // 是否可被选择 0可选择 1不可选择
-	Remark   string `json:"remark" example:"Business type dictionary"` // 字典描述
+	Id       uint64 `json:"id" example:"1"`                 // 数据ID
+	GroupKey string `json:"groupKey" example:"serviceCode"` // 字典分组KEY
+	Val      string `json:"val" example:"1"`                // 字典值（字符型）
+	Label    string `json:"label" example:"PlatBase"`       // 字段名称
+	LabelEn  string `json:"labelEn" example:"PlatBase"`     // 字段名称（英文）
+	Choose   string `json:"choose" example:"0"`             // 是否可被选择 0可选择 1不可选择
+	Remark   string `json:"remark" example:"Remark"`        // 字典描述
 }
 
 // DictPageReq 字典分页请求
 type DictPageReq struct {
-	Local    string `json:"-"`                              // 字典语言
 	GroupKey string `json:"groupKey" example:"serviceCode"` // 需要查询的字典分组
-	Label    string `json:"label" example:"Success"`        // 字典展示文言，跟随请求语言模糊检索
 	baseModel.PageReq
 }
 
 // DictPageRes 字典分页响应
 type DictPageRes struct {
-	Id       uint64 `json:"id" example:"1"`                           // 数据ID
-	GroupKey string `json:"groupKey" example:"serviceCode"`           // 字典分组KEY
-	Label    string `json:"label" example:"Plat"`                     // 字段名称
-	LabelEn  string `json:"labelEn" example:"Plat"`                   // 字段名称（英文）
-	Choose   string `json:"choose" example:"1"`                       // 是否可被选择 0可选择 1不可选择
-	Val      string `json:"val" example:"1"`                          // 字典值（字符型）
-	Sort     uint8  `json:"sort" example:"0"`                         // 字典排序
-	Remark   string `json:"remark" example:"Business code: Platform"` // 字典描述
-	Mark     string `json:"mark" example:"1"`                         // 变更标识 0可变更 1禁止变更
+	DictGetRes
+	Sort uint8  `json:"sort" example:"0"` // 字典排序
+	Mark string `json:"mark" example:"1"` // 变更标识 0可变更 1禁止变更
 }
 
 // SysConfigGetRes 系统配置查询结果
@@ -94,7 +88,7 @@ type SysConfigGetRes struct {
 	LoginFailNum      uint16 `json:"loginFailNum" example:"1"`      // 登陆失败最大尝试次数，最小为1
 	LoginFailLockUnit string `json:"loginFailLockUnit" example:"1"` // 登陆失败锁定 1秒 2分 3时 4天
 	LoginFailLockNum  uint16 `json:"loginFailLockNum" example:"1"`  // 登陆失败锁定数量，最小为1
-	LoginFailTryNum   uint16 `json:"loginFailTryNum"`               // 登陆失败尝试次数
+	LoginFailTryNum   uint16 `json:"loginFailTryNum" example:"1"`   // 登陆失败尝试次数
 	LogoutSwitch      string `json:"logoutSwitch" example:"0"`      // 登陆过期开关，0限制 1不限制
 	LogoutUnit        string `json:"logoutUnit" example:"1"`        // 登陆过期单位，1秒 2分 3时 4天
 	LogoutNum         uint16 `json:"logoutNum" example:"1"`         // 登陆过期长度数量，最小为1
@@ -113,4 +107,56 @@ type SysConfigEditReq struct {
 	LogoutSwitch      string `json:"logoutSwitch" binding:"required,oneof='0' '1'" example:"0"`    // 登陆过期开关，0限制 1不限制
 	LogoutUnit        string `json:"logoutUnit" binding:"numeric" example:"1"`                     // 登陆过期单位，1秒 2分 3时 4天
 	LogoutNum         uint16 `json:"logoutNum" binding:"numeric" example:"1"`                      // 登陆过期长度数量，最小为1
+}
+
+// ResponseNextValReq 字典建议Val请求
+type ResponseNextValReq struct {
+	ServiceCode string `json:"serviceCode" binding:"required" example:"0"` // 业务ID，来源于字典，指定响应码归属业务
+	Type        string `json:"type" binding:"required" example:"S"`        // 响应类型，该字段用于筛选，可配置S和F
+}
+
+// ResponseDoReq 响应码通用请求
+type ResponseDoReq struct {
+	ZhCn   string `json:"zhCn" binding:"required" example:"ZhCn"` // 中文响应文言
+	EnUs   string `json:"enUs" binding:"required" example:"EnUs"` // 英文响应文言
+	Remark string `json:"remark" example:"Remark"`                // 其他备注信息
+}
+
+// ResponseAddReq 响应码创建请求
+type ResponseAddReq struct {
+	ResponseDoReq
+	ServiceCode string `json:"serviceCode" binding:"required" example:"0"`            // 业务ID，来源于字典，指定响应码归属业务
+	Type        string `json:"type" binding:"required,oneof='S' 'F' 'E'" example:"S"` // 响应类型，该字段用于筛选，可配置S/F/E
+	Code        string `json:"code" example:"S101"`                                   // 响应码，仅示例，实际入库实时计算
+}
+
+// ResponseEditReq 响应码编辑请求
+type ResponseEditReq struct {
+	Id uint64 `json:"id" binding:"required" example:"1"` // 数据ID
+	ResponseDoReq
+}
+
+// ResponseGetRes 响应码分页响应
+type ResponseGetRes struct {
+	Id          uint64 `json:"id" example:"1"`          // 数据ID
+	Code        string `json:"code" example:"20101"`    // 响应码
+	ServiceCode string `json:"serviceCode" example:"1"` // 业务ID，来源于字典，指定响应码归属业务
+	Type        string `json:"type" example:"S"`        // 响应类型，该字段用于筛选，可配置S和F
+	ZhCn        string `json:"zhCn" example:"ZhCn"`     // 中文响应文言
+	EnUs        string `json:"enUs" example:"EnUs"`     // 英文响应文言
+	Remark      string `json:"remark" example:"Remark"` // 其他备注信息
+}
+
+// ResponsePageReq 响应码分页请求
+type ResponsePageReq struct {
+	Code        string `json:"code" example:"20"`      // 响应码，支持模糊查询
+	ServiceCode string `json:"serviceCode"example:"0"` // 业务ID，来源于字典，指定响应码归属业务
+	Type        string `json:"type" example:"S"`       // 响应类型，该字段用于筛选，可配置S和F
+	baseModel.PageReq
+}
+
+// ResponsePageRes 响应码分页响应
+type ResponsePageRes struct {
+	ResponseGetRes
+	Mark string `json:"mark" example:"1"` // 变更标识 0可变更 1禁止变更
 }

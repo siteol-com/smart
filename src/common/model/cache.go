@@ -1,5 +1,7 @@
 package model
 
+var CacheRouterNormal = &CacheRouter{}
+
 // CacheRouter 缓存路由对象
 type CacheRouter struct {
 	Type       uint8    `json:"type"`       // 免授权路由 0 授权 1 免授权

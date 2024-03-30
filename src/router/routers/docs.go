@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	"siteol.com/smart/src/router/middleware"
 	"siteol.com/smart/src/service/comm/commHander"
 )
 
@@ -9,7 +10,7 @@ import (
 func DocsRouter(router *gin.Engine) {
 	// API
 	// initSwagger
-	docsRouter := router.Group("/docs")
+	docsRouter := router.Group("/docs", middleware.OpenMiddleWare)
 	{
 		// Swagger资源文件
 		docsRouter.POST("/sample", commHander.Sample)

@@ -44,7 +44,8 @@ func GetRouterConf(c *gin.Context) *model.CacheRouter {
 		router = obj.(*model.CacheRouter)
 		return router
 	}
-	return nil
+	// 空白对象
+	return model.CacheRouterNormal
 }
 
 // JsonRes 执行Json响应
