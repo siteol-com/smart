@@ -3,8 +3,8 @@ package platServer
 import (
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
-	"siteol.com/smart/src/common/model"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/platDb"
 	"siteol.com/smart/src/common/redis"
 )
@@ -16,11 +16,11 @@ func GetSysConfig(traceID string) *baseModel.ResBody {
 		log.ErrorTF(traceID, "GetSysConfig Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.SysConfigGetNG)
 	}
-	return baseModel.SuccessUnPop(model.ToSysConfigGetRes(&res))
+	return baseModel.SuccessUnPop(platModel.ToSysConfigGetRes(&res))
 }
 
 // EditSysConfig 编辑系统配置
-func EditSysConfig(traceID string, req *model.SysConfigEditReq) *baseModel.ResBody {
+func EditSysConfig(traceID string, req *platModel.SysConfigEditReq) *baseModel.ResBody {
 	dbReq, err := platDb.SysConfigTable.FindOneById(1)
 	if err != nil {
 		log.ErrorTF(traceID, "GetSysConfig Fail . Err Is : %v", err)

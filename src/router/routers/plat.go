@@ -8,7 +8,7 @@ import (
 
 // PlatRouter 平台业务路由
 func PlatRouter(router *gin.Engine) {
-	platRouter := router.Group("/plat", middleware.OpenMiddleWare) // TODO 授权中间件
+	platRouter := router.Group("/plat", middleware.CommMiddleWare) // TODO 授权中间件
 	{
 		// 字典分组相关
 		dictGroupRouter := platRouter.Group("/dictGroup")
@@ -37,6 +37,15 @@ func PlatRouter(router *gin.Engine) {
 			responseRouter.POST("/get", platHander.GetResponse)
 			responseRouter.POST("/edit", platHander.EditResponse)
 			responseRouter.POST("/del", platHander.DelResponse)
+		}
+		// 接口路由相关
+		routerRouter := platRouter.Group("/router")
+		{
+			routerRouter.POST("/add", platHander.AddRouter)
+			routerRouter.POST("/page", platHander.PageRouter)
+			routerRouter.POST("/get", platHander.GetRouter)
+			routerRouter.POST("/edit", platHander.EditRouter)
+			routerRouter.POST("/del", platHander.DelRouter)
 		}
 		// 系统配置相关
 		sysConfigRouter := platRouter.Group("/sysConfig")

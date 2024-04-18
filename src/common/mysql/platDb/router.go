@@ -10,12 +10,15 @@ type Router struct {
 	Id           uint64 `json:"id"`           // 默认数据ID
 	Name         string `json:"name"`         // 路由名称，用于界面展示，与权限关联
 	Url          string `json:"url"`          // 路由地址，后端访问URL，后端不在URL中携带参数，统一Post处理内容
-	Type         string `json:"type"`         // 免授权路由 0 授权 1 免授权
+	Type         string `json:"type"`         // 免授权路由 0 免授权 1 授权
 	ServiceCode  string `json:"serviceCode"`  // 业务编码（字典），为接口分组
-	ReqLogPrint  uint8  `json:"reqLogPrint"`  // 请求日志打印 0 打印 1 不打印
-	ReqLogSecure string `json:"reqLogSecure"` // 请求日志脱敏字段，逗号分隔
-	ResLogPrint  uint8  `json:"resLogPrint"`  // 响应日志打印 0 打印 1 不打印
-	ResLogSecure string `json:"resLogSecure"` // 响应日志脱敏字段，逗号分隔
+	ReqLogInDb   string `json:"reqLogInDb"`   // 请求日志入库 0 打印 1 不打印
+	ReqLogPrint  string `json:"reqLogPrint"`  // 请求日志打印 0 打印 1 不打印
+	ReqLogSecure string `json:"reqLogSecure"` // 请求日志脱敏字段，逗号分隔，打印时允许配置
+	ResLogInDb   string `json:"resLogInDb"`   // 响应日志入库 0 打印 1 不打印
+	ResLogPrint  string `json:"resLogPrint"`  // 响应日志打印 0 打印 1 不打印
+	ResLogSecure string `json:"resLogSecure"` // 响应日志脱敏字段，逗号分隔，打印时允许配置
+	Remark       string `json:"remark"`       // 其他备注信息
 	Common
 }
 

@@ -18,7 +18,7 @@ const DEFAULT_FORMAT = "2006-01-02 15:04:05 info path/main.go:88 | message"
 const DEFAULT_FORMAT_TAG = "2006-01-02 15:04:05 tag info path/main.go:88 | message"
 
 // DEFAULT_FORMAT_TRACED 默认日志格式带TraceID
-const DEFAULT_FORMAT_TRACEID = "traceID 2006-01-02 15:04:05.000 info path/main.go:88 | message"
+const DEFAULT_FORMAT_TRACEID = "2006-01-02 15:04:05.000 traceID info path/main.go:88 | message"
 
 var (
 	DEFAULT_DIVIDE = boldColorStr(colorGreen, DivideToken)

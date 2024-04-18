@@ -74,221 +74,6 @@ definitions:
         example: 1
         type: integer
     type: object
-  model.DictAddReq:
-    properties:
-      choose:
-        description: 是否可被选择 0可选择 1不可选择
-        enum:
-        - "0"
-        - "1"
-        example: "0"
-        type: string
-      groupKey:
-        description: 字典分组KEY
-        example: serviceCode
-        type: string
-      label:
-        description: 字段名称
-        example: PlatBase
-        type: string
-      labelEn:
-        description: 字段名称（英文）
-        example: PlatBase
-        type: string
-      remark:
-        description: 字典描述
-        example: Business type dictionary
-        type: string
-      val:
-        description: 字典值（字符型）
-        example: "1"
-        type: string
-    required:
-    - choose
-    - groupKey
-    - label
-    - labelEn
-    - val
-    type: object
-  model.DictBroReq:
-    properties:
-      groupKey:
-        description: 字典分组KEY
-        example: serviceCode
-        type: string
-    required:
-    - groupKey
-    type: object
-  model.DictEditReq:
-    properties:
-      choose:
-        description: 是否可被选择 0可选择 1不可选择
-        enum:
-        - "0"
-        - "1"
-        example: "0"
-        type: string
-      id:
-        description: 数据ID
-        example: 1
-        type: integer
-      label:
-        description: 字段名称
-        example: PlatBase
-        type: string
-      labelEn:
-        description: 字段名称（英文）
-        example: PlatBase
-        type: string
-      remark:
-        description: 字典描述
-        example: Business type dictionary
-        type: string
-    required:
-    - choose
-    - id
-    - label
-    - labelEn
-    type: object
-  model.DictGetRes:
-    properties:
-      choose:
-        description: 是否可被选择 0可选择 1不可选择
-        example: "0"
-        type: string
-      groupKey:
-        description: 字典分组KEY
-        example: serviceCode
-        type: string
-      id:
-        description: 数据ID
-        example: 1
-        type: integer
-      label:
-        description: 字段名称
-        example: PlatBase
-        type: string
-      labelEn:
-        description: 字段名称（英文）
-        example: PlatBase
-        type: string
-      remark:
-        description: 字典描述
-        example: Remark
-        type: string
-      val:
-        description: 字典值（字符型）
-        example: "1"
-        type: string
-    type: object
-  model.DictGroupReadRes:
-    properties:
-      list:
-        description: 字典分组下拉列表 [{'label':'业务模块','value':'serviceCode'}]
-        items:
-          $ref: '#/definitions/baseModel.SelectRes'
-        type: array
-      map:
-        additionalProperties:
-          type: string
-        description: 字典分组翻译Map
-        example:
-          '{''serviceCode''': '''Business module''}'
-        type: object
-    type: object
-  model.DictNextValReq:
-    properties:
-      groupKey:
-        description: 字典分组KEY
-        example: serviceCode
-        type: string
-    required:
-    - groupKey
-    type: object
-  model.DictPageReq:
-    properties:
-      current:
-        description: 当前页
-        example: 1
-        type: integer
-      groupKey:
-        description: 需要查询的字典分组
-        example: serviceCode
-        type: string
-      pageSize:
-        description: 单页数量
-        example: 10
-        type: integer
-    type: object
-  model.DictPageRes:
-    properties:
-      choose:
-        description: 是否可被选择 0可选择 1不可选择
-        example: "0"
-        type: string
-      groupKey:
-        description: 字典分组KEY
-        example: serviceCode
-        type: string
-      id:
-        description: 数据ID
-        example: 1
-        type: integer
-      label:
-        description: 字段名称
-        example: PlatBase
-        type: string
-      labelEn:
-        description: 字段名称（英文）
-        example: PlatBase
-        type: string
-      mark:
-        description: 变更标识 0可变更 1禁止变更
-        example: "1"
-        type: string
-      remark:
-        description: 字典描述
-        example: Remark
-        type: string
-      sort:
-        description: 字典排序
-        example: 0
-        type: integer
-      val:
-        description: 字典值（字符型）
-        example: "1"
-        type: string
-    type: object
-  model.DictReadReq:
-    properties:
-      groupKeys:
-        description: 需要查询的字典分组
-        example:
-        - serviceCode
-        - responseType
-        items:
-          type: string
-        type: array
-    required:
-    - groupKeys
-    type: object
-  model.DictReadRes:
-    properties:
-      list:
-        additionalProperties:
-          items:
-            $ref: '#/definitions/baseModel.SelectRes'
-          type: array
-        description: 字典下拉列表 {'serviceCode':"[{'label':'基础','value':'1'}]"}
-        type: object
-      map:
-        additionalProperties:
-          additionalProperties:
-            type: string
-          type: object
-        description: 字典翻译Map {'serviceCode':{'1':'基础'}}
-        type: object
-    type: object
   model.DocsAuthLg:
     properties:
       code:
@@ -359,7 +144,230 @@ definitions:
         example: xx Field should be required
         type: string
     type: object
-  model.ResponseAddReq:
+  platModel.DictAddReq:
+    properties:
+      choose:
+        description: 是否可被选择 0可选择 1不可选择
+        enum:
+        - "0"
+        - "1"
+        example: "0"
+        type: string
+      groupKey:
+        description: 字典分组KEY
+        example: serviceCode
+        maxLength: 16
+        type: string
+      label:
+        description: 字段名称
+        example: PlatBase
+        maxLength: 64
+        type: string
+      labelEn:
+        description: 字段名称（英文）
+        example: PlatBase
+        maxLength: 64
+        type: string
+      remark:
+        description: 字典描述
+        example: Business type dictionary
+        maxLength: 64
+        type: string
+      val:
+        description: 字典值（字符型）
+        example: "1"
+        maxLength: 16
+        type: string
+    required:
+    - choose
+    - groupKey
+    - label
+    - labelEn
+    - val
+    type: object
+  platModel.DictBroReq:
+    properties:
+      groupKey:
+        description: 字典分组KEY
+        example: serviceCode
+        type: string
+    required:
+    - groupKey
+    type: object
+  platModel.DictEditReq:
+    properties:
+      choose:
+        description: 是否可被选择 0可选择 1不可选择
+        enum:
+        - "0"
+        - "1"
+        example: "0"
+        type: string
+      id:
+        description: 数据ID
+        example: 1
+        type: integer
+      label:
+        description: 字段名称
+        example: PlatBase
+        maxLength: 64
+        type: string
+      labelEn:
+        description: 字段名称（英文）
+        example: PlatBase
+        maxLength: 64
+        type: string
+      remark:
+        description: 字典描述
+        example: Business type dictionary
+        maxLength: 64
+        type: string
+    required:
+    - choose
+    - id
+    - label
+    - labelEn
+    type: object
+  platModel.DictGetRes:
+    properties:
+      choose:
+        description: 是否可被选择 0可选择 1不可选择
+        example: "0"
+        type: string
+      groupKey:
+        description: 字典分组KEY
+        example: serviceCode
+        type: string
+      id:
+        description: 数据ID
+        example: 1
+        type: integer
+      label:
+        description: 字段名称
+        example: PlatBase
+        type: string
+      labelEn:
+        description: 字段名称（英文）
+        example: PlatBase
+        type: string
+      remark:
+        description: 字典描述
+        example: Remark
+        type: string
+      val:
+        description: 字典值（字符型）
+        example: "1"
+        type: string
+    type: object
+  platModel.DictGroupReadRes:
+    properties:
+      list:
+        description: 字典分组下拉列表 [{'label':'业务模块','value':'serviceCode'}]
+        items:
+          $ref: '#/definitions/baseModel.SelectRes'
+        type: array
+      map:
+        additionalProperties:
+          type: string
+        description: 字典分组翻译Map
+        example:
+          '{''serviceCode''': '''Business module''}'
+        type: object
+    type: object
+  platModel.DictNextValReq:
+    properties:
+      groupKey:
+        description: 字典分组KEY
+        example: serviceCode
+        type: string
+    required:
+    - groupKey
+    type: object
+  platModel.DictPageReq:
+    properties:
+      current:
+        description: 当前页
+        example: 1
+        type: integer
+      groupKey:
+        description: 需要查询的字典分组
+        example: serviceCode
+        type: string
+      pageSize:
+        description: 单页数量
+        example: 10
+        type: integer
+    type: object
+  platModel.DictPageRes:
+    properties:
+      choose:
+        description: 是否可被选择 0可选择 1不可选择
+        example: "0"
+        type: string
+      groupKey:
+        description: 字典分组KEY
+        example: serviceCode
+        type: string
+      id:
+        description: 数据ID
+        example: 1
+        type: integer
+      label:
+        description: 字段名称
+        example: PlatBase
+        type: string
+      labelEn:
+        description: 字段名称（英文）
+        example: PlatBase
+        type: string
+      mark:
+        description: 变更标识 0可变更 1禁止变更
+        example: "1"
+        type: string
+      remark:
+        description: 字典描述
+        example: Remark
+        type: string
+      sort:
+        description: 字典排序
+        example: 0
+        type: integer
+      val:
+        description: 字典值（字符型）
+        example: "1"
+        type: string
+    type: object
+  platModel.DictReadReq:
+    properties:
+      groupKeys:
+        description: 需要查询的字典分组
+        example:
+        - serviceCode
+        - responseType
+        items:
+          type: string
+        type: array
+    required:
+    - groupKeys
+    type: object
+  platModel.DictReadRes:
+    properties:
+      list:
+        additionalProperties:
+          items:
+            $ref: '#/definitions/baseModel.SelectRes'
+          type: array
+        description: 字典下拉列表 {'serviceCode':"[{'label':'基础','value':'1'}]"}
+        type: object
+      map:
+        additionalProperties:
+          additionalProperties:
+            type: string
+          type: object
+        description: 字典翻译Map {'serviceCode':{'1':'基础'}}
+        type: object
+    type: object
+  platModel.ResponseAddReq:
     properties:
       code:
         description: 响应码，仅示例，实际入库实时计算
@@ -368,22 +376,30 @@ definitions:
       enUs:
         description: 英文响应文言
         example: EnUs
+        maxLength: 128
         type: string
       remark:
         description: 其他备注信息
         example: Remark
+        maxLength: 64
         type: string
       serviceCode:
         description: 业务ID，来源于字典，指定响应码归属业务
         example: "0"
+        maxLength: 3
         type: string
       type:
-        description: 响应类型，该字段用于筛选，可配置S和F
+        description: 响应类型，该字段用于筛选，可配置S/F/E
+        enum:
+        - S
+        - F
+        - E
         example: S
         type: string
       zhCn:
         description: 中文响应文言
         example: ZhCn
+        maxLength: 128
         type: string
     required:
     - enUs
@@ -391,11 +407,12 @@ definitions:
     - type
     - zhCn
     type: object
-  model.ResponseEditReq:
+  platModel.ResponseEditReq:
     properties:
       enUs:
         description: 英文响应文言
         example: EnUs
+        maxLength: 128
         type: string
       id:
         description: 数据ID
@@ -404,17 +421,19 @@ definitions:
       remark:
         description: 其他备注信息
         example: Remark
+        maxLength: 64
         type: string
       zhCn:
         description: 中文响应文言
         example: ZhCn
+        maxLength: 128
         type: string
     required:
     - enUs
     - id
     - zhCn
     type: object
-  model.ResponseGetRes:
+  platModel.ResponseGetRes:
     properties:
       code:
         description: 响应码
@@ -437,7 +456,7 @@ definitions:
         example: "1"
         type: string
       type:
-        description: 响应类型，该字段用于筛选，可配置S和F
+        description: 响应类型，该字段用于筛选，可配置S/F/E
         example: S
         type: string
       zhCn:
@@ -445,21 +464,26 @@ definitions:
         example: ZhCn
         type: string
     type: object
-  model.ResponseNextValReq:
+  platModel.ResponseNextValReq:
     properties:
       serviceCode:
         description: 业务ID，来源于字典，指定响应码归属业务
         example: "0"
+        maxLength: 3
         type: string
       type:
-        description: 响应类型，该字段用于筛选，可配置S和F
+        description: 响应类型，该字段用于筛选，可配置S/F/E
+        enum:
+        - S
+        - F
+        - E
         example: S
         type: string
     required:
     - serviceCode
     - type
     type: object
-  model.ResponsePageReq:
+  platModel.ResponsePageReq:
     properties:
       code:
         description: 响应码，支持模糊查询
@@ -478,11 +502,11 @@ definitions:
         example: "0"
         type: string
       type:
-        description: 响应类型，该字段用于筛选，可配置S和F
+        description: 响应类型，该字段用于筛选，可配置S/F/E
         example: S
         type: string
     type: object
-  model.ResponsePageRes:
+  platModel.ResponsePageRes:
     properties:
       code:
         description: 响应码
@@ -509,7 +533,7 @@ definitions:
         example: "1"
         type: string
       type:
-        description: 响应类型，该字段用于筛选，可配置S和F
+        description: 响应类型，该字段用于筛选，可配置S/F/E
         example: S
         type: string
       zhCn:
@@ -517,7 +541,263 @@ definitions:
         example: ZhCn
         type: string
     type: object
-  model.SysConfigEditReq:
+  platModel.RouterAddReq:
+    properties:
+      name:
+        description: 路由名称，用于界面展示，与权限关联
+        example: Login
+        maxLength: 32
+        type: string
+      reqLogInDb:
+        description: 请求日志入库 0 启用 1 默认不启用
+        enum:
+        - "0"
+        - "1"
+        example: "0"
+        type: string
+      reqLogPrint:
+        description: 请求日志打印 0 打印 1 不打印
+        enum:
+        - "0"
+        - "1"
+        example: "0"
+        type: string
+      reqLogSecure:
+        description: 请求日志脱敏字段，逗号分隔，打印时允许配置
+        example: phone,account,password
+        maxLength: 256
+        type: string
+      resLogInDb:
+        description: 响应日志入库 0 启用 1 默认不启用
+        enum:
+        - "0"
+        - "1"
+        example: "0"
+        type: string
+      resLogPrint:
+        description: 响应日志打印 0 打印 1 不打印
+        enum:
+        - "0"
+        - "1"
+        example: "0"
+        type: string
+      resLogSecure:
+        description: 响应日志脱敏字段，逗号分隔，打印时允许配置
+        example: name,account,password
+        maxLength: 256
+        type: string
+      serviceCode:
+        description: 业务编码（字典），为接口分组
+        example: base
+        maxLength: 3
+        type: string
+      type:
+        description: 免授权路由 0 免授权 1 授权
+        enum:
+        - "0"
+        - "1"
+        example: "0"
+        type: string
+      url:
+        description: 路由地址，后端访问URL，后端不在URL中携带参数，统一Post处理内容
+        example: /auth/login
+        maxLength: 64
+        type: string
+    required:
+    - name
+    - reqLogInDb
+    - reqLogPrint
+    - resLogInDb
+    - resLogPrint
+    - serviceCode
+    - type
+    - url
+    type: object
+  platModel.RouterEditReq:
+    properties:
+      id:
+        description: 数据ID
+        example: 1
+        type: integer
+      name:
+        description: 路由名称，用于界面展示，与权限关联
+        example: Login
+        maxLength: 32
+        type: string
+      reqLogInDb:
+        description: 请求日志入库 0 启用 1 默认不启用
+        enum:
+        - "0"
+        - "1"
+        example: "0"
+        type: string
+      reqLogPrint:
+        description: 请求日志打印 0 打印 1 不打印
+        enum:
+        - "0"
+        - "1"
+        example: "0"
+        type: string
+      reqLogSecure:
+        description: 请求日志脱敏字段，逗号分隔，打印时允许配置
+        example: phone,account,password
+        maxLength: 256
+        type: string
+      resLogInDb:
+        description: 响应日志入库 0 启用 1 默认不启用
+        enum:
+        - "0"
+        - "1"
+        example: "0"
+        type: string
+      resLogPrint:
+        description: 响应日志打印 0 打印 1 不打印
+        enum:
+        - "0"
+        - "1"
+        example: "0"
+        type: string
+      resLogSecure:
+        description: 响应日志脱敏字段，逗号分隔，打印时允许配置
+        example: name,account,password
+        maxLength: 256
+        type: string
+      serviceCode:
+        description: 业务编码（字典），为接口分组
+        example: base
+        maxLength: 3
+        type: string
+    required:
+    - id
+    - name
+    - reqLogInDb
+    - reqLogPrint
+    - resLogInDb
+    - resLogPrint
+    - serviceCode
+    type: object
+  platModel.RouterGetRes:
+    properties:
+      id:
+        description: 数据ID
+        example: 1
+        type: integer
+      name:
+        description: 路由名称，用于界面展示，与权限关联
+        example: Login
+        type: string
+      reqLogInDb:
+        description: 请求日志入库 0 启用 1 默认不启用
+        example: "0"
+        type: string
+      reqLogPrint:
+        description: 请求日志打印 0 打印 1 不打印
+        example: "0"
+        type: string
+      reqLogSecure:
+        description: 请求日志脱敏字段，逗号分隔，打印时允许配置
+        example: phone
+        type: string
+      resLogInDb:
+        description: 响应日志入库 0 启用 1 默认不启用
+        example: "0"
+        type: string
+      resLogPrint:
+        description: 响应日志打印 0 打印 1 不打印
+        example: "0"
+        type: string
+      resLogSecure:
+        description: 响应日志脱敏字段，逗号分隔，打印时允许配置
+        example: name
+        type: string
+      serviceCode:
+        description: 业务编码（字典），为接口分组
+        example: base
+        type: string
+      type:
+        description: 免授权路由 0 免授权 1 授权
+        example: "0"
+        type: string
+      url:
+        description: 路由地址，后端访问URL，后端不在URL中携带参数，统一Post处理内容
+        example: /auth/login
+        type: string
+    type: object
+  platModel.RouterPageReq:
+    properties:
+      current:
+        description: 当前页
+        example: 1
+        type: integer
+      pageSize:
+        description: 单页数量
+        example: 10
+        type: integer
+      serviceCode:
+        description: 业务编码（字典），为接口分组
+        example: base
+        type: string
+      type:
+        description: 免授权路由 0 免授权 1 授权
+        example: "0"
+        type: string
+      url:
+        description: 路由地址，后端访问URL，支持模糊查询
+        example: /auth/login
+        type: string
+    type: object
+  platModel.RouterPageRes:
+    properties:
+      id:
+        description: 数据ID
+        example: 1
+        type: integer
+      mark:
+        description: 变更标识 0可变更 1禁止变更
+        example: "1"
+        type: string
+      name:
+        description: 路由名称，用于界面展示，与权限关联
+        example: Login
+        type: string
+      reqLogInDb:
+        description: 请求日志入库 0 启用 1 默认不启用
+        example: "0"
+        type: string
+      reqLogPrint:
+        description: 请求日志打印 0 打印 1 不打印
+        example: "0"
+        type: string
+      reqLogSecure:
+        description: 请求日志脱敏字段，逗号分隔，打印时允许配置
+        example: phone
+        type: string
+      resLogInDb:
+        description: 响应日志入库 0 启用 1 默认不启用
+        example: "0"
+        type: string
+      resLogPrint:
+        description: 响应日志打印 0 打印 1 不打印
+        example: "0"
+        type: string
+      resLogSecure:
+        description: 响应日志脱敏字段，逗号分隔，打印时允许配置
+        example: name
+        type: string
+      serviceCode:
+        description: 业务编码（字典），为接口分组
+        example: base
+        type: string
+      type:
+        description: 免授权路由 0 免授权 1 授权
+        example: "0"
+        type: string
+      url:
+        description: 路由地址，后端访问URL，后端不在URL中携带参数，统一Post处理内容
+        example: /auth/login
+        type: string
+    type: object
+  platModel.SysConfigEditReq:
     properties:
       loginFailLockNum:
         description: 登陆失败锁定数量，最小为1
@@ -577,7 +857,7 @@ definitions:
     - loginSwitch
     - logoutSwitch
     type: object
-  model.SysConfigGetRes:
+  platModel.SysConfigGetRes:
     properties:
       loginFailLockNum:
         description: 登陆失败锁定数量，最小为1
@@ -696,7 +976,7 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/model.DictAddReq'
+          $ref: '#/definitions/platModel.DictAddReq'
       produces:
       - application/json
       responses:
@@ -721,16 +1001,12 @@ paths:
       description: 获取字典排序数据
       operationId: BroDict 字典排序数据
       parameters:
-      - description: 语言，不传默认为zh-CN
-        in: header
-        name: Lang
-        type: string
       - description: 请求
         in: body
         name: req
         required: true
         schema:
-          $ref: '#/definitions/model.DictBroReq'
+          $ref: '#/definitions/platModel.DictBroReq'
       produces:
       - application/json
       responses:
@@ -755,10 +1031,6 @@ paths:
       description: 字典封存处理
       operationId: DelDict 字典封存
       parameters:
-      - description: 语言，不传默认为zh-CN
-        in: header
-        name: Lang
-        type: string
       - description: 请求
         in: body
         name: req
@@ -796,7 +1068,7 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/model.DictEditReq'
+          $ref: '#/definitions/platModel.DictEditReq'
       produces:
       - application/json
       responses:
@@ -837,7 +1109,7 @@ paths:
             - $ref: '#/definitions/baseModel.ResBody'
             - properties:
                 data:
-                  $ref: '#/definitions/model.DictGetRes'
+                  $ref: '#/definitions/platModel.DictGetRes'
               type: object
       security:
       - Token: []
@@ -856,7 +1128,7 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/model.DictNextValReq'
+          $ref: '#/definitions/platModel.DictNextValReq'
       produces:
       - application/json
       responses:
@@ -886,7 +1158,7 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/model.DictPageReq'
+          $ref: '#/definitions/platModel.DictPageReq'
       produces:
       - application/json
       responses:
@@ -902,7 +1174,7 @@ paths:
                   - properties:
                       list:
                         items:
-                          $ref: '#/definitions/model.DictPageRes'
+                          $ref: '#/definitions/platModel.DictPageRes'
                         type: array
                     type: object
               type: object
@@ -927,7 +1199,7 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/model.DictReadReq'
+          $ref: '#/definitions/platModel.DictReadReq'
       produces:
       - application/json
       responses:
@@ -938,7 +1210,7 @@ paths:
             - $ref: '#/definitions/baseModel.ResBody'
             - properties:
                 data:
-                  $ref: '#/definitions/model.DictReadRes'
+                  $ref: '#/definitions/platModel.DictReadRes'
               type: object
       security:
       - Token: []
@@ -952,10 +1224,6 @@ paths:
       description: 字典分组下字典排序处理
       operationId: SortDict 字典排序处理
       parameters:
-      - description: 语言，不传默认为zh-CN
-        in: header
-        name: Lang
-        type: string
       - description: 请求
         in: body
         name: req
@@ -1002,7 +1270,7 @@ paths:
             - $ref: '#/definitions/baseModel.ResBody'
             - properties:
                 data:
-                  $ref: '#/definitions/model.DictGroupReadRes'
+                  $ref: '#/definitions/platModel.DictGroupReadRes'
               type: object
       security:
       - Token: []
@@ -1021,7 +1289,7 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/model.ResponseAddReq'
+          $ref: '#/definitions/platModel.ResponseAddReq'
       produces:
       - application/json
       responses:
@@ -1087,7 +1355,7 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/model.ResponseEditReq'
+          $ref: '#/definitions/platModel.ResponseEditReq'
       produces:
       - application/json
       responses:
@@ -1128,7 +1396,7 @@ paths:
             - $ref: '#/definitions/baseModel.ResBody'
             - properties:
                 data:
-                  $ref: '#/definitions/model.ResponseGetRes'
+                  $ref: '#/definitions/platModel.ResponseGetRes'
               type: object
       security:
       - Token: []
@@ -1147,7 +1415,7 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/model.ResponseNextValReq'
+          $ref: '#/definitions/platModel.ResponseNextValReq'
       produces:
       - application/json
       responses:
@@ -1164,7 +1432,7 @@ paths:
       - Token: []
       summary: 响应码NextVal建议
       tags:
-      - 数据字典
+      - 响应配置
   /plat/response/page:
     post:
       consumes:
@@ -1177,7 +1445,7 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/model.ResponsePageReq'
+          $ref: '#/definitions/platModel.ResponsePageReq'
       produces:
       - application/json
       responses:
@@ -1193,7 +1461,7 @@ paths:
                   - properties:
                       list:
                         items:
-                          $ref: '#/definitions/model.ResponsePageRes'
+                          $ref: '#/definitions/platModel.ResponsePageRes'
                         type: array
                     type: object
               type: object
@@ -1202,6 +1470,169 @@ paths:
       summary: 响应码分页
       tags:
       - 响应配置
+  /plat/router/add:
+    post:
+      consumes:
+      - application/json
+      description: 新建路由接口配置
+      operationId: AddRouter 路由接口新建
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/platModel.RouterAddReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      security:
+      - Token: []
+      summary: 路由接口新建
+      tags:
+      - 路由接口
+  /plat/router/del:
+    post:
+      consumes:
+      - application/json
+      description: 路由接口封存处理
+      operationId: DelRouter 路由接口封存
+      parameters:
+      - description: 语言，不传默认为zh-CN
+        in: header
+        name: Lang
+        type: string
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/baseModel.IdReq'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      security:
+      - Token: []
+      summary: 路由接口封存
+      tags:
+      - 路由接口
+  /plat/router/edit:
+    post:
+      consumes:
+      - application/json
+      description: 在路由接口分组下编辑路由接口
+      operationId: EditRouter 路由接口编辑
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/platModel.RouterEditReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      security:
+      - Token: []
+      summary: 路由接口编辑
+      tags:
+      - 路由接口
+  /plat/router/get:
+    post:
+      consumes:
+      - application/json
+      description: 查询路由接口详情
+      operationId: GetRouter 路由接口详情
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/baseModel.IdReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  $ref: '#/definitions/platModel.RouterGetRes'
+              type: object
+      security:
+      - Token: []
+      summary: 路由接口详情
+      tags:
+      - 路由接口
+  /plat/router/page:
+    post:
+      consumes:
+      - application/json
+      description: 查询路由接口分页数据
+      operationId: PageRouter 路由接口分页
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/platModel.RouterPageReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/baseModel.ResBody'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/baseModel.PageRes'
+                  - properties:
+                      list:
+                        items:
+                          $ref: '#/definitions/platModel.RouterPageRes'
+                        type: array
+                    type: object
+              type: object
+      security:
+      - Token: []
+      summary: 路由接口分页
+      tags:
+      - 路由接口
   /plat/sysConfig/edit:
     post:
       consumes:
@@ -1214,7 +1645,7 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/model.SysConfigEditReq'
+          $ref: '#/definitions/platModel.SysConfigEditReq'
       produces:
       - application/json
       responses:
@@ -1255,7 +1686,7 @@ paths:
             - $ref: '#/definitions/baseModel.ResBody'
             - properties:
                 data:
-                  $ref: '#/definitions/model.SysConfigGetRes'
+                  $ref: '#/definitions/platModel.SysConfigGetRes'
               type: object
       security:
       - Token: []

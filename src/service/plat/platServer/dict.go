@@ -3,14 +3,14 @@ package platServer
 import (
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
-	"siteol.com/smart/src/common/model"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/actuator"
 	"siteol.com/smart/src/common/mysql/platDb"
 )
 
 // ReadDict  读取字典
-func ReadDict(traceID string, req *model.DictReadReq) *baseModel.ResBody {
+func ReadDict(traceID string, req *platModel.DictReadReq) *baseModel.ResBody {
 	// 如果查询key不为空
 	if len(req.GroupKeys) > 0 {
 		dictListMap := make(map[string][]*baseModel.SelectRes, len(req.GroupKeys))
@@ -27,13 +27,13 @@ func ReadDict(traceID string, req *model.DictReadReq) *baseModel.ResBody {
 			}
 			dictListMap[groupKey], dictValueMap[groupKey] = dictListToRead(dictList, req.Local)
 		}
-		return baseModel.SuccessUnPop(model.DictReadRes{List: dictListMap, Map: dictValueMap})
+		return baseModel.SuccessUnPop(platModel.DictReadRes{List: dictListMap, Map: dictValueMap})
 	}
 	return baseModel.SuccessUnPop(nil)
 }
 
 // NextDictVal 字典的Val建议
-func NextDictVal(traceID string, req *model.DictNextValReq) *baseModel.ResBody {
+func NextDictVal(traceID string, req *platModel.DictNextValReq) *baseModel.ResBody {
 	// 组装Query
 	query := actuator.InitQuery()
 	query.Eq("group_key", req.GroupKey)
@@ -46,7 +46,7 @@ func NextDictVal(traceID string, req *model.DictNextValReq) *baseModel.ResBody {
 }
 
 // AddDict 创建字典
-func AddDict(traceID string, req *model.DictAddReq) *baseModel.ResBody {
+func AddDict(traceID string, req *platModel.DictAddReq) *baseModel.ResBody {
 	// 创建对象初始化
 	dbReq := req.ToDbReq()
 	err := platDb.DictTable.InsertOne(dbReq)
@@ -59,14 +59,14 @@ func AddDict(traceID string, req *model.DictAddReq) *baseModel.ResBody {
 }
 
 // PageDict 查询字典分页
-func PageDict(traceID string, req *model.DictPageReq) *baseModel.ResBody {
+func PageDict(traceID string, req *platModel.DictPageReq) *baseModel.ResBody {
 	// 查询分页
 	total, list, err := platDb.DictTable.Page(dictPageQuery(req))
 	if err != nil {
 		log.ErrorTF(traceID, "PageDict Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.DictGetNG)
 	}
-	return baseModel.SuccessUnPop(baseModel.SetPageRes(model.ToDictPageRes(list), total))
+	return baseModel.SuccessUnPop(baseModel.SetPageRes(platModel.ToDictPageRes(list), total))
 }
 
 // GetDict 字典详情
@@ -76,11 +76,11 @@ func GetDict(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 		log.ErrorTF(traceID, "GetDict Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.DictGetNG)
 	}
-	return baseModel.SuccessUnPop(model.ToDictGetRes(&res))
+	return baseModel.SuccessUnPop(platModel.ToDictGetRes(&res))
 }
 
 // EditDict 编辑字典
-func EditDict(traceID string, req *model.DictEditReq) *baseModel.ResBody {
+func EditDict(traceID string, req *platModel.DictEditReq) *baseModel.ResBody {
 	dbReq, err := platDb.DictTable.FindOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetDict Fail . Err Is : %v", err)
@@ -98,7 +98,7 @@ func EditDict(traceID string, req *model.DictEditReq) *baseModel.ResBody {
 }
 
 // BroDict 字典分组列表
-func BroDict(traceID string, req *model.DictBroReq) *baseModel.ResBody {
+func BroDict(traceID string, req *platModel.DictBroReq) *baseModel.ResBody {
 	// 如果查询key不为空（只查询启用的数据）
 	dictList, err := platDb.DictTable.FindByObjectSort(&platDb.Dict{GroupKey: req.GroupKey, Common: platDb.Common{Status: constant.StatusOpen}})
 	if err != nil {

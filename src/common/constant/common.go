@@ -21,4 +21,5 @@ const (
 
 	CacheSysConf  = ProjectName + "::SysConf"  // 系统配置缓存
 	CacheResTrans = ProjectName + "::ResTrans" // 响应码缓存
+	CacheRouters  = ProjectName + "::Routers"  // 路由缓存
 )

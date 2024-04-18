@@ -27,6 +27,8 @@ var (
 	ResFail = Fail(constant.Fail)
 	// SysErr Json 500 默认系统异常
 	SysErr = jsonResult(http.StatusInternalServerError, constant.Error, "", nil, false)
+	// PathErr Json 404 默认路由异常
+	PathErr = jsonResult(http.StatusNotFound, constant.PathErr, "", nil, false)
 )
 
 // ResBody 响应Body

@@ -2,8 +2,8 @@ package platServer
 
 import (
 	"siteol.com/smart/src/common/constant"
-	"siteol.com/smart/src/common/model"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/actuator"
 	"siteol.com/smart/src/common/mysql/platDb"
 	"strings"
@@ -26,7 +26,7 @@ func dictCheckDBErr(err error) *baseModel.ResBody {
 }
 
 // 字典分页查询对象
-func dictPageQuery(req *model.DictPageReq) (query *actuator.Query) {
+func dictPageQuery(req *platModel.DictPageReq) (query *actuator.Query) {
 	// 初始化Page
 	req.PageReq.PageInit()
 	// 组装Query
@@ -51,21 +51,19 @@ func dictListToBro(list []*platDb.Dict, local string) []*baseModel.SortRes {
 			continue
 		}
 		// 如果可选择，创建选择数据
-		if dict.Choose == constant.StatusOpen {
-			// 翻译label
-			var label string
-			switch local {
-			case "en":
-				label = dict.LabelEn
-			default:
-				label = dict.Label
-			}
-			broList = append(broList, &baseModel.SortRes{
-				Id:   dict.Id,
-				Name: label,
-				Sort: dict.Sort,
-			})
+		// 翻译label
+		var label string
+		switch local {
+		case "en":
+			label = dict.LabelEn
+		default:
+			label = dict.Label
 		}
+		broList = append(broList, &baseModel.SortRes{
+			Id:   dict.Id,
+			Name: label,
+			Sort: dict.Sort,
+		})
 	}
 	return broList
 }

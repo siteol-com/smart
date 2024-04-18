@@ -25,7 +25,7 @@ func ReturnMsgTrans(res *baseModel.ResBody, c *gin.Context, router *model.CacheR
 	}
 	// 响应日志
 	printBts := []byte("{}")
-	if router.ResUnPrint {
+	if !router.ResPrint {
 		printBts = []byte("{ Res Set Not Print}")
 	} else {
 		// 如需打印日志

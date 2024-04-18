@@ -2,6 +2,8 @@ package utils
 
 import (
 	"math/rand"
+	"siteol.com/smart/src/common/constant"
+	"strings"
 	"time"
 )
 
@@ -32,4 +34,19 @@ func RandStr(length int, f bool) string {
 		result[i] = bytes[r.Intn(len(bytes))]
 	}
 	return string(result)
+}
+
+// StatusBool 状态转bool，0为true
+func StatusBool(status string) bool {
+	return status == constant.StatusOpen
+}
+
+// ArrayStr 字符串转数组
+func ArrayStr(str string) []string {
+	array := make([]string, 0)
+	if str == "" {
+		return array
+	}
+	// 逗号截取
+	return strings.Split(str, ",")
 }

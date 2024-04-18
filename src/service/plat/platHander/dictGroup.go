@@ -16,8 +16,8 @@ import (
 // @Accept			json
 // @Produce			json
 // @Security		Token
-// @Param			Lang	header		string	false									"语言，不传默认为zh-CN"
-// @Success			200		{object}	baseModel.ResBody{data=model.DictGroupReadRes}	"响应成功"
+// @Param			Lang	header		string	false										"语言，不传默认为zh-CN"
+// @Success			200		{object}	baseModel.ResBody{data=platModel.DictGroupReadRes}	"响应成功"
 func ReadDictGroup(c *gin.Context) {
 	// traceID 日志追踪
 	traceID := c.GetString(constant.ContextTraceID)

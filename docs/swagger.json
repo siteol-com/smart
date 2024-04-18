@@ -110,7 +110,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.DictAddReq"
+                            "$ref": "#/definitions/platModel.DictAddReq"
                         }
                     }
                 ],
@@ -157,18 +157,12 @@
                 "operationId": "BroDict 字典排序数据",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "语言，不传默认为zh-CN",
-                        "name": "Lang",
-                        "in": "header"
-                    },
-                    {
                         "description": "请求",
                         "name": "req",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.DictBroReq"
+                            "$ref": "#/definitions/platModel.DictBroReq"
                         }
                     }
                 ],
@@ -214,12 +208,6 @@
                 "summary": "字典封存",
                 "operationId": "DelDict 字典封存",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "语言，不传默认为zh-CN",
-                        "name": "Lang",
-                        "in": "header"
-                    },
                     {
                         "description": "请求",
                         "name": "req",
@@ -281,7 +269,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.DictEditReq"
+                            "$ref": "#/definitions/platModel.DictEditReq"
                         }
                     }
                 ],
@@ -349,7 +337,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.DictGetRes"
+                                            "$ref": "#/definitions/platModel.DictGetRes"
                                         }
                                     }
                                 }
@@ -385,7 +373,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.DictNextValReq"
+                            "$ref": "#/definitions/platModel.DictNextValReq"
                         }
                     }
                 ],
@@ -437,7 +425,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.DictPageReq"
+                            "$ref": "#/definitions/platModel.DictPageReq"
                         }
                     }
                 ],
@@ -463,7 +451,7 @@
                                                         "list": {
                                                             "type": "array",
                                                             "items": {
-                                                                "$ref": "#/definitions/model.DictPageRes"
+                                                                "$ref": "#/definitions/platModel.DictPageRes"
                                                             }
                                                         }
                                                     }
@@ -510,7 +498,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.DictReadReq"
+                            "$ref": "#/definitions/platModel.DictReadReq"
                         }
                     }
                 ],
@@ -526,7 +514,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.DictReadRes"
+                                            "$ref": "#/definitions/platModel.DictReadRes"
                                         }
                                     }
                                 }
@@ -556,12 +544,6 @@
                 "summary": "排序处理",
                 "operationId": "SortDict 字典排序处理",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "语言，不传默认为zh-CN",
-                        "name": "Lang",
-                        "in": "header"
-                    },
                     {
                         "description": "请求",
                         "name": "req",
@@ -636,7 +618,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.DictGroupReadRes"
+                                            "$ref": "#/definitions/platModel.DictGroupReadRes"
                                         }
                                     }
                                 }
@@ -672,7 +654,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.ResponseAddReq"
+                            "$ref": "#/definitions/platModel.ResponseAddReq"
                         }
                     }
                 ],
@@ -785,7 +767,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.ResponseEditReq"
+                            "$ref": "#/definitions/platModel.ResponseEditReq"
                         }
                     }
                 ],
@@ -853,7 +835,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.ResponseGetRes"
+                                            "$ref": "#/definitions/platModel.ResponseGetRes"
                                         }
                                     }
                                 }
@@ -878,7 +860,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "数据字典"
+                    "响应配置"
                 ],
                 "summary": "响应码NextVal建议",
                 "operationId": "NextResponseVal 响应码NextVal建议",
@@ -889,7 +871,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.ResponseNextValReq"
+                            "$ref": "#/definitions/platModel.ResponseNextValReq"
                         }
                     }
                 ],
@@ -941,7 +923,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.ResponsePageReq"
+                            "$ref": "#/definitions/platModel.ResponsePageReq"
                         }
                     }
                 ],
@@ -967,7 +949,291 @@
                                                         "list": {
                                                             "type": "array",
                                                             "items": {
-                                                                "$ref": "#/definitions/model.ResponsePageRes"
+                                                                "$ref": "#/definitions/platModel.ResponsePageRes"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/plat/router/add": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "新建路由接口配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "路由接口"
+                ],
+                "summary": "路由接口新建",
+                "operationId": "AddRouter 路由接口新建",
+                "parameters": [
+                    {
+                        "description": "请求",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/platModel.RouterAddReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "响应成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/baseModel.ResBody"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/plat/router/del": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "路由接口封存处理",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "路由接口"
+                ],
+                "summary": "路由接口封存",
+                "operationId": "DelRouter 路由接口封存",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "语言，不传默认为zh-CN",
+                        "name": "Lang",
+                        "in": "header"
+                    },
+                    {
+                        "description": "请求",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/baseModel.IdReq"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "响应成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/baseModel.ResBody"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/plat/router/edit": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "在路由接口分组下编辑路由接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "路由接口"
+                ],
+                "summary": "路由接口编辑",
+                "operationId": "EditRouter 路由接口编辑",
+                "parameters": [
+                    {
+                        "description": "请求",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/platModel.RouterEditReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "响应成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/baseModel.ResBody"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/plat/router/get": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "查询路由接口详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "路由接口"
+                ],
+                "summary": "路由接口详情",
+                "operationId": "GetRouter 路由接口详情",
+                "parameters": [
+                    {
+                        "description": "请求",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/baseModel.IdReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "响应成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/baseModel.ResBody"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/platModel.RouterGetRes"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/plat/router/page": {
+            "post": {
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ],
+                "description": "查询路由接口分页数据",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "路由接口"
+                ],
+                "summary": "路由接口分页",
+                "operationId": "PageRouter 路由接口分页",
+                "parameters": [
+                    {
+                        "description": "请求",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/platModel.RouterPageReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "响应成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/baseModel.ResBody"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/baseModel.PageRes"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "list": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/platModel.RouterPageRes"
                                                             }
                                                         }
                                                     }
@@ -1008,7 +1274,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.SysConfigEditReq"
+                            "$ref": "#/definitions/platModel.SysConfigEditReq"
                         }
                     }
                 ],
@@ -1076,7 +1342,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.SysConfigGetRes"
+                                            "$ref": "#/definitions/platModel.SysConfigGetRes"
                                         }
                                     }
                                 }
@@ -1187,294 +1453,6 @@
                 }
             }
         },
-        "model.DictAddReq": {
-            "type": "object",
-            "required": [
-                "choose",
-                "groupKey",
-                "label",
-                "labelEn",
-                "val"
-            ],
-            "properties": {
-                "choose": {
-                    "description": "是否可被选择 0可选择 1不可选择",
-                    "type": "string",
-                    "enum": [
-                        "0",
-                        "1"
-                    ],
-                    "example": "0"
-                },
-                "groupKey": {
-                    "description": "字典分组KEY",
-                    "type": "string",
-                    "example": "serviceCode"
-                },
-                "label": {
-                    "description": "字段名称",
-                    "type": "string",
-                    "example": "PlatBase"
-                },
-                "labelEn": {
-                    "description": "字段名称（英文）",
-                    "type": "string",
-                    "example": "PlatBase"
-                },
-                "remark": {
-                    "description": "字典描述",
-                    "type": "string",
-                    "example": "Business type dictionary"
-                },
-                "val": {
-                    "description": "字典值（字符型）",
-                    "type": "string",
-                    "example": "1"
-                }
-            }
-        },
-        "model.DictBroReq": {
-            "type": "object",
-            "required": [
-                "groupKey"
-            ],
-            "properties": {
-                "groupKey": {
-                    "description": "字典分组KEY",
-                    "type": "string",
-                    "example": "serviceCode"
-                }
-            }
-        },
-        "model.DictEditReq": {
-            "type": "object",
-            "required": [
-                "choose",
-                "id",
-                "label",
-                "labelEn"
-            ],
-            "properties": {
-                "choose": {
-                    "description": "是否可被选择 0可选择 1不可选择",
-                    "type": "string",
-                    "enum": [
-                        "0",
-                        "1"
-                    ],
-                    "example": "0"
-                },
-                "id": {
-                    "description": "数据ID",
-                    "type": "integer",
-                    "example": 1
-                },
-                "label": {
-                    "description": "字段名称",
-                    "type": "string",
-                    "example": "PlatBase"
-                },
-                "labelEn": {
-                    "description": "字段名称（英文）",
-                    "type": "string",
-                    "example": "PlatBase"
-                },
-                "remark": {
-                    "description": "字典描述",
-                    "type": "string",
-                    "example": "Business type dictionary"
-                }
-            }
-        },
-        "model.DictGetRes": {
-            "type": "object",
-            "properties": {
-                "choose": {
-                    "description": "是否可被选择 0可选择 1不可选择",
-                    "type": "string",
-                    "example": "0"
-                },
-                "groupKey": {
-                    "description": "字典分组KEY",
-                    "type": "string",
-                    "example": "serviceCode"
-                },
-                "id": {
-                    "description": "数据ID",
-                    "type": "integer",
-                    "example": 1
-                },
-                "label": {
-                    "description": "字段名称",
-                    "type": "string",
-                    "example": "PlatBase"
-                },
-                "labelEn": {
-                    "description": "字段名称（英文）",
-                    "type": "string",
-                    "example": "PlatBase"
-                },
-                "remark": {
-                    "description": "字典描述",
-                    "type": "string",
-                    "example": "Remark"
-                },
-                "val": {
-                    "description": "字典值（字符型）",
-                    "type": "string",
-                    "example": "1"
-                }
-            }
-        },
-        "model.DictGroupReadRes": {
-            "type": "object",
-            "properties": {
-                "list": {
-                    "description": "字典分组下拉列表 [{'label':'业务模块','value':'serviceCode'}]",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/baseModel.SelectRes"
-                    }
-                },
-                "map": {
-                    "description": "字典分组翻译Map",
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "string"
-                    },
-                    "example": {
-                        "{'serviceCode'": "'Business module'}"
-                    }
-                }
-            }
-        },
-        "model.DictNextValReq": {
-            "type": "object",
-            "required": [
-                "groupKey"
-            ],
-            "properties": {
-                "groupKey": {
-                    "description": "字典分组KEY",
-                    "type": "string",
-                    "example": "serviceCode"
-                }
-            }
-        },
-        "model.DictPageReq": {
-            "type": "object",
-            "properties": {
-                "current": {
-                    "description": "当前页",
-                    "type": "integer",
-                    "example": 1
-                },
-                "groupKey": {
-                    "description": "需要查询的字典分组",
-                    "type": "string",
-                    "example": "serviceCode"
-                },
-                "pageSize": {
-                    "description": "单页数量",
-                    "type": "integer",
-                    "example": 10
-                }
-            }
-        },
-        "model.DictPageRes": {
-            "type": "object",
-            "properties": {
-                "choose": {
-                    "description": "是否可被选择 0可选择 1不可选择",
-                    "type": "string",
-                    "example": "0"
-                },
-                "groupKey": {
-                    "description": "字典分组KEY",
-                    "type": "string",
-                    "example": "serviceCode"
-                },
-                "id": {
-                    "description": "数据ID",
-                    "type": "integer",
-                    "example": 1
-                },
-                "label": {
-                    "description": "字段名称",
-                    "type": "string",
-                    "example": "PlatBase"
-                },
-                "labelEn": {
-                    "description": "字段名称（英文）",
-                    "type": "string",
-                    "example": "PlatBase"
-                },
-                "mark": {
-                    "description": "变更标识 0可变更 1禁止变更",
-                    "type": "string",
-                    "example": "1"
-                },
-                "remark": {
-                    "description": "字典描述",
-                    "type": "string",
-                    "example": "Remark"
-                },
-                "sort": {
-                    "description": "字典排序",
-                    "type": "integer",
-                    "example": 0
-                },
-                "val": {
-                    "description": "字典值（字符型）",
-                    "type": "string",
-                    "example": "1"
-                }
-            }
-        },
-        "model.DictReadReq": {
-            "type": "object",
-            "required": [
-                "groupKeys"
-            ],
-            "properties": {
-                "groupKeys": {
-                    "description": "需要查询的字典分组",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "serviceCode",
-                        "responseType"
-                    ]
-                }
-            }
-        },
-        "model.DictReadRes": {
-            "type": "object",
-            "properties": {
-                "list": {
-                    "description": "字典下拉列表 {'serviceCode':\"[{'label':'基础','value':'1'}]\"}",
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/baseModel.SelectRes"
-                        }
-                    }
-                },
-                "map": {
-                    "description": "字典翻译Map {'serviceCode':{'1':'基础'}}",
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "model.DocsAuthLg": {
             "type": "object",
             "properties": {
@@ -1570,7 +1548,303 @@
                 }
             }
         },
-        "model.ResponseAddReq": {
+        "platModel.DictAddReq": {
+            "type": "object",
+            "required": [
+                "choose",
+                "groupKey",
+                "label",
+                "labelEn",
+                "val"
+            ],
+            "properties": {
+                "choose": {
+                    "description": "是否可被选择 0可选择 1不可选择",
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
+                    "example": "0"
+                },
+                "groupKey": {
+                    "description": "字典分组KEY",
+                    "type": "string",
+                    "maxLength": 16,
+                    "example": "serviceCode"
+                },
+                "label": {
+                    "description": "字段名称",
+                    "type": "string",
+                    "maxLength": 64,
+                    "example": "PlatBase"
+                },
+                "labelEn": {
+                    "description": "字段名称（英文）",
+                    "type": "string",
+                    "maxLength": 64,
+                    "example": "PlatBase"
+                },
+                "remark": {
+                    "description": "字典描述",
+                    "type": "string",
+                    "maxLength": 64,
+                    "example": "Business type dictionary"
+                },
+                "val": {
+                    "description": "字典值（字符型）",
+                    "type": "string",
+                    "maxLength": 16,
+                    "example": "1"
+                }
+            }
+        },
+        "platModel.DictBroReq": {
+            "type": "object",
+            "required": [
+                "groupKey"
+            ],
+            "properties": {
+                "groupKey": {
+                    "description": "字典分组KEY",
+                    "type": "string",
+                    "example": "serviceCode"
+                }
+            }
+        },
+        "platModel.DictEditReq": {
+            "type": "object",
+            "required": [
+                "choose",
+                "id",
+                "label",
+                "labelEn"
+            ],
+            "properties": {
+                "choose": {
+                    "description": "是否可被选择 0可选择 1不可选择",
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
+                    "example": "0"
+                },
+                "id": {
+                    "description": "数据ID",
+                    "type": "integer",
+                    "example": 1
+                },
+                "label": {
+                    "description": "字段名称",
+                    "type": "string",
+                    "maxLength": 64,
+                    "example": "PlatBase"
+                },
+                "labelEn": {
+                    "description": "字段名称（英文）",
+                    "type": "string",
+                    "maxLength": 64,
+                    "example": "PlatBase"
+                },
+                "remark": {
+                    "description": "字典描述",
+                    "type": "string",
+                    "maxLength": 64,
+                    "example": "Business type dictionary"
+                }
+            }
+        },
+        "platModel.DictGetRes": {
+            "type": "object",
+            "properties": {
+                "choose": {
+                    "description": "是否可被选择 0可选择 1不可选择",
+                    "type": "string",
+                    "example": "0"
+                },
+                "groupKey": {
+                    "description": "字典分组KEY",
+                    "type": "string",
+                    "example": "serviceCode"
+                },
+                "id": {
+                    "description": "数据ID",
+                    "type": "integer",
+                    "example": 1
+                },
+                "label": {
+                    "description": "字段名称",
+                    "type": "string",
+                    "example": "PlatBase"
+                },
+                "labelEn": {
+                    "description": "字段名称（英文）",
+                    "type": "string",
+                    "example": "PlatBase"
+                },
+                "remark": {
+                    "description": "字典描述",
+                    "type": "string",
+                    "example": "Remark"
+                },
+                "val": {
+                    "description": "字典值（字符型）",
+                    "type": "string",
+                    "example": "1"
+                }
+            }
+        },
+        "platModel.DictGroupReadRes": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "description": "字典分组下拉列表 [{'label':'业务模块','value':'serviceCode'}]",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/baseModel.SelectRes"
+                    }
+                },
+                "map": {
+                    "description": "字典分组翻译Map",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "example": {
+                        "{'serviceCode'": "'Business module'}"
+                    }
+                }
+            }
+        },
+        "platModel.DictNextValReq": {
+            "type": "object",
+            "required": [
+                "groupKey"
+            ],
+            "properties": {
+                "groupKey": {
+                    "description": "字典分组KEY",
+                    "type": "string",
+                    "example": "serviceCode"
+                }
+            }
+        },
+        "platModel.DictPageReq": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "description": "当前页",
+                    "type": "integer",
+                    "example": 1
+                },
+                "groupKey": {
+                    "description": "需要查询的字典分组",
+                    "type": "string",
+                    "example": "serviceCode"
+                },
+                "pageSize": {
+                    "description": "单页数量",
+                    "type": "integer",
+                    "example": 10
+                }
+            }
+        },
+        "platModel.DictPageRes": {
+            "type": "object",
+            "properties": {
+                "choose": {
+                    "description": "是否可被选择 0可选择 1不可选择",
+                    "type": "string",
+                    "example": "0"
+                },
+                "groupKey": {
+                    "description": "字典分组KEY",
+                    "type": "string",
+                    "example": "serviceCode"
+                },
+                "id": {
+                    "description": "数据ID",
+                    "type": "integer",
+                    "example": 1
+                },
+                "label": {
+                    "description": "字段名称",
+                    "type": "string",
+                    "example": "PlatBase"
+                },
+                "labelEn": {
+                    "description": "字段名称（英文）",
+                    "type": "string",
+                    "example": "PlatBase"
+                },
+                "mark": {
+                    "description": "变更标识 0可变更 1禁止变更",
+                    "type": "string",
+                    "example": "1"
+                },
+                "remark": {
+                    "description": "字典描述",
+                    "type": "string",
+                    "example": "Remark"
+                },
+                "sort": {
+                    "description": "字典排序",
+                    "type": "integer",
+                    "example": 0
+                },
+                "val": {
+                    "description": "字典值（字符型）",
+                    "type": "string",
+                    "example": "1"
+                }
+            }
+        },
+        "platModel.DictReadReq": {
+            "type": "object",
+            "required": [
+                "groupKeys"
+            ],
+            "properties": {
+                "groupKeys": {
+                    "description": "需要查询的字典分组",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "serviceCode",
+                        "responseType"
+                    ]
+                }
+            }
+        },
+        "platModel.DictReadRes": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "description": "字典下拉列表 {'serviceCode':\"[{'label':'基础','value':'1'}]\"}",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/baseModel.SelectRes"
+                        }
+                    }
+                },
+                "map": {
+                    "description": "字典翻译Map {'serviceCode':{'1':'基础'}}",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "platModel.ResponseAddReq": {
             "type": "object",
             "required": [
                 "enUs",
@@ -1587,31 +1861,40 @@
                 "enUs": {
                     "description": "英文响应文言",
                     "type": "string",
+                    "maxLength": 128,
                     "example": "EnUs"
                 },
                 "remark": {
                     "description": "其他备注信息",
                     "type": "string",
+                    "maxLength": 64,
                     "example": "Remark"
                 },
                 "serviceCode": {
                     "description": "业务ID，来源于字典，指定响应码归属业务",
                     "type": "string",
+                    "maxLength": 3,
                     "example": "0"
                 },
                 "type": {
-                    "description": "响应类型，该字段用于筛选，可配置S和F",
+                    "description": "响应类型，该字段用于筛选，可配置S/F/E",
                     "type": "string",
+                    "enum": [
+                        "S",
+                        "F",
+                        "E"
+                    ],
                     "example": "S"
                 },
                 "zhCn": {
                     "description": "中文响应文言",
                     "type": "string",
+                    "maxLength": 128,
                     "example": "ZhCn"
                 }
             }
         },
-        "model.ResponseEditReq": {
+        "platModel.ResponseEditReq": {
             "type": "object",
             "required": [
                 "enUs",
@@ -1622,6 +1905,7 @@
                 "enUs": {
                     "description": "英文响应文言",
                     "type": "string",
+                    "maxLength": 128,
                     "example": "EnUs"
                 },
                 "id": {
@@ -1632,16 +1916,18 @@
                 "remark": {
                     "description": "其他备注信息",
                     "type": "string",
+                    "maxLength": 64,
                     "example": "Remark"
                 },
                 "zhCn": {
                     "description": "中文响应文言",
                     "type": "string",
+                    "maxLength": 128,
                     "example": "ZhCn"
                 }
             }
         },
-        "model.ResponseGetRes": {
+        "platModel.ResponseGetRes": {
             "type": "object",
             "properties": {
                 "code": {
@@ -1670,7 +1956,7 @@
                     "example": "1"
                 },
                 "type": {
-                    "description": "响应类型，该字段用于筛选，可配置S和F",
+                    "description": "响应类型，该字段用于筛选，可配置S/F/E",
                     "type": "string",
                     "example": "S"
                 },
@@ -1681,7 +1967,7 @@
                 }
             }
         },
-        "model.ResponseNextValReq": {
+        "platModel.ResponseNextValReq": {
             "type": "object",
             "required": [
                 "serviceCode",
@@ -1691,16 +1977,22 @@
                 "serviceCode": {
                     "description": "业务ID，来源于字典，指定响应码归属业务",
                     "type": "string",
+                    "maxLength": 3,
                     "example": "0"
                 },
                 "type": {
-                    "description": "响应类型，该字段用于筛选，可配置S和F",
+                    "description": "响应类型，该字段用于筛选，可配置S/F/E",
                     "type": "string",
+                    "enum": [
+                        "S",
+                        "F",
+                        "E"
+                    ],
                     "example": "S"
                 }
             }
         },
-        "model.ResponsePageReq": {
+        "platModel.ResponsePageReq": {
             "type": "object",
             "properties": {
                 "code": {
@@ -1724,13 +2016,13 @@
                     "example": "0"
                 },
                 "type": {
-                    "description": "响应类型，该字段用于筛选，可配置S和F",
+                    "description": "响应类型，该字段用于筛选，可配置S/F/E",
                     "type": "string",
                     "example": "S"
                 }
             }
         },
-        "model.ResponsePageRes": {
+        "platModel.ResponsePageRes": {
             "type": "object",
             "properties": {
                 "code": {
@@ -1764,7 +2056,7 @@
                     "example": "1"
                 },
                 "type": {
-                    "description": "响应类型，该字段用于筛选，可配置S和F",
+                    "description": "响应类型，该字段用于筛选，可配置S/F/E",
                     "type": "string",
                     "example": "S"
                 },
@@ -1775,7 +2067,331 @@
                 }
             }
         },
-        "model.SysConfigEditReq": {
+        "platModel.RouterAddReq": {
+            "type": "object",
+            "required": [
+                "name",
+                "reqLogInDb",
+                "reqLogPrint",
+                "resLogInDb",
+                "resLogPrint",
+                "serviceCode",
+                "type",
+                "url"
+            ],
+            "properties": {
+                "name": {
+                    "description": "路由名称，用于界面展示，与权限关联",
+                    "type": "string",
+                    "maxLength": 32,
+                    "example": "Login"
+                },
+                "reqLogInDb": {
+                    "description": "请求日志入库 0 启用 1 默认不启用",
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
+                    "example": "0"
+                },
+                "reqLogPrint": {
+                    "description": "请求日志打印 0 打印 1 不打印",
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
+                    "example": "0"
+                },
+                "reqLogSecure": {
+                    "description": "请求日志脱敏字段，逗号分隔，打印时允许配置",
+                    "type": "string",
+                    "maxLength": 256,
+                    "example": "phone,account,password"
+                },
+                "resLogInDb": {
+                    "description": "响应日志入库 0 启用 1 默认不启用",
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
+                    "example": "0"
+                },
+                "resLogPrint": {
+                    "description": "响应日志打印 0 打印 1 不打印",
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
+                    "example": "0"
+                },
+                "resLogSecure": {
+                    "description": "响应日志脱敏字段，逗号分隔，打印时允许配置",
+                    "type": "string",
+                    "maxLength": 256,
+                    "example": "name,account,password"
+                },
+                "serviceCode": {
+                    "description": "业务编码（字典），为接口分组",
+                    "type": "string",
+                    "maxLength": 3,
+                    "example": "base"
+                },
+                "type": {
+                    "description": "免授权路由 0 免授权 1 授权",
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
+                    "example": "0"
+                },
+                "url": {
+                    "description": "路由地址，后端访问URL，后端不在URL中携带参数，统一Post处理内容",
+                    "type": "string",
+                    "maxLength": 64,
+                    "example": "/auth/login"
+                }
+            }
+        },
+        "platModel.RouterEditReq": {
+            "type": "object",
+            "required": [
+                "id",
+                "name",
+                "reqLogInDb",
+                "reqLogPrint",
+                "resLogInDb",
+                "resLogPrint",
+                "serviceCode"
+            ],
+            "properties": {
+                "id": {
+                    "description": "数据ID",
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "description": "路由名称，用于界面展示，与权限关联",
+                    "type": "string",
+                    "maxLength": 32,
+                    "example": "Login"
+                },
+                "reqLogInDb": {
+                    "description": "请求日志入库 0 启用 1 默认不启用",
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
+                    "example": "0"
+                },
+                "reqLogPrint": {
+                    "description": "请求日志打印 0 打印 1 不打印",
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
+                    "example": "0"
+                },
+                "reqLogSecure": {
+                    "description": "请求日志脱敏字段，逗号分隔，打印时允许配置",
+                    "type": "string",
+                    "maxLength": 256,
+                    "example": "phone,account,password"
+                },
+                "resLogInDb": {
+                    "description": "响应日志入库 0 启用 1 默认不启用",
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
+                    "example": "0"
+                },
+                "resLogPrint": {
+                    "description": "响应日志打印 0 打印 1 不打印",
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1"
+                    ],
+                    "example": "0"
+                },
+                "resLogSecure": {
+                    "description": "响应日志脱敏字段，逗号分隔，打印时允许配置",
+                    "type": "string",
+                    "maxLength": 256,
+                    "example": "name,account,password"
+                },
+                "serviceCode": {
+                    "description": "业务编码（字典），为接口分组",
+                    "type": "string",
+                    "maxLength": 3,
+                    "example": "base"
+                }
+            }
+        },
+        "platModel.RouterGetRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "数据ID",
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "description": "路由名称，用于界面展示，与权限关联",
+                    "type": "string",
+                    "example": "Login"
+                },
+                "reqLogInDb": {
+                    "description": "请求日志入库 0 启用 1 默认不启用",
+                    "type": "string",
+                    "example": "0"
+                },
+                "reqLogPrint": {
+                    "description": "请求日志打印 0 打印 1 不打印",
+                    "type": "string",
+                    "example": "0"
+                },
+                "reqLogSecure": {
+                    "description": "请求日志脱敏字段，逗号分隔，打印时允许配置",
+                    "type": "string",
+                    "example": "phone"
+                },
+                "resLogInDb": {
+                    "description": "响应日志入库 0 启用 1 默认不启用",
+                    "type": "string",
+                    "example": "0"
+                },
+                "resLogPrint": {
+                    "description": "响应日志打印 0 打印 1 不打印",
+                    "type": "string",
+                    "example": "0"
+                },
+                "resLogSecure": {
+                    "description": "响应日志脱敏字段，逗号分隔，打印时允许配置",
+                    "type": "string",
+                    "example": "name"
+                },
+                "serviceCode": {
+                    "description": "业务编码（字典），为接口分组",
+                    "type": "string",
+                    "example": "base"
+                },
+                "type": {
+                    "description": "免授权路由 0 免授权 1 授权",
+                    "type": "string",
+                    "example": "0"
+                },
+                "url": {
+                    "description": "路由地址，后端访问URL，后端不在URL中携带参数，统一Post处理内容",
+                    "type": "string",
+                    "example": "/auth/login"
+                }
+            }
+        },
+        "platModel.RouterPageReq": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "description": "当前页",
+                    "type": "integer",
+                    "example": 1
+                },
+                "pageSize": {
+                    "description": "单页数量",
+                    "type": "integer",
+                    "example": 10
+                },
+                "serviceCode": {
+                    "description": "业务编码（字典），为接口分组",
+                    "type": "string",
+                    "example": "base"
+                },
+                "type": {
+                    "description": "免授权路由 0 免授权 1 授权",
+                    "type": "string",
+                    "example": "0"
+                },
+                "url": {
+                    "description": "路由地址，后端访问URL，支持模糊查询",
+                    "type": "string",
+                    "example": "/auth/login"
+                }
+            }
+        },
+        "platModel.RouterPageRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "数据ID",
+                    "type": "integer",
+                    "example": 1
+                },
+                "mark": {
+                    "description": "变更标识 0可变更 1禁止变更",
+                    "type": "string",
+                    "example": "1"
+                },
+                "name": {
+                    "description": "路由名称，用于界面展示，与权限关联",
+                    "type": "string",
+                    "example": "Login"
+                },
+                "reqLogInDb": {
+                    "description": "请求日志入库 0 启用 1 默认不启用",
+                    "type": "string",
+                    "example": "0"
+                },
+                "reqLogPrint": {
+                    "description": "请求日志打印 0 打印 1 不打印",
+                    "type": "string",
+                    "example": "0"
+                },
+                "reqLogSecure": {
+                    "description": "请求日志脱敏字段，逗号分隔，打印时允许配置",
+                    "type": "string",
+                    "example": "phone"
+                },
+                "resLogInDb": {
+                    "description": "响应日志入库 0 启用 1 默认不启用",
+                    "type": "string",
+                    "example": "0"
+                },
+                "resLogPrint": {
+                    "description": "响应日志打印 0 打印 1 不打印",
+                    "type": "string",
+                    "example": "0"
+                },
+                "resLogSecure": {
+                    "description": "响应日志脱敏字段，逗号分隔，打印时允许配置",
+                    "type": "string",
+                    "example": "name"
+                },
+                "serviceCode": {
+                    "description": "业务编码（字典），为接口分组",
+                    "type": "string",
+                    "example": "base"
+                },
+                "type": {
+                    "description": "免授权路由 0 免授权 1 授权",
+                    "type": "string",
+                    "example": "0"
+                },
+                "url": {
+                    "description": "路由地址，后端访问URL，后端不在URL中携带参数，统一Post处理内容",
+                    "type": "string",
+                    "example": "/auth/login"
+                }
+            }
+        },
+        "platModel.SysConfigEditReq": {
             "type": "object",
             "required": [
                 "loginFailSwitch",
@@ -1852,7 +2468,7 @@
                 }
             }
         },
-        "model.SysConfigGetRes": {
+        "platModel.SysConfigGetRes": {
             "type": "object",
             "properties": {
                 "loginFailLockNum": {

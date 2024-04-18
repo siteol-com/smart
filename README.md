@@ -80,3 +80,26 @@ rm .\docs\docs.go
 [Swagger[支持调试]：http://localhost:8000/docs/swagger/index.html](http://localhost:8000/docs/swagger/index.html) 
 
 [ReDoc[阅读增强]：http://localhost:8000/docs/redoc/index.html](http://localhost:8000/docs/redoc/index.html)
+
+# 设计思想
+
+## RBAC模型
+
+账号 - 角色（多） - 权限（多） - 接口路由（多）。
+
+## 数据权限
+
+部门数据权限体系，上级可以看下级，特殊部门允许查看全体数据。
+
+## 动态系统配置
+
+系统配置入库，支持热配置生效。
+
+## 响应码国际化
+
+未配置的响应码翻译以默认成功和默认失败响应，支持响应码国际化翻译，支持变量注入。
+
+## 动态路由配置
+
+未配置的路由禁止访问，支持热处理，接口加入/移除、授权配置、日志记录、报文入库、脱敏加密等。
+

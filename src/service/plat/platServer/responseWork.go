@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
-	"siteol.com/smart/src/common/model"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/actuator"
 	"siteol.com/smart/src/common/mysql/platDb"
 	"siteol.com/smart/src/common/redis"
@@ -48,7 +48,7 @@ func responseMakeCode(serviceCode, codeType string) (code string, err error) {
 }
 
 // 字典分页查询对象
-func responsePageQuery(req *model.ResponsePageReq) (query *actuator.Query) {
+func responsePageQuery(req *platModel.ResponsePageReq) (query *actuator.Query) {
 	// 初始化Page
 	req.PageReq.PageInit()
 	// 组装Query

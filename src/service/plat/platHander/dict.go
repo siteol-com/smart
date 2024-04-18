@@ -2,8 +2,8 @@ package platHander
 
 import (
 	"github.com/gin-gonic/gin"
-	"siteol.com/smart/src/common/model"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/service"
 	"siteol.com/smart/src/service/plat/platServer"
 )
@@ -17,13 +17,13 @@ import (
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		Lang	header		string				false					"语言，不传默认为zh-CN"
-// @Param		req		body		model.DictReadReq	true					"请求"
-// @Success		200		{object}	baseModel.ResBody{data=model.DictReadRes}	"响应成功"
+// @Param		Lang	header		string				false						"语言，不传默认为zh-CN"
+// @Param		req		body		platModel.DictReadReq	true					"请求"
+// @Success		200		{object}	baseModel.ResBody{data=platModel.DictReadRes}	"响应成功"
 func ReadDict(c *gin.Context) {
-	traceID, reqObj, err := service.ValidateReqObj(c, &model.DictReadReq{})
+	traceID, reqObj, err := service.ValidateReqObj(c, &platModel.DictReadReq{})
 	if err == nil {
-		req := reqObj.(*model.DictReadReq)
+		req := reqObj.(*platModel.DictReadReq)
 		// 语言读取
 		req.Local = service.GetLocal(c)
 		// 执行查询
@@ -40,12 +40,12 @@ func ReadDict(c *gin.Context) {
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		req	body		model.DictNextValReq	true	"请求"
-// @Success		200	{object}	baseModel.ResBody{data=int64}	"响应成功"
+// @Param		req	body		platModel.DictNextValReq	true	"请求"
+// @Success		200	{object}	baseModel.ResBody{data=int64}		"响应成功"
 func NextDictVal(c *gin.Context) {
-	traceID, reqObj, err := service.ValidateReqObj(c, &model.DictNextValReq{})
+	traceID, reqObj, err := service.ValidateReqObj(c, &platModel.DictNextValReq{})
 	if err == nil {
-		req := reqObj.(*model.DictNextValReq)
+		req := reqObj.(*platModel.DictNextValReq)
 		// 执行创建
 		service.JsonRes(c, platServer.NextDictVal(traceID, req))
 	}
@@ -60,12 +60,12 @@ func NextDictVal(c *gin.Context) {
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		req	body		model.DictAddReq	true		"请求"
+// @Param		req	body		platModel.DictAddReq	true	"请求"
 // @Success		200	{object}	baseModel.ResBody{data=bool}	"响应成功"
 func AddDict(c *gin.Context) {
-	traceID, reqObj, err := service.ValidateReqObj(c, &model.DictAddReq{})
+	traceID, reqObj, err := service.ValidateReqObj(c, &platModel.DictAddReq{})
 	if err == nil {
-		req := reqObj.(*model.DictAddReq)
+		req := reqObj.(*platModel.DictAddReq)
 		// 执行创建
 		service.JsonRes(c, platServer.AddDict(traceID, req))
 	}
@@ -80,12 +80,12 @@ func AddDict(c *gin.Context) {
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		req	body		model.DictPageReq	true											"请求"
-// @Success		200	{object}	baseModel.ResBody{data=baseModel.PageRes{list=[]model.DictPageRes}}	"响应成功"
+// @Param		req	body		platModel.DictPageReq	true											"请求"
+// @Success		200	{object}	baseModel.ResBody{data=baseModel.PageRes{list=[]platModel.DictPageRes}}	"响应成功"
 func PageDict(c *gin.Context) {
-	traceID, reqObj, err := service.ValidateReqObj(c, &model.DictPageReq{})
+	traceID, reqObj, err := service.ValidateReqObj(c, &platModel.DictPageReq{})
 	if err == nil {
-		req := reqObj.(*model.DictPageReq)
+		req := reqObj.(*platModel.DictPageReq)
 		// 执行查询
 		service.JsonRes(c, platServer.PageDict(traceID, req))
 	}
@@ -100,8 +100,8 @@ func PageDict(c *gin.Context) {
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		req	body		baseModel.IdReq		true					"请求"
-// @Success		200	{object}	baseModel.ResBody{data=model.DictGetRes}	"响应成功"
+// @Param		req	body		baseModel.IdReq		true						"请求"
+// @Success		200	{object}	baseModel.ResBody{data=platModel.DictGetRes}	"响应成功"
 func GetDict(c *gin.Context) {
 	traceID, reqObj, err := service.ValidateReqObj(c, &baseModel.IdReq{})
 	if err == nil {
@@ -120,12 +120,12 @@ func GetDict(c *gin.Context) {
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		req	body		model.DictEditReq	true		"请求"
+// @Param		req	body		platModel.DictEditReq	true	"请求"
 // @Success		200	{object}	baseModel.ResBody{data=bool}	"响应成功"
 func EditDict(c *gin.Context) {
-	traceID, reqObj, err := service.ValidateReqObj(c, &model.DictEditReq{})
+	traceID, reqObj, err := service.ValidateReqObj(c, &platModel.DictEditReq{})
 	if err == nil {
-		req := reqObj.(*model.DictEditReq)
+		req := reqObj.(*platModel.DictEditReq)
 		// 执行创建
 		service.JsonRes(c, platServer.EditDict(traceID, req))
 	}
@@ -140,13 +140,12 @@ func EditDict(c *gin.Context) {
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		Lang	header		string				false					"语言，不传默认为zh-CN"
-// @Param		req		body		model.DictBroReq	true					"请求"
+// @Param		req		body		platModel.DictBroReq	true				"请求"
 // @Success		200		{object}	baseModel.ResBody{data=baseModel.SortRes}	"响应成功"
 func BroDict(c *gin.Context) {
-	traceID, reqObj, err := service.ValidateReqObj(c, &model.DictBroReq{})
+	traceID, reqObj, err := service.ValidateReqObj(c, &platModel.DictBroReq{})
 	if err == nil {
-		req := reqObj.(*model.DictBroReq)
+		req := reqObj.(*platModel.DictBroReq)
 		// 语言读取
 		req.Local = service.GetLocal(c)
 		// 执行查询
@@ -163,7 +162,6 @@ func BroDict(c *gin.Context) {
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		Lang	header		string				false		"语言，不传默认为zh-CN"
 // @Param		req		body		[]baseModel.SortReq	true		"请求"
 // @Success		200		{object}	baseModel.ResBody{data=bool}	"响应成功"
 func SortDict(c *gin.Context) {
@@ -184,7 +182,6 @@ func SortDict(c *gin.Context) {
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		Lang	header		string				false		"语言，不传默认为zh-CN"
 // @Param		req		body		[]baseModel.IdReq	true		"请求"
 // @Success		200		{object}	baseModel.ResBody{data=bool}	"响应成功"
 func DelDict(c *gin.Context) {

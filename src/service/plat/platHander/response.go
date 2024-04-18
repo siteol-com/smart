@@ -2,8 +2,8 @@ package platHander
 
 import (
 	"github.com/gin-gonic/gin"
-	"siteol.com/smart/src/common/model"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/service"
 	"siteol.com/smart/src/service/plat/platServer"
 )
@@ -13,16 +13,16 @@ import (
 // @Summary			响应码NextVal建议
 // @Description		在业务分组下读取下一个响应码的建议值
 // @Router			/plat/response/nextVal [post]
-// @Tags			数据字典
+// @Tags			响应配置
 // @Accept			json
 // @Produce			json
 // @Security		Token
-// @Param			req	body		model.ResponseNextValReq	true	"请求"
-// @Success			200	{object}	baseModel.ResBody{data=int64}		"响应成功"
+// @Param			req	body		platModel.ResponseNextValReq	true	"请求"
+// @Success			200	{object}	baseModel.ResBody{data=int64}			"响应成功"
 func NextResponseVal(c *gin.Context) {
-	traceID, reqObj, err := service.ValidateReqObj(c, &model.ResponseNextValReq{})
+	traceID, reqObj, err := service.ValidateReqObj(c, &platModel.ResponseNextValReq{})
 	if err == nil {
-		req := reqObj.(*model.ResponseNextValReq)
+		req := reqObj.(*platModel.ResponseNextValReq)
 		// 执行创建
 		service.JsonRes(c, platServer.NextResponseVal(traceID, req))
 	}
@@ -37,12 +37,12 @@ func NextResponseVal(c *gin.Context) {
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		req	body		model.ResponseAddReq	true	"请求"
-// @Success		200	{object}	baseModel.ResBody{data=bool}	"响应成功"
+// @Param		req	body		platModel.ResponseAddReq	true	"请求"
+// @Success		200	{object}	baseModel.ResBody{data=bool}		"响应成功"
 func AddResponse(c *gin.Context) {
-	traceID, reqObj, err := service.ValidateReqObj(c, &model.ResponseAddReq{})
+	traceID, reqObj, err := service.ValidateReqObj(c, &platModel.ResponseAddReq{})
 	if err == nil {
-		req := reqObj.(*model.ResponseAddReq)
+		req := reqObj.(*platModel.ResponseAddReq)
 		// 执行创建
 		service.JsonRes(c, platServer.AddResponse(traceID, req))
 	}
@@ -57,12 +57,12 @@ func AddResponse(c *gin.Context) {
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		req	body		model.ResponsePageReq	true											"请求"
-// @Success		200	{object}	baseModel.ResBody{data=baseModel.PageRes{list=[]model.ResponsePageRes}}	"响应成功"
+// @Param		req	body		platModel.ResponsePageReq	true											"请求"
+// @Success		200	{object}	baseModel.ResBody{data=baseModel.PageRes{list=[]platModel.ResponsePageRes}}	"响应成功"
 func PageResponse(c *gin.Context) {
-	traceID, reqObj, err := service.ValidateReqObj(c, &model.ResponsePageReq{})
+	traceID, reqObj, err := service.ValidateReqObj(c, &platModel.ResponsePageReq{})
 	if err == nil {
-		req := reqObj.(*model.ResponsePageReq)
+		req := reqObj.(*platModel.ResponsePageReq)
 		// 执行查询
 		service.JsonRes(c, platServer.PageResponse(traceID, req))
 	}
@@ -77,8 +77,8 @@ func PageResponse(c *gin.Context) {
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		req	body		baseModel.IdReq		true			"请求"
-// @Success		200	{object}	baseModel.ResBody{data=model.ResponseGetRes}	"响应成功"
+// @Param		req	body		baseModel.IdReq		true							"请求"
+// @Success		200	{object}	baseModel.ResBody{data=platModel.ResponseGetRes}	"响应成功"
 func GetResponse(c *gin.Context) {
 	traceID, reqObj, err := service.ValidateReqObj(c, &baseModel.IdReq{})
 	if err == nil {
@@ -97,12 +97,12 @@ func GetResponse(c *gin.Context) {
 // @Accept			json
 // @Produce			json
 // @Security		Token
-// @Param			req	body		model.ResponseEditReq	true	"请求"
-// @Success			200	{object}	baseModel.ResBody{data=bool}	"响应成功"
+// @Param			req	body		platModel.ResponseEditReq	true	"请求"
+// @Success			200	{object}	baseModel.ResBody{data=bool}		"响应成功"
 func EditResponse(c *gin.Context) {
-	traceID, reqObj, err := service.ValidateReqObj(c, &model.ResponseEditReq{})
+	traceID, reqObj, err := service.ValidateReqObj(c, &platModel.ResponseEditReq{})
 	if err == nil {
-		req := reqObj.(*model.ResponseEditReq)
+		req := reqObj.(*platModel.ResponseEditReq)
 		// 执行创建
 		service.JsonRes(c, platServer.EditResponse(traceID, req))
 	}

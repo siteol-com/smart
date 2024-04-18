@@ -3,8 +3,8 @@ package platServer
 import (
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
-	"siteol.com/smart/src/common/model"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/platDb"
 )
 
@@ -36,7 +36,7 @@ func ReadDictGroup(traceID, local string) *baseModel.ResBody {
 		dictGroupMap[d.Key] = label
 	}
 	// 处理响应
-	resData := &model.DictGroupReadRes{
+	resData := &platModel.DictGroupReadRes{
 		List: dictGroupList,
 		Map:  dictGroupMap,
 	}

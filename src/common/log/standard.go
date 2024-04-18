@@ -134,9 +134,6 @@ func (s *Standard) TPrintTF(v, l levelIndex, tag string, traceID string, format 
 		Tag:    tag,
 		Divide: DEFAULT_DIVIDE,
 	}
-	if traceID != "" {
-		traceID = traceID + " >"
-	}
 	r.TraceID = boldColorStr(traceIDColor, traceID)
 
 	if format == "" {

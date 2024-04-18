@@ -3,7 +3,7 @@ package platHander
 import (
 	"github.com/gin-gonic/gin"
 	"siteol.com/smart/src/common/constant"
-	"siteol.com/smart/src/common/model"
+	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/service"
 	"siteol.com/smart/src/service/plat/platServer"
 )
@@ -17,8 +17,8 @@ import (
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		req	body		baseModel.IdReq	true							"请求"
-// @Success		200	{object}	baseModel.ResBody{data=model.SysConfigGetRes}	"响应成功"
+// @Param		req	body		baseModel.IdReq	true								"请求"
+// @Success		200	{object}	baseModel.ResBody{data=platModel.SysConfigGetRes}	"响应成功"
 func GetSysConfig(c *gin.Context) {
 	// traceID 日志追踪
 	traceID := c.GetString(constant.ContextTraceID)
@@ -35,12 +35,12 @@ func GetSysConfig(c *gin.Context) {
 // @Accept			json
 // @Produce			json
 // @Security		Token
-// @Param			req	body		model.SysConfigEditReq	true	"请求"
-// @Success			200	{object}	baseModel.ResBody{data=bool}	"响应成功"
+// @Param			req	body		platModel.SysConfigEditReq	true	"请求"
+// @Success			200	{object}	baseModel.ResBody{data=bool}		"响应成功"
 func EditSysConfig(c *gin.Context) {
-	traceID, reqObj, err := service.ValidateReqObj(c, &model.SysConfigEditReq{})
+	traceID, reqObj, err := service.ValidateReqObj(c, &platModel.SysConfigEditReq{})
 	if err == nil {
-		req := reqObj.(*model.SysConfigEditReq)
+		req := reqObj.(*platModel.SysConfigEditReq)
 		// 执行创建
 		service.JsonRes(c, platServer.EditSysConfig(traceID, req))
 	}

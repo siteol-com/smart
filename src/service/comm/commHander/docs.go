@@ -73,7 +73,7 @@ func DocsFile(c *gin.Context) {
 	case ".css":
 		contextType = "text/css"
 	}
-	data, err := os.ReadFile("docs/file/" + fileInfo)
+	data, err := os.ReadFile("docs/" + fileInfo)
 	if err != nil {
 		c.JSON(http.StatusNotFound, nil)
 	} else {
