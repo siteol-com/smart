@@ -53,7 +53,7 @@ func main() {
 	httpServer := &http.Server{Addr: config.JsonConfig.Server.Port, Handler: newRouter}
 	// 启用HTTP服务 - 注册自定义路由
 	go utils.RecoverWrap(func() {
-		log.InfoTF(traceId, "Server Listening on port %s success .", config.JsonConfig.Server.Port)
+		log.InfoTF(traceId, "Server Listening on port %s success", config.JsonConfig.Server.Port)
 		if err := httpServer.ListenAndServe(); err != nil {
 			log.ErrorTF(traceId, "Server Listening on port %s . Err %v", config.JsonConfig.Server.Port, err)
 			os.Exit(1)
@@ -85,16 +85,23 @@ func serviceInit(traceId string) {
 		// 系统配置初始化
 		err := platServer.SyncSysConfigCache(traceId)
 		if err != nil {
-			log.ErrorTF(traceId, "InitSysConfigCache Fail . Err is : %v", err)
+			log.ErrorTF(traceId, "InitSysConfigCache Fail . Err Is : %v", err)
 			os.Exit(1)
 		}
-		log.InfoTF(traceId, "InitSysConfigCache success .")
+		log.InfoTF(traceId, "InitSysConfigCache success")
 		// 响应码配置初始化
 		err = platServer.SyncResponseCache(traceId)
 		if err != nil {
-			log.ErrorTF(traceId, "InitResponseCache Fail . Err is : %v", err)
+			log.ErrorTF(traceId, "InitResponseCache Fail . Err Is : %v", err)
 			os.Exit(1)
 		}
-		log.InfoTF(traceId, "InitResponseCache success .")
+		log.InfoTF(traceId, "InitResponseCache success")
+		// 路由配置初始化
+		err = platServer.SyncRouterCache(traceId)
+		if err != nil {
+			log.ErrorTF(traceId, "InitRouterCache Fail . Err Is : %v", err)
+			os.Exit(1)
+		}
+		log.InfoTF(traceId, "InitRouterCache success")
 	}
 }

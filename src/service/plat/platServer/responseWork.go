@@ -76,7 +76,7 @@ func SyncResponseCache(traceID string) (err error) {
 		return
 	}
 	if len(allList) == 0 {
-		log.WarnTF(traceID, "SyncResponseCache GetResponse Empty .")
+		log.WarnTF(traceID, "SyncResponseCache GetResponse Empty")
 		return
 	}
 	// 组装缓存对象
@@ -99,8 +99,8 @@ func SyncResponseCache(traceID string) (err error) {
 	}
 	// 写入缓存 无超期
 	err = redis.Set(constant.CacheResTrans, resCodeCacheMap, 0)
-	if err == nil {
-		log.InfoTF(traceID, "SyncResponseCache Success .")
+	if err != nil {
+		log.InfoTF(traceID, "SyncResponseCache Fail . Err Is : %v", err)
 	}
 	return
 }

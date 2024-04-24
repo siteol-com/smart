@@ -42,6 +42,7 @@ var typeMap = map[string]string{
 	"int":      "uint16",
 	"smallint": "uint8",
 	"varchar":  "string",
+	"text":     "string",
 	"datetime": "*time.Time",
 }
 var commonColumn = map[string]bool{"mark": true, "status": true, "create_at": true, "update_at": true}
@@ -60,7 +61,8 @@ var tableArray = []string{
 	//"role",
 	//"role_permission",
 	//"router",
-	"sys_config",
+	//"sys_config",
+	"router_log",
 }
 
 // 包位置
@@ -81,7 +83,7 @@ func TestDBPlatMaker(t *testing.T) {
 		tableFile = toFixStr(table, false) + ".go"
 		tx := platDb.Raw(fmt.Sprintf("select `table_comment` from `tables` where `table_schema` = '%s' AND `table_name`='%s'", dbName, table)).Scan(&tableComment)
 		if tableComment == "" {
-			t.Logf("Make %s File Fail .Can not Find %s , Err is : %v", tableFile, table, tx.Error)
+			t.Logf("Make %s File Fail .Can not Find %s , Err Is : %v", tableFile, table, tx.Error)
 			continue
 		}
 		// 是否需要追加导入 是否包含公共字段
@@ -92,7 +94,7 @@ func TestDBPlatMaker(t *testing.T) {
 		columnList := make([][4]string, 0)
 		rows, err := platDb.Raw(fmt.Sprintf("select `column_name`,`data_type`,`column_comment` from `columns` where `table_schema` = '%s' AND `table_name`='%s' ORDER BY ORDINAL_POSITION", dbName, table)).Rows()
 		if err != nil {
-			t.Logf("Make %s File Fail .Can not Find %s Columns , Err is : %v", tableFile, table, err)
+			t.Logf("Make %s File Fail .Can not Find %s Columns , Err Is : %v", tableFile, table, err)
 			continue
 		}
 		// 组装字段
@@ -144,7 +146,7 @@ func TestDBPlatMaker(t *testing.T) {
 		code = strings.ReplaceAll(code, "${table}", table)
 		err = os.WriteFile(path+tableFile, []byte(code), 0777)
 		if err != nil {
-			t.Logf("Make %s File Fail . Err is : %v", tableFile, err)
+			t.Logf("Make %s File Fail . Err Is : %v", tableFile, err)
 		} else {
 			t.Logf("Make %s File Success . ", tableFile)
 		}

@@ -62,7 +62,7 @@ func SyncRouterCache(traceID string) (err error) {
 		return
 	}
 	if len(allList) == 0 {
-		log.WarnTF(traceID, "SyncRouterCache GetRouter Empty .")
+		log.WarnTF(traceID, "SyncRouterCache GetRouter Empty")
 		return
 	}
 	// 组装缓存对象
@@ -72,10 +72,9 @@ func SyncRouterCache(traceID string) (err error) {
 		cache := &model.CacheRouter{
 			Id:        res.Id,
 			NeedAuth:  utils.StatusBool(res.Type),
-			ReqDb:     utils.StatusBool(res.ReqLogInDb),
+			LogInDb:   utils.StatusBool(res.LogInDb),
 			ReqPrint:  utils.StatusBool(res.ReqLogPrint),
 			ReqSecure: utils.ArrayStr(res.ReqLogSecure),
-			ResDb:     utils.StatusBool(res.ResLogInDb),
 			ResPrint:  utils.StatusBool(res.ResLogPrint),
 			ResSecure: utils.ArrayStr(res.ResLogSecure),
 		}
@@ -83,8 +82,8 @@ func SyncRouterCache(traceID string) (err error) {
 	}
 	// 写入缓存 无超期
 	err = redis.Set(constant.CacheRouters, resCacheMap, 0)
-	if err == nil {
-		log.InfoTF(traceID, "SyncRouterCache Success .")
+	if err != nil {
+		log.InfoTF(traceID, "SyncRouterCache Fail . Err Is : %v", err)
 	}
 	return
 }

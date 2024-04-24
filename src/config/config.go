@@ -20,9 +20,11 @@ type Config struct {
 
 // Server 服务配置
 type Server struct {
+	Name     string // 服务名
 	Port     string // 服务端口
 	LogLevel string // 日志等级
 	LogRoot  int    // 日志展示路径范围
+	Debug    bool   // 调试模式，打开时部分处理跳过或进入Mock处理
 }
 
 // MySQL MySQL数据配置组
@@ -53,7 +55,7 @@ func ReadConfig() {
 	JsonConfig = &Config{}
 	filePath := fmt.Sprintf("%s/config/config_%s.json", WorkDir, SysEnv)
 	file, _ := os.Open(filePath)
-	defer file.Close()
+	defer func() { _ = file.Close() }()
 	decoder := json.NewDecoder(file)
 	for decoder.More() {
 		err := decoder.Decode(JsonConfig)

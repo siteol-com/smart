@@ -10,9 +10,9 @@ import (
 var baseStr = "0123456789aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"
 var traceStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-// TraceID 生成8位随机日志ID
+// TraceID 生成10位随机日志ID
 func TraceID() string {
-	return RandStr(9, true)
+	return RandStr(10, true)
 }
 
 // SaltKey 生成一个16位的随机盐值
@@ -21,7 +21,7 @@ func SaltKey() string {
 }
 
 // RandStr 生成指定位数的随机字符
-// f=true:大小英数字 =false:大写英文字母
+// f=true:大写英文字母 =false:大小英数字
 func RandStr(length int, f bool) string {
 	bytes := []byte(baseStr)
 	if f {

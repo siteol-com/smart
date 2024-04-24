@@ -24,6 +24,6 @@ func Init(traceId string) {
 		log.ErrorTF(traceId, "Init Redis Fail . Err : %s", err)
 		os.Exit(1)
 	} else {
-		log.InfoTF(traceId, "Init Redis success .")
+		log.InfoTF(traceId, "Init Redis success")
 	}
 }

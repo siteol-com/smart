@@ -11,7 +11,7 @@ const (
 	ContextLang    = "Lang"       // 语言
 	ContextTraceID = "TraceID"    // 日志链路跟踪ID
 	ContextRouterC = "RouterConf" // 路由配置对象
-	Context
+	ContextRouterI = "RouterInDb" // 路由入库对象
 
 	StatusOpen  = "0" // 正常 启动 可变更
 	StatusLock  = "1" // 禁用 锁定 登出 不可变更

@@ -48,7 +48,7 @@ func GetRouterConf(c *gin.Context) *model.CacheRouter {
 	return model.CacheRouterNormal
 }
 
-// JsonRes 执行Json响应
+// JsonRes 执行Json响应 包含响应日志处理
 func JsonRes(c *gin.Context, res *baseModel.ResBody) {
 	// traceID 日志追踪
 	traceID := c.GetString(constant.ContextTraceID)

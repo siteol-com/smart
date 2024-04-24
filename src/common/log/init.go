@@ -84,7 +84,7 @@ func logSplit() {
 		if oldFile != nil {
 			err := oldFile.Close()
 			if err != nil {
-				ErrorF("close the log file %s fail, error is %s", oldFile.Name(), err)
+				ErrorF("close the log file %s fail, error Is :%s", oldFile.Name(), err)
 			}
 		}
 	}
@@ -94,7 +94,7 @@ func logSplit() {
 func removeLogFile() {
 	sPath, err := os.Getwd()
 	if err != nil {
-		ErrorF("get the current file path error, the error is %s\n", err)
+		ErrorF("get the current file path error, the error Is :%s\n", err)
 		return
 	}
 
@@ -104,7 +104,7 @@ func removeLogFile() {
 	// 一天前
 	d, err := time.ParseDuration("-24h")
 	if err != nil {
-		ErrorF("parse the time error, the error is %s", err)
+		ErrorF("parse the time error, the error Is :%s", err)
 		return
 	}
 	cur := time.Now()

@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"net/http"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/mysql/platDb"
+	"siteol.com/smart/src/common/utils/security"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"siteol.com/smart/src/common/constant"
@@ -24,16 +27,37 @@ func ReturnMsgTrans(res *baseModel.ResBody, c *gin.Context, router *model.CacheR
 		tableMsgTrans(res, lang, traceID)
 	}
 	// 响应日志
-	printBts := []byte("{}")
-	if !router.ResPrint {
-		printBts = []byte("{ Res Set Not Print}")
-	} else {
+	printStr := fmt.Sprintf("Res Code Is :%d . Res Set Not Print", res.HttpCode)
+	// 响应安全日志
+	resBts, _ := json.Marshal(res)
+	printSafeStr := security.SafeJson(string(resBts), router.ResSecure)
+	if router.ResPrint {
 		// 如需打印日志
-		resBts, _ := json.Marshal(res)
-		// JSON序列化
-		printBts = resBts
+		printStr = printSafeStr
 	}
-	log.InfoTF(traceID, "RespBody: %s", printBts)
+	log.InfoTF(traceID, "Res Code Is :%d . Res Body : %s", res.HttpCode, printStr)
+	// 日志入库
+	if router.LogInDb {
+		// 提取日志对象
+		obj, ok := c.Get(constant.ContextRouterI)
+		if ok {
+			// 提取到则异步加入到库中
+			now := time.Now()
+			logInDb := &platDb.RouterLog{}
+			logInDb = obj.(*platDb.RouterLog)
+			if logInDb != nil {
+				logInDb.ResStatus = res.HttpCode
+				logInDb.ResBody = printSafeStr
+				logInDb.ResTime = &now
+				go func() {
+					err := platDb.RouterLogTable.InsertOne(logInDb)
+					if err != nil {
+						log.ErrorTF(traceID, "Insert Router Log Fail . Err Is : %v", err)
+					}
+				}()
+			}
+		}
+	}
 }
 
 // tableMsgTrans 执行Msg翻译

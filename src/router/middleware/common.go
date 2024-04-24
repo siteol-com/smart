@@ -16,21 +16,23 @@ func CommMiddleWare(c *gin.Context) {
 	url := c.Request.URL.Path
 	log.InfoTF(traceID, "Req URL = %s", url)
 	c.Set(constant.ContextTraceID, traceID)
-	// 是否是中间件拒绝
-	middleRes := true
-	defer func() {
-		// TODO 中间件拒绝的特殊处理
-		if middleRes {
-			service.JsonRes(c, baseModel.SysErr)
-		}
-	}()
 	// 设置语言
 	setLang(c)
-	// TODO 设置路由配置
-	setRouter(c, url)
+	// 读取路由配置，可能会NG 404 路由找不到
+	router, routerNg := setRouter(c, url, traceID)
+	if routerNg {
+		service.JsonRes(c, baseModel.PathErr)
+		return
+	}
+	// 请求日志处理，可能会NG 500 系统异常
+	reqNg := setReq(c, router, url, traceID)
+	if reqNg {
+		service.JsonRes(c, baseModel.SysErr)
+		return
+	}
 	// 读取鉴权信息
-	// TODO
-	// 其他中间件或控制层响应，无需本层特殊处理
-	middleRes = false
+	if router.NeedAuth {
+		// TODO
+	}
 	c.Next()
 }

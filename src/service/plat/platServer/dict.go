@@ -20,7 +20,7 @@ func ReadDict(traceID string, req *platModel.DictReadReq) *baseModel.ResBody {
 			// 默认的Sort排序处理
 			dictList, err := platDb.DictTable.FindByObjectSort(&platDb.Dict{GroupKey: groupKey})
 			if err != nil {
-				log.WarnTF(traceID, "ListDict Fail . GroupKey Query By : %s , Err is : %v", groupKey, err)
+				log.WarnTF(traceID, "ListDict Fail . GroupKey Query By : %s , Err Is : %v", groupKey, err)
 				dictListMap[groupKey] = make([]*baseModel.SelectRes, 0)
 				dictValueMap[groupKey] = make(map[string]string, 0)
 				continue
@@ -102,7 +102,7 @@ func BroDict(traceID string, req *platModel.DictBroReq) *baseModel.ResBody {
 	// 如果查询key不为空（只查询启用的数据）
 	dictList, err := platDb.DictTable.FindByObjectSort(&platDb.Dict{GroupKey: req.GroupKey, Common: platDb.Common{Status: constant.StatusOpen}})
 	if err != nil {
-		log.WarnTF(traceID, "BroDict Fail . GroupKey Query By : %s , Err is : %v", req.GroupKey, err)
+		log.WarnTF(traceID, "BroDict Fail . GroupKey Query By : %s , Err Is : %v", req.GroupKey, err)
 		return baseModel.Fail(constant.DictGetNG)
 	}
 	return baseModel.SuccessUnPop(dictListToBro(dictList, req.Local))
@@ -115,7 +115,7 @@ func SortDict(traceID string, req []*baseModel.SortReq) *baseModel.ResBody {
 	}
 	err := platDb.DictTable.SortWithTransaction(req)
 	if err != nil {
-		log.ErrorTF(traceID, "SortDict Fail .  Err is : %s", err)
+		log.ErrorTF(traceID, "SortDict Fail .  Err Is : %s", err)
 		return baseModel.Fail(constant.DictSortNG)
 	}
 	return baseModel.Success(constant.DictSortSS, true)
