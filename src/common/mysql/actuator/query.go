@@ -21,17 +21,17 @@ import (
 // MySQL 查询器
 // 整型字段即使传递”也会走索引，因此这里直接通过固定 ”作为值的模板
 const (
-	Eq        = "`${name}` = '${value}'"      // 等于
-	Ne        = "`${name}` != '${value}'"     // 不等于
-	Gt        = "`${name}` > '${value}'"      // 大于
-	Lt        = "`${name}` < '${value}'"      // 小于
-	Ge        = "`${name}` >= '${value}'"     // 大于等于
-	Le        = "`${name}` <= '${value}'"     // 小于等于
-	Like      = "`${name}` like '%${value}%'" // 模糊检索
-	StartWith = "`${name}` like '%${value}'"  // 起始于
-	EndWith   = "`${name}` like '${value}%'"  // 结束于
-	BaseSql   = "SELECT %s FROM %s"           // 基础Sql
-	CountSql  = "count(id)"                   // 数据求和字句
+	Eq        = "`${name}` = ?"     // 等于
+	Ne        = "`${name}` != ?"    // 不等于
+	Gt        = "`${name}` > ?"     // 大于
+	Lt        = "`${name}` < ?"     // 小于
+	Ge        = "`${name}` >= ?"    // 大于等于
+	Le        = "`${name}` <= ?"    // 小于等于
+	Like      = "`${name}` like ?"  // 模糊检索
+	StartWith = "`${name}` like ?"  // 起始于
+	EndWith   = "`${name}` like ?"  // 结束于
+	BaseSql   = "SELECT %s FROM %s" // 基础Sql
+	CountSql  = "count(id)"         // 数据求和字句
 )
 
 // Query 分页查询器对象
@@ -99,17 +99,17 @@ func (q *Query) Le(name string, value any) {
 
 // Like 模糊查询
 func (q *Query) Like(name string, value any) {
-	q.makeWhere(Like, name, value)
+	q.makeWhere(Like, name, fmt.Sprintf("%%%v%%", value))
 }
 
 // StartWith 开始模糊
 func (q *Query) StartWith(name string, value any) {
-	q.makeWhere(StartWith, name, value)
+	q.makeWhere(StartWith, name, fmt.Sprintf("%v%%", value))
 }
 
 // EndWith 结束模糊
 func (q *Query) EndWith(name string, value any) {
-	q.makeWhere(EndWith, name, value)
+	q.makeWhere(EndWith, name, fmt.Sprintf("%%%v", value))
 }
 
 // 实装Where
@@ -164,7 +164,8 @@ func (q *Query) LimitByPage(current, pageSize int) {
 }
 
 // makeSqlByQuery 根据Query对象生成SQL（包内方法）
-func (q *Query) makeSqlByQuery(count bool) string {
+func (q *Query) makeSqlByQuery(count bool) (string, []any) {
+	var whereArray []any
 	sql := &bytes.Buffer{}
 	selectInfo := "*"
 	if count {
@@ -174,18 +175,18 @@ func (q *Query) makeSqlByQuery(count bool) string {
 	sql.WriteString(fmt.Sprintf(BaseSql, selectInfo, q.Table))
 	// Where 语句
 	if len(q.Where) > 0 {
-		q.makeWhereSql(sql)
+		whereArray = q.makeWhereSql(sql)
 	}
 	// Order 语句
 	if len(q.Order) > 0 {
 		q.makeOrderSql(sql)
 	}
-
-	return sql.String()
+	return sql.String(), whereArray
 }
 
 // makeWhereSql 生成查询语句
-func (q *Query) makeWhereSql(sql *bytes.Buffer) {
+func (q *Query) makeWhereSql(sql *bytes.Buffer) []any {
+	whereArray := make([]any, len(q.Where))
 	for i, where := range q.Where {
 		if i == 0 {
 			sql.WriteString(" WHERE ")
@@ -195,9 +196,10 @@ func (q *Query) makeWhereSql(sql *bytes.Buffer) {
 		// 创建Where子句
 		subWhere := where.SubWhere
 		subWhere = strings.ReplaceAll(subWhere, "${name}", where.Name)
-		subWhere = strings.ReplaceAll(subWhere, "${value}", fmt.Sprintf("%v", where.Value))
+		whereArray[i] = where.Value
 		sql.WriteString(subWhere)
 	}
+	return whereArray
 }
 
 // makeOrderSql 创建排序语句
@@ -221,16 +223,16 @@ func (q *Query) makeOrderSql(sql *bytes.Buffer) {
 func (q *Query) countByQuery(db *gorm.DB) (int64, error) {
 	total := int64(0)
 	// 不包含Limit
-	sql := q.makeSqlByQuery(true)
-	r := db.Raw(sql).Find(&total)
+	sql, whereArray := q.makeSqlByQuery(true)
+	r := db.Raw(sql, whereArray...).Find(&total)
 	return total, r.Error
 }
 
 // FindByQuery 自定义Query结构组装查询
 func (q *Query) findByQuery(db *gorm.DB, res any) error {
 	// 不包含Limit
-	sql := q.makeSqlByQuery(false)
-	dbQuery := db.Raw(sql)
+	sql, whereArray := q.makeSqlByQuery(false)
+	dbQuery := db.Raw(sql, whereArray...)
 	// 如果有Limit
 	if q.LimitRange != nil {
 		dbQuery.Offset(q.LimitRange.Offset).Limit(q.LimitRange.Limit)

@@ -1,7 +1,6 @@
 package actuator
 
 import (
-	"fmt"
 	"siteol.com/smart/src/common/model/baseModel"
 
 	"gorm.io/gorm"
@@ -122,7 +121,8 @@ func (t Table[T]) UpdateOne(req any) (err error) {
 // DeleteOne 删除一条数据（根据ID）
 func (t Table[T]) DeleteOne(id uint64) (err error) {
 	var exe T
-	r := exe.DataBase().Exec(fmt.Sprintf("DELETE FROM %s WHERE `id`= ?", exe.TableName()), id)
+	r := exe.DataBase().Delete(&exe, id)
+	//.Exec(fmt.Sprintf("DELETE FROM %s WHERE `id`= ?", exe.TableName()), id)
 	err = r.Error
 	return
 }
@@ -130,7 +130,8 @@ func (t Table[T]) DeleteOne(id uint64) (err error) {
 // DeleteByIds 删除多条数据（根据ID）
 func (t Table[T]) DeleteByIds(ids []uint64) (err error) {
 	var exe T
-	r := exe.DataBase().Exec(fmt.Sprintf("DELETE FROM %s WHERE `id`IN ?", exe.TableName()), ids)
+	r := exe.DataBase().Delete(&exe, ids)
+	//.Exec(fmt.Sprintf("DELETE FROM %s WHERE `id`IN ?", exe.TableName()), ids)
 	err = r.Error
 	return
 }

@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-const uuid = "ME_BUGS_SITE_OL_STONE"
+// const uuid = "ME_BUGS_SITE_OL_STONE"
 
 func TestLogLevel(t *testing.T) {
 	setLevelIndex(InfoLevel)
@@ -103,4 +103,9 @@ func TestGetLogger(t *testing.T) {
 	std := GetStdLogger()
 	std.Print("123")
 	std.Print(321)
+}
+
+// 暂无意义的测试类
+func TestRe(t *testing.T) {
+	removeLogFile()
 }
