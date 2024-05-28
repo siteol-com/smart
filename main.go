@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"siteol.com/smart/src/service/plat/platServer"
+	"siteol.com/smart/src/service/plat/platService"
 	"syscall"
 	"time"
 
@@ -83,21 +83,21 @@ func serviceInit(traceId string) {
 	// 主服务进行响应码初始化
 	if config.SysNode == "APP01" {
 		// 系统配置初始化
-		err := platServer.SyncSysConfigCache(traceId)
+		err := platService.SyncSysConfigCache(traceId)
 		if err != nil {
 			log.ErrorTF(traceId, "InitSysConfigCache Fail . Err Is : %v", err)
 			os.Exit(1)
 		}
 		log.InfoTF(traceId, "InitSysConfigCache success")
 		// 响应码配置初始化
-		err = platServer.SyncResponseCache(traceId)
+		err = platService.SyncResponseCache(traceId)
 		if err != nil {
 			log.ErrorTF(traceId, "InitResponseCache Fail . Err Is : %v", err)
 			os.Exit(1)
 		}
 		log.InfoTF(traceId, "InitResponseCache success")
 		// 路由配置初始化
-		err = platServer.SyncRouterCache(traceId)
+		err = platService.SyncRouterCache(traceId)
 		if err != nil {
 			log.ErrorTF(traceId, "InitRouterCache Fail . Err Is : %v", err)
 			os.Exit(1)

@@ -3,7 +3,7 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 	"siteol.com/smart/src/router/middleware"
-	"siteol.com/smart/src/service/plat/platHander"
+	"siteol.com/smart/src/service/plat/platHandler"
 )
 
 // PlatRouter 平台业务路由
@@ -13,45 +13,56 @@ func PlatRouter(router *gin.Engine) {
 		// 字典分组相关
 		dictGroupRouter := platRouter.Group("/dictGroup")
 		{
-			dictGroupRouter.POST("/read", platHander.ReadDictGroup)
+			dictGroupRouter.POST("/read", platHandler.ReadDictGroup)
 		}
 		// 字典相关
 		dictRouter := platRouter.Group("/dict")
 		{
-			dictRouter.POST("/read", platHander.ReadDict)
-			dictRouter.POST("/nextVal", platHander.NextDictVal)
-			dictRouter.POST("/add", platHander.AddDict)
-			dictRouter.POST("/page", platHander.PageDict)
-			dictRouter.POST("/get", platHander.GetDict)
-			dictRouter.POST("/edit", platHander.EditDict)
-			dictRouter.POST("/bro", platHander.BroDict)
-			dictRouter.POST("/sort", platHander.SortDict)
-			dictRouter.POST("/del", platHander.DelDict)
+			dictRouter.POST("/read", platHandler.ReadDict)
+			dictRouter.POST("/nextVal", platHandler.NextDictVal)
+			dictRouter.POST("/add", platHandler.AddDict)
+			dictRouter.POST("/page", platHandler.PageDict)
+			dictRouter.POST("/get", platHandler.GetDict)
+			dictRouter.POST("/edit", platHandler.EditDict)
+			dictRouter.POST("/bro", platHandler.BroDict)
+			dictRouter.POST("/sort", platHandler.SortDict)
+			dictRouter.POST("/del", platHandler.DelDict)
 		}
 		// 响应码相关
 		responseRouter := platRouter.Group("/response")
 		{
-			responseRouter.POST("/nextVal", platHander.NextResponseVal)
-			responseRouter.POST("/add", platHander.AddResponse)
-			responseRouter.POST("/page", platHander.PageResponse)
-			responseRouter.POST("/get", platHander.GetResponse)
-			responseRouter.POST("/edit", platHander.EditResponse)
-			responseRouter.POST("/del", platHander.DelResponse)
+			responseRouter.POST("/nextVal", platHandler.NextResponseVal)
+			responseRouter.POST("/add", platHandler.AddResponse)
+			responseRouter.POST("/page", platHandler.PageResponse)
+			responseRouter.POST("/get", platHandler.GetResponse)
+			responseRouter.POST("/edit", platHandler.EditResponse)
+			responseRouter.POST("/del", platHandler.DelResponse)
 		}
 		// 接口路由相关
 		routerRouter := platRouter.Group("/router")
 		{
-			routerRouter.POST("/add", platHander.AddRouter)
-			routerRouter.POST("/page", platHander.PageRouter)
-			routerRouter.POST("/get", platHander.GetRouter)
-			routerRouter.POST("/edit", platHander.EditRouter)
-			routerRouter.POST("/del", platHander.DelRouter)
+			routerRouter.POST("/add", platHandler.AddRouter)
+			routerRouter.POST("/page", platHandler.PageRouter)
+			routerRouter.POST("/get", platHandler.GetRouter)
+			routerRouter.POST("/edit", platHandler.EditRouter)
+			routerRouter.POST("/del", platHandler.DelRouter)
+		}
+		// 权限相关
+		permissionRouter := platRouter.Group("/permission")
+		{
+			permissionRouter.POST("/add", platHandler.AddPermission)
+			permissionRouter.POST("/tree", platHandler.TreePermission)
+			permissionRouter.POST("/get", platHandler.GetPermission)
+			permissionRouter.POST("/edit", platHandler.EditPermission)
+			permissionRouter.POST("/del", platHandler.DelPermission)
+			permissionRouter.POST("/bro", platHandler.BroPermission)
+			permissionRouter.POST("/sort", platHandler.SortPermission)
 		}
 		// 系统配置相关
 		sysConfigRouter := platRouter.Group("/sysConfig")
 		{
-			sysConfigRouter.POST("/get", platHander.GetSysConfig)
-			sysConfigRouter.POST("/edit", platHander.EditSysConfig)
+			sysConfigRouter.POST("/get", platHandler.GetSysConfig)
+			sysConfigRouter.POST("/edit", platHandler.EditSysConfig)
 		}
 	}
 }

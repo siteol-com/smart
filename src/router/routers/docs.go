@@ -2,7 +2,7 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"siteol.com/smart/src/service/comm/commHander"
+	"siteol.com/smart/src/service/base/baseHandler"
 )
 
 // DocsRouter API文档路由
@@ -12,12 +12,12 @@ func DocsRouter(router *gin.Engine) {
 	docsRouter := router.Group("/docs")
 	{
 		// Swagger资源文件
-		docsRouter.POST("/sample", commHander.Sample)
+		docsRouter.POST("/sample", baseHandler.Sample)
 		// Swagger资源文件
-		docsRouter.GET("/file/*any", commHander.DocsFile)
+		docsRouter.GET("/file/*any", baseHandler.DocsFile)
 		// ReDoc
-		docsRouter.GET("/redoc/*any", commHander.ReDoc)
+		docsRouter.GET("/redoc/*any", baseHandler.ReDoc)
 		// Swagger范本
-		docsRouter.GET("/swagger/*any", commHander.SwaggerDoc)
+		docsRouter.GET("/swagger/*any", baseHandler.SwaggerDoc)
 	}
 }

@@ -3,7 +3,7 @@ package platModel
 import (
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/model/baseModel"
-	"siteol.com/smart/src/common/mysql/platDb"
+	"siteol.com/smart/src/common/mysql/platDB"
 	"time"
 )
 
@@ -29,16 +29,16 @@ type ResponseAddReq struct {
 }
 
 // ToDbReq 响应码创建对象转字典对象
-func (r *ResponseAddReq) ToDbReq() *platDb.ResponseCode {
+func (r *ResponseAddReq) ToDbReq() *platDB.ResponseCode {
 	now := time.Now()
-	return &platDb.ResponseCode{
+	return &platDB.ResponseCode{
 		Id:          0,
 		ServiceCode: r.ServiceCode,
 		Type:        r.Type,
 		ZhCn:        r.ZhCn,
 		EnUs:        r.EnUs,
 		Remark:      r.Remark,
-		Common: platDb.Common{
+		Common: platDB.Common{
 			Mark:     constant.StatusOpen,
 			Status:   constant.StatusOpen,
 			CreateAt: &now,
@@ -54,7 +54,7 @@ type ResponseEditReq struct {
 }
 
 // ToDbReq 响应码更新对象转字典对象
-func (r *ResponseEditReq) ToDbReq(d *platDb.ResponseCode) {
+func (r *ResponseEditReq) ToDbReq(d *platDB.ResponseCode) {
 	now := time.Now()
 	d.ZhCn = r.ZhCn
 	d.EnUs = r.EnUs
@@ -74,7 +74,7 @@ type ResponseGetRes struct {
 }
 
 // ToResponseGetRes 响应码转为查询对象
-func ToResponseGetRes(r *platDb.ResponseCode) *ResponseGetRes {
+func ToResponseGetRes(r *platDB.ResponseCode) *ResponseGetRes {
 	return &ResponseGetRes{
 		Id:          r.Id,
 		Code:        r.Code,
@@ -101,7 +101,7 @@ type ResponsePageRes struct {
 }
 
 // ToResponsePageRes 响应码转为分页对象
-func ToResponsePageRes(list []*platDb.ResponseCode) []*ResponsePageRes {
+func ToResponsePageRes(list []*platDB.ResponseCode) []*ResponsePageRes {
 	res := make([]*ResponsePageRes, len(list))
 	for i, r := range list {
 		res[i] = &ResponsePageRes{

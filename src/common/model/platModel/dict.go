@@ -3,7 +3,7 @@ package platModel
 import (
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/model/baseModel"
-	"siteol.com/smart/src/common/mysql/platDb"
+	"siteol.com/smart/src/common/mysql/platDB"
 	"time"
 )
 
@@ -53,9 +53,9 @@ type DictAddReq struct {
 }
 
 // ToDbReq 字典创建对象转字典对象
-func (r *DictAddReq) ToDbReq() *platDb.Dict {
+func (r *DictAddReq) ToDbReq() *platDB.Dict {
 	now := time.Now()
-	return &platDb.Dict{
+	return &platDB.Dict{
 		Id:       0,
 		GroupKey: r.GroupKey,
 		Label:    r.Label,
@@ -65,7 +65,7 @@ func (r *DictAddReq) ToDbReq() *platDb.Dict {
 		Pid:      1,
 		Sort:     0,
 		Remark:   r.Remark,
-		Common: platDb.Common{
+		Common: platDB.Common{
 			Mark:     constant.StatusOpen,
 			Status:   constant.StatusOpen,
 			CreateAt: &now,
@@ -81,7 +81,7 @@ type DictEditReq struct {
 }
 
 // ToDbReq 字典更新对象转字典对象
-func (r *DictEditReq) ToDbReq(d *platDb.Dict) {
+func (r *DictEditReq) ToDbReq(d *platDB.Dict) {
 	now := time.Now()
 	d.Label = r.Label
 	d.LabelEn = r.LabelEn
@@ -102,7 +102,7 @@ type DictGetRes struct {
 }
 
 // ToDictGetRes 字典转为查询对象
-func ToDictGetRes(r *platDb.Dict) *DictGetRes {
+func ToDictGetRes(r *platDB.Dict) *DictGetRes {
 	return &DictGetRes{
 		Id:       r.Id,
 		GroupKey: r.GroupKey,
@@ -123,12 +123,12 @@ type DictPageReq struct {
 // DictPageRes 字典分页响应
 type DictPageRes struct {
 	DictGetRes
-	Sort uint8  `json:"sort" example:"0"` // 字典排序
+	Sort uint16 `json:"sort" example:"0"` // 字典排序
 	Mark string `json:"mark" example:"1"` // 变更标识 0可变更 1禁止变更
 }
 
 // ToDictPageRes 字典转为分页对象
-func ToDictPageRes(list []*platDb.Dict) []*DictPageRes {
+func ToDictPageRes(list []*platDB.Dict) []*DictPageRes {
 	res := make([]*DictPageRes, len(list))
 	for i, r := range list {
 		res[i] = &DictPageRes{

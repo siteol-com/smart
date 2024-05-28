@@ -3,7 +3,7 @@ package platModel
 import (
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/model/baseModel"
-	"siteol.com/smart/src/common/mysql/platDb"
+	"siteol.com/smart/src/common/mysql/platDB"
 	"time"
 )
 
@@ -27,9 +27,9 @@ type RouterAddReq struct {
 }
 
 // ToDbReq 路由接口创建对象转字典对象
-func (r *RouterAddReq) ToDbReq() *platDb.Router {
+func (r *RouterAddReq) ToDbReq() *platDB.Router {
 	now := time.Now()
-	return &platDb.Router{
+	return &platDB.Router{
 		Id:           0,
 		Name:         r.Name,
 		Url:          r.Url,
@@ -41,7 +41,7 @@ func (r *RouterAddReq) ToDbReq() *platDb.Router {
 		ResLogPrint:  r.ResLogPrint,
 		ResLogSecure: r.ResLogSecure,
 		Remark:       r.Remark,
-		Common: platDb.Common{
+		Common: platDB.Common{
 			Mark:     constant.StatusOpen,
 			Status:   constant.StatusOpen,
 			CreateAt: &now,
@@ -57,7 +57,7 @@ type RouterEditReq struct {
 }
 
 // ToDbReq 路由接口更新对象转字典对象
-func (r *RouterEditReq) ToDbReq(d *platDb.Router) {
+func (r *RouterEditReq) ToDbReq(d *platDB.Router) {
 	now := time.Now()
 	d.Name = r.Name
 	d.ServiceCode = r.ServiceCode
@@ -86,7 +86,7 @@ type RouterGetRes struct {
 }
 
 // ToRouterGetRes 路由接口转为查询对象
-func ToRouterGetRes(r *platDb.Router) *RouterGetRes {
+func ToRouterGetRes(r *platDB.Router) *RouterGetRes {
 	return &RouterGetRes{
 		Id:           r.Id,
 		Type:         r.Type,
@@ -104,6 +104,7 @@ func ToRouterGetRes(r *platDb.Router) *RouterGetRes {
 
 // RouterPageReq 路由接口分页请求
 type RouterPageReq struct {
+	Name        string `json:"name" example:"login"`        // 路由名，支持模糊查询
 	Url         string `json:"url" example:"/auth/login"`   // 路由地址，后端访问URL，支持模糊查询
 	ServiceCode string `json:"serviceCode"  example:"base"` // 业务编码（字典），为接口分组
 	Type        string `json:"type" example:"0"`            // 免授权路由 0 免授权 1 授权
@@ -117,7 +118,7 @@ type RouterPageRes struct {
 }
 
 // ToRouterPageRes 路由接口转为分页对象
-func ToRouterPageRes(list []*platDb.Router) []*RouterPageRes {
+func ToRouterPageRes(list []*platDB.Router) []*RouterPageRes {
 	res := make([]*RouterPageRes, len(list))
 	for i, r := range list {
 		res[i] = &RouterPageRes{

@@ -7,7 +7,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"siteol.com/smart/src/common/constant"
-	"siteol.com/smart/src/common/model"
 	"siteol.com/smart/src/common/utils/translator"
 	"siteol.com/smart/src/common/validate"
 )
@@ -37,15 +36,15 @@ func GetLocal(c *gin.Context) string {
 }
 
 // GetRouterConf 从上下文获取登录用户授权机构体
-func GetRouterConf(c *gin.Context) *model.CacheRouter {
+func GetRouterConf(c *gin.Context) *baseModel.CacheRouter {
 	obj, ok := c.Get(constant.ContextRouterC)
 	if ok {
-		router := &model.CacheRouter{}
-		router = obj.(*model.CacheRouter)
+		router := &baseModel.CacheRouter{}
+		router = obj.(*baseModel.CacheRouter)
 		return router
 	}
 	// 空白对象
-	return model.CacheRouterNormal
+	return baseModel.CacheRouterNormal
 }
 
 // JsonRes 执行Json响应 包含响应日志处理
