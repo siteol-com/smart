@@ -13,8 +13,8 @@ const (
 	ContextRouterC = "RouterConf" // 路由配置对象
 	ContextRouterI = "RouterInDb" // 路由入库对象
 
-	StatusOpen  = "0" // 正常 启动 可变更
-	StatusLock  = "1" // 禁用 锁定 登出 不可变更
+	StatusOpen  = "0" // 正常 启动 可变更 选择
+	StatusLock  = "1" // 禁用 锁定 登出 不可变更 半选
 	StatusClose = "2" // 移除 弃用 踢出
 
 	DBDuplicateErr = "Error 1062 (23000): Duplicate entry" // 唯一索引错误

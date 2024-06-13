@@ -54,7 +54,7 @@ TRUNCATE TABLE response_code;
  */
 
 const (
-	CodeFmt = "%s%d%02d" // 成功码Format
+	CodeFmt = "%s%s%02d" // 成功码Format
 `)
 	// 添加实际内容
 	for i, data := range rows {

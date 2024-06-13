@@ -26,15 +26,22 @@ func ReturnMsgTrans(res *baseModel.ResBody, c *gin.Context, router *baseModel.Ca
 		tableMsgTrans(res, lang, traceID)
 	}
 	// 响应日志
-	printStr := fmt.Sprintf("Res Code Is :%d . Res Set Not Print", res.HttpCode)
+	printStr := ""
 	// 响应安全日志
 	resBts, _ := json.Marshal(res)
 	printSafeStr := security.SafeJson(string(resBts), router.ResSecure)
 	if router.ResPrint {
 		// 如需打印日志
-		printStr = printSafeStr
+		printStr = fmt.Sprintf("Res Code Is :%d . Res Body Is :%s", res.HttpCode, printSafeStr)
+	} else {
+		// 仅打印响应消息
+		emptyBts, _ := json.Marshal(baseModel.ResBody{
+			Code: res.Code,
+			Msg:  res.Msg,
+		})
+		printStr = fmt.Sprintf("Res Code Is :%d . Res Set Not Print . So Date To Be Null . Res Msg Is :%s", res.HttpCode, string(emptyBts))
 	}
-	log.InfoTF(traceID, "Res Code Is :%d . Res Body : %s", res.HttpCode, printStr)
+	log.InfoTF(traceID, printStr)
 	// 日志入库
 	if router.LogInDb {
 		// 提取日志对象

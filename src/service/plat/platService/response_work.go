@@ -9,7 +9,6 @@ import (
 	"siteol.com/smart/src/common/mysql/actuator"
 	"siteol.com/smart/src/common/mysql/platDB"
 	"siteol.com/smart/src/common/redis"
-	"strconv"
 	"strings"
 )
 
@@ -39,11 +38,7 @@ func responseMakeCode(serviceCode, codeType string) (code string, err error) {
 	if err != nil {
 		return
 	}
-	sCode, err := strconv.Atoi(serviceCode)
-	if err != nil {
-		return
-	}
-	code = fmt.Sprintf(constant.CodeFmt, codeType, sCode, total)
+	code = fmt.Sprintf(constant.CodeFmt, codeType, serviceCode, total)
 	return
 }
 

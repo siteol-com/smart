@@ -55,7 +55,7 @@ func recursionPermissionTree(traceID string, treeNode *baseModel.Tree) (err erro
 		treeChild := &baseModel.Tree{
 			Title:    item.Name,
 			Key:      item.Alias,
-			Expand:   item.Alias,
+			Expand:   item.Static == constant.StatusOpen, // 拓展用于选择框置灰
 			Children: nil,
 			Level:    item.Level,
 			Id:       item.Id,

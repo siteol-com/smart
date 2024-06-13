@@ -13,7 +13,7 @@ type Permission struct {
 	Level  string `json:"level"`  // 权限等级 1分组（一级导航）2模块（页面）3功能（按钮）第四级路由不在本表中体现
 	Pid    uint64 `json:"pid"`    // 父级ID，默认为1
 	Sort   uint16 `json:"sort"`   // 字典排序
-	Static string `json:"static"` // 默认启用权限，1 启用 2 不启，启用后，该权限默认被分配，不可去勾
+	Static string `json:"static"` // 默认启用权限，0 启用 1 不启，启用后，该权限默认被分配，不可去勾
 	Common
 }
 

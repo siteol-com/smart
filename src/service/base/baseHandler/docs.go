@@ -19,12 +19,12 @@ import (
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		req	body		model.DocsReq	true	"示例请求"
-// @Success		200	{object}	model.DocsOk			"业务受理成功"
-// @Failure		400	{object}	model.DocsVail			"数据校验失败"
-// @Failure		401	{object}	model.DocsAuthLg		"当前尚未登陆"
-// @Failure		403	{object}	model.DocsAuthNg		"权限校验失败"
-// @Failure		500	{object}	model.DocsErr			"服务系统异常"
+// @Param		req	body		baseModel.DocsReq	true	"示例请求"
+// @Success		200	{object}	baseModel.DocsOk			"业务受理成功"
+// @Failure		400	{object}	baseModel.DocsVail			"数据校验失败"
+// @Failure		401	{object}	baseModel.DocsAuthLg		"当前尚未登陆"
+// @Failure		403	{object}	baseModel.DocsAuthNg		"权限校验失败"
+// @Failure		500	{object}	baseModel.DocsErr			"服务系统异常"
 func Sample(c *gin.Context) {
 	_, req, err := service.ValidateReqObj(c, &baseModel.DocsReq{})
 	if err != nil {

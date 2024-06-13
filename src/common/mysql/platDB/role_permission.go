@@ -25,3 +25,17 @@ func (t RolePermission) DataBase() *gorm.DB {
 func (t RolePermission) TableName() string {
 	return "role_permission"
 }
+
+// FindPermissionIds 获取权限对应的路由ID
+func (t RolePermission) FindPermissionIds(roleId uint64) (res []uint64, err error) {
+	r := platDb.Table(t.TableName()).Distinct("permission_id").Where("permission_id", roleId).Find(&res)
+	err = r.Error
+	return
+}
+
+// DeleteByRoleId 根据权限ID移除路由
+func (t RolePermission) DeleteByRoleId(roleId uint64) (err error) {
+	r := platDb.Where("role_id = ?", roleId).Delete(&t)
+	err = r.Error
+	return
+}

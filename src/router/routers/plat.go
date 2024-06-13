@@ -58,6 +58,15 @@ func PlatRouter(router *gin.Engine) {
 			permissionRouter.POST("/bro", platHandler.BroPermission)
 			permissionRouter.POST("/sort", platHandler.SortPermission)
 		}
+		// 角色相关
+		roleRouter := platRouter.Group("/role")
+		{
+			roleRouter.POST("/add", platHandler.AddRole)
+			roleRouter.POST("/page", platHandler.PageRole)
+			roleRouter.POST("/get", platHandler.GetRole)
+			roleRouter.POST("/edit", platHandler.EditRole)
+			roleRouter.POST("/del", platHandler.DelRole)
+		}
 		// 系统配置相关
 		sysConfigRouter := platRouter.Group("/sysConfig")
 		{

@@ -20,7 +20,7 @@ func AddPermission(traceID string, req *platModel.PermissionAddReq) *baseModel.R
 		return checkPermissionDBErr(err)
 	}
 	// 新增权限路由
-	err = syncPermissionRouters(dbReq.Id, req.RouterIds, false, traceID)
+	err = syncPermissionRouters(traceID, dbReq.Id, req.RouterIds, false)
 	if err != nil {
 		// 移除当前值
 		errD := platDB.PermissionTable.DeleteOne(dbReq.Id)
@@ -45,7 +45,7 @@ func TreePermission(traceID string) *baseModel.ResBody {
 		Title:    rootPerm.Name,
 		Key:      rootPerm.Alias,
 		Children: nil,
-		Expand:   rootPerm.Alias,
+		Expand:   rootPerm.Static == constant.StatusOpen, // 拓展用于选择框置灰
 		Level:    rootPerm.Level,
 		Id:       rootPerm.Id,
 	}
@@ -63,7 +63,7 @@ func GetPermission(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 		return baseModel.Fail(constant.PermissionGetNG)
 	}
 	// 获取路由集数据
-	routerIds, routers, _ := getPermissionRouters(res.Id, true, traceID)
+	routerIds, routers, _ := getPermissionRouters(traceID, res.Id, true)
 	return baseModel.SuccessUnPop(platModel.ToPermissionGetRes(&res, routerIds, routers))
 }
 
@@ -75,7 +75,7 @@ func EditPermission(traceID string, req *platModel.PermissionEditReq) *baseModel
 		return baseModel.Fail(constant.PermissionGetNG)
 	}
 	// 先处理路由数据
-	err = syncPermissionRouters(req.Id, req.RouterIds, true, traceID)
+	err = syncPermissionRouters(traceID, req.Id, req.RouterIds, true)
 	if err != nil {
 		return baseModel.Fail(constant.PermissionRouterNG)
 	}
@@ -103,7 +103,7 @@ func DelPermission(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 		return baseModel.Fail(constant.PermissionMarkNG)
 	}
 	// 先删除路由关联，传入空白数组只删不加
-	err = syncPermissionRouters(req.Id, nil, true, traceID)
+	err = syncPermissionRouters(traceID, req.Id, nil, true)
 	if err != nil {
 		return baseModel.Fail(constant.PermissionRouterNG)
 	}

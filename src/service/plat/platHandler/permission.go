@@ -13,7 +13,7 @@ import (
 // @id				AddPermission 权限新建
 // @Summary			权限新建
 // @Description		新建权限配置
-// @Router			/plat/Permission/add [post]
+// @Router			/plat/permission/add [post]
 // @Tags			访问权限
 // @Accept			json
 // @Produce			json
@@ -33,7 +33,7 @@ func AddPermission(c *gin.Context) {
 // @id			PagePermission 权限树
 // @Summary		权限树
 // @Description	查询权限树数据
-// @Router		/plat/Permission/tree [post]
+// @Router		/plat/permission/tree [post]
 // @Tags		访问权限
 // @Accept		json
 // @Produce		json
@@ -51,7 +51,7 @@ func TreePermission(c *gin.Context) {
 // @id			GetPermission 权限详情
 // @Summary		权限详情
 // @Description	查询权限详情
-// @Router		/plat/Permission/get [post]
+// @Router		/plat/permission/get [post]
 // @Tags		访问权限
 // @Accept		json
 // @Produce		json
@@ -71,7 +71,7 @@ func GetPermission(c *gin.Context) {
 // @id				EditPermission 权限编辑
 // @Summary			权限编辑
 // @Description		在权限分组下编辑权限
-// @Router			/plat/Permission/edit [post]
+// @Router			/plat/permission/edit [post]
 // @Tags			访问权限
 // @Accept			json
 // @Produce			json
@@ -91,7 +91,7 @@ func EditPermission(c *gin.Context) {
 // @id			DelPermission 权限封存
 // @Summary		权限封存
 // @Description	权限封存处理
-// @Router		/plat/Permission/del [post]
+// @Router		/plat/permission/del [post]
 // @Tags		访问权限
 // @Accept		json
 // @Produce		json
@@ -112,7 +112,7 @@ func DelPermission(c *gin.Context) {
 // @id			BroPermission 同级权限
 // @Summary		同级权限
 // @Description	同级权限列表
-// @Router		/plat/Permission/bro [post]
+// @Router		/plat/permission/bro [post]
 // @Tags		访问权限
 // @Accept		json
 // @Produce		json
@@ -139,7 +139,7 @@ func BroPermission(c *gin.Context) {
 // @Produce      	json
 // @Security	 	Token
 // @Param        	req body		[]baseModel.SortReq	true	"请求"
-// @Success      	200 {object}	resp.ResBody{data=bool}		"响应成功"
+// @Success      	200 {object}	baseModel.ResBody{data=bool}		"响应成功"
 func SortPermission(c *gin.Context) {
 	traceID, reqObj, err := service.ValidateReqObj(c, &[]*baseModel.SortReq{})
 	if err == nil {

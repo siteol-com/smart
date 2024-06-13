@@ -7,7 +7,7 @@ import (
 )
 
 // getPermissionRouters 获取权限路由集 withRouter 是否提取路由信息
-func getPermissionRouters(permissionId uint64, withRouter bool, traceID string) (routerIds []uint64, routers []*platModel.RouterPageRes, err error) {
+func getPermissionRouters(traceID string, permissionId uint64, withRouter bool) (routerIds []uint64, routers []*platModel.RouterPageRes, err error) {
 	// 补充查询关联的路由和路由ID
 	routerIds, err = platDB.PermissionRouter{}.FindRouterIds(permissionId)
 	if err != nil {
@@ -30,8 +30,9 @@ func getPermissionRouters(permissionId uint64, withRouter bool, traceID string) 
 }
 
 // editPermissionRouters 编辑权限对应的路由
-func syncPermissionRouters(permissionId uint64, routerIds []uint64, editFlag bool, traceID string) (err error) {
+func syncPermissionRouters(traceID string, permissionId uint64, routerIds []uint64, editFlag bool) (err error) {
 	if editFlag {
+		// 移除当前权限的路由
 		err = platDB.PermissionRouter{}.DeleteByPermissionId(permissionId)
 		if err != nil {
 			log.ErrorTF(traceID, "DeleteByPermissionId By %d Fail . Err Is : %v", permissionId, err)
@@ -50,7 +51,12 @@ func syncPermissionRouters(permissionId uint64, routerIds []uint64, editFlag boo
 		err = platDB.PermissionRouterTable.InsertBatch(&permissionRouters)
 		if err != nil {
 			log.ErrorTF(traceID, "InsertBatchPermissionRouter By PermissionId %d Fail . Err Is : %v", permissionId, err)
+			return
 		}
+	}
+	if editFlag {
+		// TODO 如果权益被绑定，则反向通知权限需要权限刷新
+
 	}
 	return
 }

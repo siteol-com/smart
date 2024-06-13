@@ -10,15 +10,15 @@ package constant
  */
 
 const (
-	CodeFmt = "%s%d%02d" // 成功码Format
+	CodeFmt = "%s%s%02d" // 成功码Format
 
-	Success  = "S000" // 默认成功文言（内置禁止修改）
-	Fail     = "F000" // 默认业务错误（内置禁止修改）
-	Error    = "E000" // 系统未知错误（内置禁止修改）
-	ValidErr = "E001" // 参数校验错误（内置禁止修改）（免翻译）
-	LoginErr = "E002" // 默认登陆失败（内置禁止修改）
-	AuthErr  = "E003" // 默认授权刷新（内置禁止修改）
-	PathErr  = "E004" // 默认路由错误（内置禁止修改）
+	Success  = "S000" // 处理成功（默认）
+	Fail     = "F000" // 处理失败（默认）
+	Error    = "E000" // 系统异常（默认）
+	ValidErr = "E001" // 参数非法（默认）（免翻译）
+	LoginErr = "E002" // 尚未登陆（默认）
+	AuthErr  = "E003" // 无权访问（默认）
+	PathErr  = "E004" // 路径不存在（默认）
 
 	DictAddSS      = "S100" // 字典创建成功
 	DictEditSS     = "S101" // 字典编辑成功
@@ -57,6 +57,14 @@ const (
 	PermissionMarkNG     = "F403" // 内置权限禁止删除
 	PermissionRouterNG   = "F404" // 权限配置路由同步失败
 	PermissionDelNG      = "F405" // 权限配置删除失败
+
+	RoleAddSS        = "S500" // 角色创建成功
+	RoleEditSS       = "S501" // 角色编辑成功
+	RoleDelSS        = "S502" // 角色删除失败
+	RoleGetNG        = "F500" // 角色查询失败
+	RoleMarkNG       = "F501" // 内置角色禁止编辑
+	RoleNameUniNG    = "F502" // 角色名全局唯一
+	RolePermissionNG = "F503" // 角色权限配置失败
 
 	SysConfigEditSS = "S800" // 系统配置编辑成功
 	SysConfigGetNG  = "F800" // 系统配置查询失败
