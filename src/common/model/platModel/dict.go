@@ -7,12 +7,6 @@ import (
 	"time"
 )
 
-// DictGroupReadRes 字典分组读取响应
-type DictGroupReadRes struct {
-	List []*baseModel.SelectRes `json:"list"`                                            // 字典分组下拉列表 [{'label':'业务模块','value':'serviceCode'}]
-	Map  map[string]string      `json:"map" example:"{'serviceCode':'Business module'}"` // 字典分组翻译Map
-}
-
 // DictReadReq 字典读取请求
 type DictReadReq struct {
 	GroupKeys []string `json:"groupKeys" binding:"required" example:"serviceCode,responseType"` // 需要查询的字典分组
@@ -117,6 +111,7 @@ func ToDictGetRes(r *platDB.Dict) *DictGetRes {
 // DictPageReq 字典分页请求
 type DictPageReq struct {
 	GroupKey string `json:"groupKey" example:"serviceCode"` // 需要查询的字典分组
+	Choose   string `json:"choose" example:"1"`             // 字典是否可选择
 	baseModel.PageReq
 }
 

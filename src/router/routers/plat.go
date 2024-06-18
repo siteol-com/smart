@@ -10,11 +10,6 @@ import (
 func PlatRouter(router *gin.Engine) {
 	platRouter := router.Group("/plat", middleware.CommMiddleWare) // TODO 授权中间件
 	{
-		// 字典分组相关
-		dictGroupRouter := platRouter.Group("/dictGroup")
-		{
-			dictGroupRouter.POST("/read", platHandler.ReadDictGroup)
-		}
 		// 字典相关
 		dictRouter := platRouter.Group("/dict")
 		{

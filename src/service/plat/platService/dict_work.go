@@ -31,6 +31,9 @@ func dictPageQuery(req *platModel.DictPageReq) (query *actuator.Query) {
 	req.PageReq.PageInit()
 	// 组装Query
 	query = actuator.InitQuery()
+	if req.Choose != "" {
+		query.Eq("choose", req.Choose)
+	}
 	if req.GroupKey != "" {
 		query.Eq("group_key", req.GroupKey)
 		query.Asc("sort")
