@@ -1,4 +1,4 @@
-package middleware
+package worker
 
 import (
 	"bytes"
@@ -16,8 +16,13 @@ import (
 	"time"
 )
 
-// 设置语言上下文
-func setLang(c *gin.Context) {
+// PrintUrl 打印URL
+func PrintUrl(url, traceID string) {
+	log.InfoTF(traceID, "Req Path Is : %s", url)
+}
+
+// SetLang 设置语言上下文
+func SetLang(c *gin.Context) {
 	lang := c.GetHeader(constant.ContextLang)
 	if lang == "" || lang == "null" {
 		lang = "zh-CN"
@@ -25,8 +30,8 @@ func setLang(c *gin.Context) {
 	c.Set(constant.ContextLang, lang)
 }
 
-// 设置路由上下文
-func setRouter(c *gin.Context, url, traceID string) (router *baseModel.CacheRouter, ng bool) {
+// SetRouter 设置路由上下文
+func SetRouter(c *gin.Context, url, traceID string) (router *baseModel.CacheRouter, ng bool) {
 	router = baseModel.CacheRouterNormal
 	// 尝试读取缓存
 	cacheGet := false
@@ -61,8 +66,8 @@ func setRouter(c *gin.Context, url, traceID string) (router *baseModel.CacheRout
 	return
 }
 
-// setReq 处理请求 请求日志、入库等
-func setReq(c *gin.Context, router *baseModel.CacheRouter, url, traceID string) (ng bool) {
+// SetReq 处理请求 请求日志、入库等
+func SetReq(c *gin.Context, router *baseModel.CacheRouter, url, traceID string) (ng bool) {
 	origReq, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		log.ErrorTF(traceID, "Req Read Fail . Err Is : %v", err)
@@ -73,7 +78,7 @@ func setReq(c *gin.Context, router *baseModel.CacheRouter, url, traceID string) 
 	runReq := io.NopCloser(bytes.NewBuffer(origReq))
 	c.Request.Body = runReq
 	// 处理日志打印
-	printStr := "Req Set Not Print"
+	printStr := "Do Not Print"
 	// 请求字符为空
 	// JSON序列化 以及安全处理
 	printSafeStr := security.SafeJson(string(origReq), router.ReqSecure)
@@ -81,7 +86,7 @@ func setReq(c *gin.Context, router *baseModel.CacheRouter, url, traceID string) 
 	if router.ReqPrint {
 		printStr = printSafeStr
 	}
-	log.InfoTF(traceID, "Req body : %s", printStr)
+	log.InfoTF(traceID, "Req Body Is : %s", printStr)
 	// 日志入库
 	if router.LogInDb {
 		now := time.Now()

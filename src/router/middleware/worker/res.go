@@ -1,19 +1,18 @@
-package translator
+package worker
 
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"net/http"
+	"siteol.com/smart/src/common/constant"
+	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/model/baseModel"
 	"siteol.com/smart/src/common/mysql/platDB"
+	"siteol.com/smart/src/common/redis"
 	"siteol.com/smart/src/common/utils/security"
 	"strings"
 	"time"
-
-	"github.com/gin-gonic/gin"
-	"siteol.com/smart/src/common/constant"
-	"siteol.com/smart/src/common/log"
-	"siteol.com/smart/src/common/redis"
 )
 
 // ReturnMsgTrans 执行响应码 => 响应文言 翻译
@@ -32,14 +31,10 @@ func ReturnMsgTrans(res *baseModel.ResBody, c *gin.Context, router *baseModel.Ca
 	printSafeStr := security.SafeJson(string(resBts), router.ResSecure)
 	if router.ResPrint {
 		// 如需打印日志
-		printStr = fmt.Sprintf("Res Code Is :%d . Res Body Is :%s", res.HttpCode, printSafeStr)
+		printStr = fmt.Sprintf("Res Code Is : %d . Res Body Is : %s", res.HttpCode, printSafeStr)
 	} else {
 		// 仅打印响应消息
-		emptyBts, _ := json.Marshal(baseModel.ResBody{
-			Code: res.Code,
-			Msg:  res.Msg,
-		})
-		printStr = fmt.Sprintf("Res Code Is :%d . Res Set Not Print . So Date To Be Null . Res Msg Is :%s", res.HttpCode, string(emptyBts))
+		printStr = fmt.Sprintf("Res Code Is : %d . Res Body Is : Do Not Print . %s", res.HttpCode, res.Code)
 	}
 	log.InfoTF(traceID, printStr)
 	// 日志入库

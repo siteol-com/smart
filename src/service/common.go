@@ -3,11 +3,11 @@ package service
 import (
 	"errors"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/router/middleware/worker"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	"siteol.com/smart/src/common/constant"
-	"siteol.com/smart/src/common/utils/translator"
 	"siteol.com/smart/src/common/validate"
 )
 
@@ -54,6 +54,6 @@ func JsonRes(c *gin.Context, res *baseModel.ResBody) {
 	// 获取路由配置
 	router := GetRouterConf(c)
 	// 对Res进行翻译
-	translator.ReturnMsgTrans(res, c, router, traceID)
+	worker.ReturnMsgTrans(res, c, router, traceID)
 	c.JSON(res.HttpCode, res)
 }

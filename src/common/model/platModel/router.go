@@ -10,7 +10,6 @@ import (
 // RouterDoReq 路由接口通用请求
 type RouterDoReq struct {
 	Name         string `json:"name" binding:"required,max=32" example:"Login"`                  // 路由名称，用于界面展示，与权限关联
-	ServiceCode  string `json:"serviceCode" binding:"required,max=3" example:"base"`             // 业务编码（字典），为接口分组
 	LogInDb      string `json:"logInDb" binding:"required,oneof='0' '1'" example:"0"`            // 日志入库 0 启用 1 默认不启用
 	ReqLogPrint  string `json:"reqLogPrint" binding:"required,oneof='0' '1'" example:"0"`        // 请求日志打印 0 打印 1 不打印
 	ReqLogSecure string `json:"reqLogSecure" binding:"max=256" example:"phone,account,password"` // 请求日志脱敏字段，逗号分隔，打印时允许配置
@@ -22,8 +21,9 @@ type RouterDoReq struct {
 // RouterAddReq 路由接口创建请求
 type RouterAddReq struct {
 	RouterDoReq
-	Type string `json:"type" binding:"required,oneof='0' '1'" example:"0"`       // 免授权路由 0 免授权 1 授权
-	Url  string `json:"url" binding:"required,uri,max=64" example:"/auth/login"` // 路由地址，后端访问URL，后端不在URL中携带参数，统一Post处理内容
+	Type        string `json:"type" binding:"required,oneof='0' '1'" example:"0"`       // 免授权路由 0 免授权 1 授权
+	ServiceCode string `json:"serviceCode" binding:"required,max=3" example:"base"`     // 业务编码（字典），为接口分组
+	Url         string `json:"url" binding:"required,uri,max=64" example:"/auth/login"` // 路由地址，后端访问URL，后端不在URL中携带参数，统一Post处理内容
 }
 
 // ToDbReq 路由接口创建对象转字典对象
@@ -60,7 +60,6 @@ type RouterEditReq struct {
 func (r *RouterEditReq) ToDbReq(d *platDB.Router) {
 	now := time.Now()
 	d.Name = r.Name
-	d.ServiceCode = r.ServiceCode
 	d.LogInDb = r.LogInDb
 	d.ReqLogPrint = r.ReqLogPrint
 	d.ReqLogSecure = r.ReqLogSecure

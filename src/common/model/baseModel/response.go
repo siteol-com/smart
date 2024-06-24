@@ -36,7 +36,7 @@ type ResBody struct {
 	HttpCode int    `json:"-"`                          // 不对外响应，传递处理
 	Code     string `json:"code" example:"S0000/F0000"` // 响应码
 	Msg      string `json:"msg" example:"Success/Fail"` // 响应消息
-	Data     any    `json:"data"`                       // 响应数据
+	Data     any    `json:"data,omitempty"`             // 响应数据
 	UnPop    bool   `json:"unPop" example:"true"`       // 免弹窗提示
 }
 
