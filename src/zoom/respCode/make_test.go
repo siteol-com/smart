@@ -14,6 +14,7 @@ import (
  * 基于Excel文件生成响应码国际化
  * 1. 生成用于constant包下的response_code.go（生成后利用 go fmt完成格式化）
  * 2. 生成刷库SQL
+ * 3. 执行目录为当前目录
  */
 
 // TestMakeResp
