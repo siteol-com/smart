@@ -58,6 +58,14 @@ func (t Table[T]) FindByObject(req any) (res []*T, err error) {
 	return
 }
 
+// CountByObject 查询表指定对象的数量
+func (t Table[T]) CountByObject(req any) (res int64, err error) {
+	var exe T
+	r := exe.DataBase().Model(req).Where(req).Count(&res)
+	err = r.Error
+	return
+}
+
 // FindByObjectSort 查询表指定对象，默认使用sort字段排序的数据集
 func (t Table[T]) FindByObjectSort(req any) (res []*T, err error) {
 	var exe T

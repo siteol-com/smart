@@ -62,6 +62,17 @@ func PlatRouter(router *gin.Engine) {
 			roleRouter.POST("/edit", platHandler.EditRole)
 			roleRouter.POST("/del", platHandler.DelRole)
 		}
+		// 集团部门相关
+		deptRouter := platRouter.Group("/dept")
+		{
+			deptRouter.POST("/add", platHandler.AddDept)
+			deptRouter.POST("/tree", platHandler.TreeDept)
+			deptRouter.POST("/get", platHandler.GetDept)
+			deptRouter.POST("/edit", platHandler.EditDept)
+			deptRouter.POST("/del", platHandler.DelDept)
+			deptRouter.POST("/bro", platHandler.BroDept)
+			deptRouter.POST("/sort", platHandler.SortDept)
+		}
 		// 系统配置相关
 		sysConfigRouter := platRouter.Group("/sysConfig")
 		{

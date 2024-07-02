@@ -30,10 +30,10 @@ type SortRes struct {
 
 // Tree 树对象
 type Tree struct {
-	Title    string  `json:"title" example:"ROOT"`    // 树标题
-	Key      string  `json:"key" example:"ROOT"`      // 树键
-	Children []*Tree `json:"children"`                // 子树
-	Level    string  `json:"level" example:"1"`       // 表示树等级
-	Expand   any     `json:"expand" example:"Expand"` // 拓展信息
-	Id       uint64  `json:"id" example:"1"`          // 表示树数据ID
+	Title    string  `json:"title" example:"ROOT"` // 树标题
+	Key      string  `json:"key" example:"ROOT"`   // 树键
+	Children []*Tree `json:"children"`             // 子树
+	Level    string  `json:"level" example:"1"`    // 表示树等级
+	Expand   any     `json:"expand"`               // 拓展信息
+	Id       uint64  `json:"id" example:"1"`       // 表示树数据ID
 }

@@ -98,7 +98,7 @@ func EditRouter(c *gin.Context) {
 // @Produce		json
 // @Security	Token
 // @Param		Lang	header		string				false		"语言，不传默认为zh-CN"
-// @Param		req		body		[]baseModel.IdReq	true		"请求"
+// @Param		req		body		baseModel.IdReq	true		"请求"
 // @Success		200		{object}	baseModel.ResBody{data=bool}	"响应成功"
 func DelRouter(c *gin.Context) {
 	traceID, reqObj, err := service.ValidateReqObj(c, &baseModel.IdReq{})

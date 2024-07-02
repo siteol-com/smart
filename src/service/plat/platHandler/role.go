@@ -37,7 +37,7 @@ func AddRole(c *gin.Context) {
 // @Accept		json
 // @Produce		json
 // @Security	Token
-// @Param		req	body		baseModel.RolePageReq	true											"请求"
+// @Param		req	body		platModel.RolePageReq	true											"请求"
 // @Success		200	{object}	baseModel.ResBody{data=baseModel.PageRes{list=[]platModel.RolePageRes}}	"响应成功"
 func PageRole(c *gin.Context) {
 	traceID, reqObj, err := service.ValidateReqObj(c, &platModel.RolePageReq{})

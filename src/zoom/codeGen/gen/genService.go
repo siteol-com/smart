@@ -36,7 +36,7 @@ func Add${tableStruct}(traceID string, req *${dbPack}Model.${tableStruct}AddReq)
 // Page${tableStruct} 查询${tableComment}分页
 func Page${tableStruct}(traceID string, req *${dbPack}Model.${tableStruct}PageReq) *baseModel.ResBody {
 	// 查询分页
-	total, list, err := ${dbPack}DB.${tableStruct}Table.Page(${tableStruct}PageQuery(req))
+	total, list, err := ${dbPack}DB.${tableStruct}Table.Page(${tableRouter}PageQuery(req))
 	if err != nil {
 		log.ErrorTF(traceID, "Page${tableStruct} Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.${tableStruct}GetNG)
@@ -103,6 +103,7 @@ func MakeServiceCode(tc *TableConfig, t *testing.T) error {
 	code := strings.ReplaceAll(serviceCodeTemp, "${tableStruct}", tc.ObjName)
 	code = strings.ReplaceAll(code, "${tableComment}", tc.Remark)
 	code = strings.ReplaceAll(code, "${dbPack}", tc.PackName)
+	code = strings.ReplaceAll(code, "${tableRouter}", tc.Router)
 	// 没有目录建目录 src/service/plat/platService
 	dir := fmt.Sprintf("../../service/%s/%sService", tc.PackName, tc.PackName)
 	if _, err := os.Stat(dir); os.IsNotExist(err) {

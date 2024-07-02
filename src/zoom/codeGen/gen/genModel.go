@@ -62,6 +62,7 @@ type ${tableStruct}PageRes struct {
 // To${tableStruct}GetRes ${tableComment} 数据库转为详情响应
 func To${tableStruct}GetRes(r *platDB.${tableStruct}) *${tableStruct}GetRes {
 	return &${tableStruct}GetRes{
+		Id:	r.Id,
 		${tableColumnsGetRes}}}
 
 // To${tableStruct}PageRes ${tableComment} 数据库转分页响应
@@ -88,6 +89,9 @@ func MakeModelCode(tc *TableConfig, t *testing.T) error {
 	var cToMod strings.Builder
 	var cToRes strings.Builder
 	var hasTime string
+	if tc.TimeImport {
+		hasTime = "now := time.Now()\n"
+	}
 	for _, item := range tc.Columns {
 		if item[0] == "Id" {
 			continue
@@ -98,10 +102,9 @@ func MakeModelCode(tc *TableConfig, t *testing.T) error {
 		// 二维数组分别是 0 字段名 1 类型 2 JSON名 3 注释 4 非空 5 长度 6 源类型
 		cs.WriteString(fmt.Sprintf("%s %s `json:\"%s\"%s%s`// %s\n", item[0], item[1], item[2], bindStr, exampleStr, item[3]))
 		csUnBind.WriteString(fmt.Sprintf("%s %s `json:\"%s\"%s`// %s\n", item[0], item[1], item[2], exampleStr, item[3]))
-		if item[2] == "*time.Time" {
+		if item[1] == "*time.Time" {
 			cToAdd.WriteString(fmt.Sprintf("%s: &now,\n", item[0]))
 			cToMod.WriteString(fmt.Sprintf("d.%s = &now\n", item[0]))
-			hasTime = "now := time.Now()\n"
 		} else {
 			cToAdd.WriteString(fmt.Sprintf("%s:r.%s,\n", item[0], item[0]))
 			cToMod.WriteString(fmt.Sprintf("d.%s = r.%s\n", item[0], item[0]))
@@ -187,7 +190,7 @@ func makeBindAndExample(item [7]string) (string, string) {
 		if h {
 			bind.WriteString(",")
 		}
-		bind.WriteString(fmt.Sprintf("max=%s,", item[5]))
+		bind.WriteString(fmt.Sprintf("max=%s", item[5]))
 	}
 	if oneOf {
 		// 枚举处理 状态，枚举：0_正常 1_锁定 2_封存

@@ -37,7 +37,7 @@ func check${tableStruct}DBErr(err error) *baseModel.ResBody {
 }
 
 // 分页查询对象封装
-func ${tableStruct}PageQuery(req *platModel.${tableStruct}PageReq) (query *actuator.Query) {
+func ${tableRouter}PageQuery(req *platModel.${tableStruct}PageReq) (query *actuator.Query) {
 	// 初始化Page
 	req.PageReq.PageInit()
 	// 组装Query
@@ -64,6 +64,7 @@ func MakeServiceWorkCode(tc *TableConfig, t *testing.T) error {
 	// 生成代码文件
 	code := strings.ReplaceAll(serviceWorkCodeTemp, "${tableStruct}", tc.ObjName)
 	code = strings.ReplaceAll(code, "${dbPack}", tc.PackName)
+	code = strings.ReplaceAll(code, "${tableRouter}", tc.Router)
 	// 没有目录建目录 src/service/plat/platService
 	dir := fmt.Sprintf("../../service/%s/%sService", tc.PackName, tc.PackName)
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
