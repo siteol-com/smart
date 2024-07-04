@@ -58,7 +58,7 @@ func routerPageQuery(req *platModel.RouterPageReq) (query *actuator.Query) {
 
 // SyncRouterCache 同步响应码配置
 func SyncRouterCache(traceID string) (err error) {
-	allList, err := platDB.RouterTable.FindAll()
+	allList, err := platDB.RouterTable.GetAll()
 	if err != nil {
 		log.ErrorTF(traceID, "SyncRouterCache GetRouter Fail . Err Is : %v", err)
 		return

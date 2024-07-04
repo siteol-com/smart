@@ -56,7 +56,7 @@ func SetRouter(c *gin.Context, url, traceID string) (router *baseModel.CacheRout
 	}
 
 	c.Set(constant.ContextRouterC, router)
-	// 缓存未取得且未启动Debug
+	// 缓存未取得且未启动Debug（测试环境数据库可以不配置路由）
 	if !cacheGet && !config.JsonConfig.Server.Debug {
 		// 非Debug直接退出
 		log.ErrorTF(traceID, "Get %s RouterCache NG", url, err)

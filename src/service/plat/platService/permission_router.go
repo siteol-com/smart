@@ -9,7 +9,7 @@ import (
 // getPermissionRouters 获取权限路由集 withRouter 是否提取路由信息
 func getPermissionRouters(traceID string, permissionId uint64, withRouter bool) (routerIds []uint64, routers []*platModel.RouterPageRes, err error) {
 	// 补充查询关联的路由和路由ID
-	routerIds, err = platDB.PermissionRouter{}.FindRouterIds(permissionId)
+	routerIds, err = platDB.PermissionRouter{}.GetRouterIds(permissionId)
 	if err != nil {
 		log.WarnTF(traceID, "GetRouterIdsByPermissionId By %d Fail . Err Is : %v", permissionId, err)
 		return
@@ -17,7 +17,7 @@ func getPermissionRouters(traceID string, permissionId uint64, withRouter bool) 
 	list := make([]*platDB.Router, 0)
 	// 关联查询路由字段
 	if withRouter && len(routerIds) > 0 {
-		listR, errR := platDB.RouterTable.FindByIds(routerIds)
+		listR, errR := platDB.RouterTable.GetByIds(routerIds)
 		if errR != nil {
 			err = errR
 			log.WarnTF(traceID, "GetRouterByRouterIds By %v Fail . Err Is : %v", routerIds, err)
@@ -29,7 +29,7 @@ func getPermissionRouters(traceID string, permissionId uint64, withRouter bool) 
 	return
 }
 
-// editPermissionRouters 编辑权限对应的路由
+// syncPermissionRouters 编辑权限对应的路由
 func syncPermissionRouters(traceID string, permissionId uint64, routerIds []uint64, editFlag bool) (err error) {
 	if editFlag {
 		// 移除当前权限的路由

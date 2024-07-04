@@ -65,7 +65,7 @@ func responsePageQuery(req *platModel.ResponsePageReq) (query *actuator.Query) {
 
 // SyncResponseCache 同步响应码配置
 func SyncResponseCache(traceID string) (err error) {
-	allList, err := platDB.ResponseTable.FindAll()
+	allList, err := platDB.ResponseTable.GetAll()
 	if err != nil {
 		log.ErrorTF(traceID, "SyncResponseCache GetResponse Fail . Err Is : %v", err)
 		return

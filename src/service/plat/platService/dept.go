@@ -26,7 +26,7 @@ func AddDept(traceID string, req *platModel.DeptAddReq) *baseModel.ResBody {
 // TreeDept 查询集团树
 func TreeDept(traceID string) *baseModel.ResBody {
 	// 查询根节点
-	rootPerm, err := platDB.DeptTable.FindOneById(1)
+	rootPerm, err := platDB.DeptTable.GetOneById(1)
 	if err != nil {
 		log.ErrorTF(traceID, "TreeDept GetRoot Fail . Err Is : %s", err)
 		return baseModel.Fail(constant.DeptGetNG)
@@ -48,7 +48,7 @@ func TreeDept(traceID string) *baseModel.ResBody {
 
 // GetDept 集团部门详情
 func GetDept(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	res, err := platDB.DeptTable.FindOneById(req.Id)
+	res, err := platDB.DeptTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetDept Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.DeptGetNG)
@@ -58,7 +58,7 @@ func GetDept(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 
 // EditDept 编辑集团部门
 func EditDept(traceID string, req *platModel.DeptEditReq) *baseModel.ResBody {
-	dbReq, err := platDB.DeptTable.FindOneById(req.Id)
+	dbReq, err := platDB.DeptTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetDept Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.DeptGetNG)
@@ -76,7 +76,7 @@ func EditDept(traceID string, req *platModel.DeptEditReq) *baseModel.ResBody {
 
 // DelDept 集团部门移除
 func DelDept(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	dbReq, err := platDB.DeptTable.FindOneById(req.Id)
+	dbReq, err := platDB.DeptTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetDept Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.DeptGetNG)
@@ -109,7 +109,6 @@ func DelDept(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 	err = platDB.DeptTable.DeleteOne(dbReq.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "DelDept %d Fail . Err Is : %v", dbReq.Id, err)
-		// 硬删除直接报错
 		return baseModel.Fail(constant.DeptDelNG)
 	}
 	return baseModel.Success(constant.DeptDelSS, true)
@@ -117,13 +116,13 @@ func DelDept(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 
 // BroDept 同级部门列表
 func BroDept(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	dbReq, err := platDB.DeptTable.FindOneById(req.Id)
+	dbReq, err := platDB.DeptTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetDeptFail . Err Is : %v", err)
 		return baseModel.Fail(constant.DeptGetNG)
 	}
 	var bros platDB.DeptArray
-	bros, err = platDB.DeptTable.FindByObject(&platDB.Dept{Pid: dbReq.Pid})
+	bros, err = platDB.DeptTable.GetByObject(&platDB.Dept{Pid: dbReq.Pid})
 	if err != nil {
 		log.ErrorTF(traceID, "GetBroDeptFail . Err Is : %v", err)
 		return baseModel.Fail(constant.DeptGetNG)

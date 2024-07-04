@@ -37,7 +37,7 @@ func recursionPermissionTree(traceID string, treeNode *baseModel.Tree) (err erro
 	}
 	// 查询子集
 	var permissionList platDB.PermissionArray
-	permissionList, err = platDB.PermissionTable.FindByObject(&platDB.Permission{Pid: treeNode.Id})
+	permissionList, err = platDB.PermissionTable.GetByObject(&platDB.Permission{Pid: treeNode.Id})
 	if err != nil {
 		log.WarnTF(traceID, "RecursionPermissionTree Fail . PID %d . Err is : %s", treeNode.Id, err)
 		return

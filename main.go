@@ -103,5 +103,12 @@ func serviceInit(traceId string) {
 			os.Exit(1)
 		}
 		log.InfoTF(traceId, "InitRouterCache success")
+		// 角色初始化
+		err = platService.SyncRoleCache(traceId)
+		if err != nil {
+			log.ErrorTF(traceId, "InitRoleCache Fail . Err Is : %v", err)
+			os.Exit(1)
+		}
+		log.InfoTF(traceId, "InitRoleCache success")
 	}
 }

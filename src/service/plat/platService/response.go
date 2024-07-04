@@ -60,7 +60,7 @@ func PageResponse(traceID string, req *platModel.ResponsePageReq) *baseModel.Res
 
 // GetResponse 响应码详情
 func GetResponse(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	res, err := platDB.ResponseTable.FindOneById(req.Id)
+	res, err := platDB.ResponseTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetResponse Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.ResponseGetNG)
@@ -70,7 +70,7 @@ func GetResponse(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 
 // EditResponse 编辑响应码
 func EditResponse(traceID string, req *platModel.ResponseEditReq) *baseModel.ResBody {
-	dbReq, err := platDB.ResponseTable.FindOneById(req.Id)
+	dbReq, err := platDB.ResponseTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetResponse Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.ResponseGetNG)
@@ -90,7 +90,7 @@ func EditResponse(traceID string, req *platModel.ResponseEditReq) *baseModel.Res
 
 // DelResponse 响应码封存
 func DelResponse(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	dbReq, err := platDB.ResponseTable.FindOneById(req.Id)
+	dbReq, err := platDB.ResponseTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetResponse Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.ResponseGetNG)

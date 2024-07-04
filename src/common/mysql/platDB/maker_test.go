@@ -83,7 +83,7 @@ func TestDBPlatMaker(t *testing.T) {
 		tableFile = table + ".go"
 		tx := platDb.Raw(fmt.Sprintf("select `table_comment` from `tables` where `table_schema` = '%s' AND `table_name`='%s'", dbName, table)).Scan(&tableComment)
 		if tableComment == "" {
-			t.Logf("Make %s File Fail .Can not Find %s , Err Is : %v", tableFile, table, tx.Error)
+			t.Logf("Make %s File Fail .Can not Get %s , Err Is : %v", tableFile, table, tx.Error)
 			continue
 		}
 		// 是否需要追加导入 是否包含公共字段
@@ -94,7 +94,7 @@ func TestDBPlatMaker(t *testing.T) {
 		columnList := make([][4]string, 0)
 		rows, err := platDb.Raw(fmt.Sprintf("select `column_name`,`data_type`,`column_comment` from `columns` where `table_schema` = '%s' AND `table_name`='%s' ORDER BY ORDINAL_POSITION", dbName, table)).Rows()
 		if err != nil {
-			t.Logf("Make %s File Fail .Can not Find %s Columns , Err Is : %v", tableFile, table, err)
+			t.Logf("Make %s File Fail .Can not Get %s Columns , Err Is : %v", tableFile, table, err)
 			continue
 		}
 		// 组装字段

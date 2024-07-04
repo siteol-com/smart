@@ -46,7 +46,7 @@ func Page${tableStruct}(traceID string, req *${dbPack}Model.${tableStruct}PageRe
 
 // Get${tableStruct} ${tableComment}详情
 func Get${tableStruct}(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	res, err := ${dbPack}DB.${tableStruct}Table.FindOneById(req.Id)
+	res, err := ${dbPack}DB.${tableStruct}Table.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "Get${tableStruct} Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.${tableStruct}GetNG)
@@ -56,7 +56,7 @@ func Get${tableStruct}(traceID string, req *baseModel.IdReq) *baseModel.ResBody 
 
 // Edit${tableStruct} 编辑${tableComment}
 func Edit${tableStruct}(traceID string, req *${dbPack}Model.${tableStruct}EditReq) *baseModel.ResBody {
-	dbReq, err := ${dbPack}DB.${tableStruct}Table.FindOneById(req.Id)
+	dbReq, err := ${dbPack}DB.${tableStruct}Table.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "Get${tableStruct} Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.${tableStruct}GetNG)
@@ -74,7 +74,7 @@ func Edit${tableStruct}(traceID string, req *${dbPack}Model.${tableStruct}EditRe
 
 // Del${tableStruct} ${tableComment}移除
 func Del${tableStruct}(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	dbReq, err := ${dbPack}DB.${tableStruct}Table.FindOneById(req.Id)
+	dbReq, err := ${dbPack}DB.${tableStruct}Table.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "Get${tableStruct} Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.${tableStruct}GetNG)

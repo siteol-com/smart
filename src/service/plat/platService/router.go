@@ -36,7 +36,7 @@ func PageRouter(traceID string, req *platModel.RouterPageReq) *baseModel.ResBody
 
 // GetRouter 路由接口详情
 func GetRouter(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	res, err := platDB.RouterTable.FindOneById(req.Id)
+	res, err := platDB.RouterTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetRouter Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.RouterGetNG)
@@ -46,7 +46,7 @@ func GetRouter(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 
 // EditRouter 编辑路由接口
 func EditRouter(traceID string, req *platModel.RouterEditReq) *baseModel.ResBody {
-	dbReq, err := platDB.RouterTable.FindOneById(req.Id)
+	dbReq, err := platDB.RouterTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetRouter Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.RouterGetNG)
@@ -66,7 +66,7 @@ func EditRouter(traceID string, req *platModel.RouterEditReq) *baseModel.ResBody
 
 // DelRouter 路由接口封存
 func DelRouter(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	dbReq, err := platDB.RouterTable.FindOneById(req.Id)
+	dbReq, err := platDB.RouterTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetRouter Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.RouterGetNG)
@@ -75,6 +75,13 @@ func DelRouter(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 	if dbReq.Mark == constant.StatusLock {
 		log.ErrorTF(traceID, "DelRouter %d Fail . Can not Edit", dbReq.Id)
 		return baseModel.Fail(constant.RouterMarkNG)
+	}
+	// 先删除路由关联的权限，无需向上通知，缓存不存在的路由会报404
+	err = platDB.PermissionRouter{}.DeleteByRouterId(dbReq.Id)
+	if err != nil {
+		log.ErrorTF(traceID, "DeletePermissionRouterByRouter %d Fail . Err Is : %v", dbReq.Id, err)
+		// 硬删除直接报错
+		return baseModel.Fail(constant.RouterDelNG)
 	}
 	// 路由是物理删除
 	err = platDB.RouterTable.DeleteOne(dbReq.Id)

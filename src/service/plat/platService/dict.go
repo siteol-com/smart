@@ -18,7 +18,7 @@ func ReadDict(traceID string, req *platModel.DictReadReq) *baseModel.ResBody {
 		// 遍历查询
 		for _, groupKey := range req.GroupKeys {
 			// 默认的Sort排序处理
-			dictList, err := platDB.DictTable.FindByObjectSort(&platDB.Dict{GroupKey: groupKey})
+			dictList, err := platDB.DictTable.GetByObjectSort(&platDB.Dict{GroupKey: groupKey})
 			if err != nil {
 				log.WarnTF(traceID, "ListDict Fail . GroupKey Query By : %s , Err Is : %v", groupKey, err)
 				dictListMap[groupKey] = make([]*baseModel.SelectRes, 0)
@@ -71,7 +71,7 @@ func PageDict(traceID string, req *platModel.DictPageReq) *baseModel.ResBody {
 
 // GetDict 字典详情
 func GetDict(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	res, err := platDB.DictTable.FindOneById(req.Id)
+	res, err := platDB.DictTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetDict Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.DictGetNG)
@@ -81,7 +81,7 @@ func GetDict(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 
 // EditDict 编辑字典
 func EditDict(traceID string, req *platModel.DictEditReq) *baseModel.ResBody {
-	dbReq, err := platDB.DictTable.FindOneById(req.Id)
+	dbReq, err := platDB.DictTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetDict Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.DictGetNG)
@@ -100,7 +100,7 @@ func EditDict(traceID string, req *platModel.DictEditReq) *baseModel.ResBody {
 // BroDict 字典分组列表
 func BroDict(traceID string, req *platModel.DictBroReq) *baseModel.ResBody {
 	// 如果查询key不为空（只查询启用的数据）
-	dictList, err := platDB.DictTable.FindByObjectSort(&platDB.Dict{GroupKey: req.GroupKey, Common: platDB.Common{Status: constant.StatusOpen}})
+	dictList, err := platDB.DictTable.GetByObjectSort(&platDB.Dict{GroupKey: req.GroupKey, Common: platDB.Common{Status: constant.StatusOpen}})
 	if err != nil {
 		log.WarnTF(traceID, "BroDict Fail . GroupKey Query By : %s , Err Is : %v", req.GroupKey, err)
 		return baseModel.Fail(constant.DictGetNG)
@@ -123,7 +123,7 @@ func SortDict(traceID string, req []*baseModel.SortReq) *baseModel.ResBody {
 
 // DelDict 字典封存
 func DelDict(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	dbReq, err := platDB.DictTable.FindOneById(req.Id)
+	dbReq, err := platDB.DictTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetDict Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.DictGetNG)

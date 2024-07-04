@@ -81,19 +81,65 @@ rm .\docs\docs.go
 
 [ReDoc[阅读增强]：http://localhost:8000/docs/redoc/index.html](http://localhost:8000/docs/redoc/index.html)
 
+
+# 本地工具
+
+本地工具以测试类形式归纳在`src/zoom`包下。
+
+所有测试类的启动目录都是代码所在位置，测试类提供了详细的注释说明。
+
+## 代码生成器
+
+src/zoom/codeGen/gen_test.go
+
+生成数据库实体类、请求响应实体类、路由入口、响应码常量、控制层、业务层。
+
+## 响应码生成器
+
+src/zoom/respCode/response_code.xlsx
+
+在Excel填写响应内容，其中编号由公式自动计算生成。
+
+src/zoom/respCode/make_test.go
+
+运行测试类自动生成初始化数据库的SQL以及响应码常量文件。
+
+- src/zoom/respCode/response_code.sql
+- src/common/constant/response_code.go
+
+## 国际化生产器
+
+src/zoom/i18n/i18n.xlsx
+
+填写国际化，不同模块分不同Sheet，第一个Sheet填写语言，注意后续的国际化Sheet的语言列要完整。
+
+src/zoom/i18n/make_test.go
+
+依照表格生成模块已经对应的前端国际化文件，TypeScript格式。
+
+src/zoom/i18n/i18n.make.exe
+
+编译的Windows执行文件，可以放在前端工程中，位置您可参考本项目的前端项目（大致在：src\locale\i18n.make.exe）。
+
 # 设计思想
 
 ## RBAC模型
 
 账号 - 角色（多） - 权限（多） - 接口路由（多）。
 
+权限颗粒度为五层，系统、模块、页面、按钮、路由（路由层已权限关联的形式构成路由集）。
+
 ## 数据权限
 
-部门数据权限体系，上级可以看下级，特殊部门允许查看全体数据。
+部门数据权限体系，支持多维度的数据权限配置，本级与下级、仅本级、仅个人、全部、指定部门、指定人。
+
+账号的数据权限可以自由选择，继承部门、本部门、本人、全局。
 
 ## 动态系统配置
 
 系统配置入库，支持热配置生效。
+
+默认的系统配置主要包含安全方面，登陆风控、多端登录限制、会话时长等。
 
 ## 响应码国际化
 

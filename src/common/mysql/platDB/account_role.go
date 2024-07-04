@@ -24,3 +24,24 @@ func (t AccountRole) DataBase() *gorm.DB {
 func (t AccountRole) TableName() string {
 	return "account_role"
 }
+
+// GetRoleIds 获取权限对应的路由ID
+func (t AccountRole) GetRoleIds(accountId uint64) (res []uint64, err error) {
+	r := platDb.Table(t.TableName()).Distinct("role_id").Where("account_id", accountId).Find(&res)
+	err = r.Error
+	return
+}
+
+// DeleteByAccountId 根据账号ID删除角色
+func (t AccountRole) DeleteByAccountId(accountId uint64) (err error) {
+	r := platDb.Where("account_id = ?", accountId).Delete(&t)
+	err = r.Error
+	return
+}
+
+// DeleteByRoleId 根据角色ID删除账号
+func (t AccountRole) DeleteByRoleId(roleId uint64) (err error) {
+	r := platDb.Where("role_id = ?", roleId).Delete(&t)
+	err = r.Error
+	return
+}

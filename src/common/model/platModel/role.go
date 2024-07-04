@@ -9,10 +9,10 @@ import (
 
 // RoleDoReq 角色通用请求
 type RoleDoReq struct {
-	Name              string   `json:"name" binding:"required,max=16" example:"Admin"`  // 角色名称
-	Remark            string   `json:"remark" binding:"max=64" example:"This is Admin"` // 角色备注
-	PermissionIds     []uint64 `json:"permissionIds" example:"1,2,3"`                   // 权限集
-	HalfPermissionIds []uint64 `json:"halfPermissionIds" example:"1,2,3"`               // 权限集（父级半选）
+	Name              string   `json:"name" binding:"required,max=16" example:"Admin"`     // 角色名称
+	Remark            string   `json:"remark" binding:"max=64" example:"This is Admin"`    // 角色备注
+	PermissionIds     []uint64 `json:"permissionIds" binding:"unique" example:"1,2,3"`     // 权限集
+	HalfPermissionIds []uint64 `json:"halfPermissionIds" binding:"unique" example:"1,2,3"` // 权限集（父级半选）
 }
 
 // RoleAddReq 角色创建请求

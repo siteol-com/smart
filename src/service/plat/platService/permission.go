@@ -35,7 +35,7 @@ func AddPermission(traceID string, req *platModel.PermissionAddReq) *baseModel.R
 // TreePermission 查询权限树
 func TreePermission(traceID string) *baseModel.ResBody {
 	// 查询根节点
-	rootPerm, err := platDB.PermissionTable.FindOneById(1)
+	rootPerm, err := platDB.PermissionTable.GetOneById(1)
 	if err != nil {
 		log.ErrorTF(traceID, "TreePermission GetRoot Fail . Err Is : %s", err)
 		return baseModel.Fail(constant.PermissionGetNG)
@@ -57,7 +57,7 @@ func TreePermission(traceID string) *baseModel.ResBody {
 
 // GetPermission 权限详情
 func GetPermission(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	res, err := platDB.PermissionTable.FindOneById(req.Id)
+	res, err := platDB.PermissionTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetPermission Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.PermissionGetNG)
@@ -69,7 +69,7 @@ func GetPermission(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 
 // EditPermission 编辑权限
 func EditPermission(traceID string, req *platModel.PermissionEditReq) *baseModel.ResBody {
-	dbReq, err := platDB.PermissionTable.FindOneById(req.Id)
+	dbReq, err := platDB.PermissionTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetPermission Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.PermissionGetNG)
@@ -92,7 +92,7 @@ func EditPermission(traceID string, req *platModel.PermissionEditReq) *baseModel
 
 // DelPermission 权限封存
 func DelPermission(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	dbReq, err := platDB.PermissionTable.FindOneById(req.Id)
+	dbReq, err := platDB.PermissionTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetPermissionFail . Err Is : %v", err)
 		return baseModel.Fail(constant.PermissionGetNG)
@@ -107,10 +107,16 @@ func DelPermission(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 	if err != nil {
 		return baseModel.Fail(constant.PermissionRouterNG)
 	}
+	// 删除权限关联角色
+	err = platDB.RolePermission{}.DeleteByPermissionId(req.Id)
+	if err != nil {
+		log.ErrorTF(traceID, "DelRolePermissionByPermission %d Fail . Err Is : %v", dbReq.Id, err)
+		return baseModel.Fail(constant.PermissionDelNG)
+	}
+	// 删除权限
 	err = platDB.PermissionTable.DeleteOne(dbReq.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "DelPermission %d Fail . Err Is : %v", dbReq.Id, err)
-		// 硬删除直接报错
 		return baseModel.Fail(constant.PermissionDelNG)
 	}
 	return baseModel.Success(constant.PermissionDelSS, true)
@@ -118,13 +124,13 @@ func DelPermission(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 
 // BroPermission 同级权限列表
 func BroPermission(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	dbReq, err := platDB.PermissionTable.FindOneById(req.Id)
+	dbReq, err := platDB.PermissionTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetPermissionFail . Err Is : %v", err)
 		return baseModel.Fail(constant.PermissionGetNG)
 	}
 	var bros platDB.PermissionArray
-	bros, err = platDB.PermissionTable.FindByObject(&platDB.Permission{Pid: dbReq.Pid})
+	bros, err = platDB.PermissionTable.GetByObject(&platDB.Permission{Pid: dbReq.Pid})
 	if err != nil {
 		log.ErrorTF(traceID, "GetBroPermissionFail . Err Is : %v", err)
 		return baseModel.Fail(constant.PermissionGetNG)

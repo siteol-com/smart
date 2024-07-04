@@ -34,7 +34,7 @@ func recursionDeptTree(traceID string, treeNode *baseModel.Tree) (err error) {
 	}
 	// 查询子集
 	var deptList platDB.DeptArray
-	deptList, err = platDB.DeptTable.FindByObject(&platDB.Dept{Pid: treeNode.Id})
+	deptList, err = platDB.DeptTable.GetByObject(&platDB.Dept{Pid: treeNode.Id})
 	if err != nil {
 		log.WarnTF(traceID, "RecursionDeptTree Fail . PID %d . Err is : %s", treeNode.Id, err)
 		return
@@ -61,6 +61,22 @@ func recursionDeptTree(traceID string, treeNode *baseModel.Tree) (err error) {
 		recursionDeptTree(traceID, treeChild)
 		// 加入子集
 		treeNode.Children = append(treeNode.Children, treeChild)
+	}
+	return
+}
+
+// getDeptMapByIds 根据ID获取部门MAP
+func getDeptMapByIds(ids []uint64) (deptMap map[uint64]string, err error) {
+	if len(ids) == 0 {
+		return
+	}
+	deptS, err := platDB.DeptTable.GetByIds(ids)
+	if err != nil {
+		return
+	}
+	deptMap = make(map[uint64]string, len(deptS))
+	for _, item := range deptS {
+		deptMap[item.Id] = item.Name
 	}
 	return
 }

@@ -64,7 +64,30 @@ const (
 	RoleGetNG        = "F500" // 角色查询失败
 	RoleMarkNG       = "F501" // 内置角色禁止编辑
 	RoleNameUniNG    = "F502" // 角色名全局唯一
+	RoleDelNG        = "F503" // 角色删除失败
 	RolePermissionNG = "F503" // 角色权限配置失败
+
+	DeptAddSS        = "Sn00" // 集团部门创建成功
+	DeptEditSS       = "Sn01" // 集团部门编辑成功
+	DeptDelSS        = "Sn02" // 集团部门删除成功
+	DeptSortSS       = "Sn03" // 集团部门排序成功
+	DeptGetNG        = "Fn00" // 集团部门查询失败
+	DeptUniNameNG    = "Fn01" // 集团部门名称全局唯一
+	DeptMarkNG       = "Fn02" // 内置集团部门禁止删除
+	DeptDelNG        = "Fn03" // 集团部门删除
+	DeptDelChildNG   = "Fn03" // 集团部门存在子部门禁止删除
+	DeptDelAccountNG = "Fn03" // 集团部门存在成员禁止删除
+
+	AccountAddSS    = "Sn00" // 登陆账号创建成功
+	AccountEditSS   = "Sn01" // 登陆账号编辑成功
+	AccountDelSS    = "Sn02" // 登陆账号删除成功
+	AccountResetSS  = "Sn02" // 登陆账号重置成功
+	AccountGetNG    = "Fn00" // 登陆账号查询失败
+	AccountUniXxxNG = "Fn01" // 登陆账号地址全局唯一
+	AccountRoleNG   = "Fn01" // 账号角色同步失败
+	AccountMarkNG   = "Fn02" // 特殊账号禁止编辑
+	AccountDelNG    = "Fn03" // 登陆账号删除失败
+	AccountResetNG  = "Fn03" // 登陆账号重置失败
 
 	SysConfigEditSS = "S800" // 系统配置编辑成功
 	SysConfigGetNG  = "F800" // 系统配置查询失败

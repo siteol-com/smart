@@ -11,7 +11,7 @@ import (
 
 // GetSysConfig 系统配置详情
 func GetSysConfig(traceID string) *baseModel.ResBody {
-	res, err := platDB.SysConfigTable.FindOneById(1)
+	res, err := platDB.SysConfigTable.GetOneById(1)
 	if err != nil {
 		log.ErrorTF(traceID, "GetSysConfig Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.SysConfigGetNG)
@@ -21,7 +21,7 @@ func GetSysConfig(traceID string) *baseModel.ResBody {
 
 // EditSysConfig 编辑系统配置
 func EditSysConfig(traceID string, req *platModel.SysConfigEditReq) *baseModel.ResBody {
-	dbReq, err := platDB.SysConfigTable.FindOneById(1)
+	dbReq, err := platDB.SysConfigTable.GetOneById(1)
 	if err != nil {
 		log.ErrorTF(traceID, "GetSysConfig Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.SysConfigGetNG)
@@ -32,7 +32,7 @@ func EditSysConfig(traceID string, req *platModel.SysConfigEditReq) *baseModel.R
 	if err != nil {
 		log.ErrorTF(traceID, "EditSysConfig %d Fail . Err Is : %v", dbReq.Id, err)
 		// 解析数据库错误 - 不涉及
-		return baseModel.ResFail
+		return baseModel.Fail(constant.SysConfigGetNG)
 	}
 	// 异步更新缓存
 	go func() { _ = SyncSysConfigCache(traceID) }()
@@ -41,7 +41,7 @@ func EditSysConfig(traceID string, req *platModel.SysConfigEditReq) *baseModel.R
 
 // SyncSysConfigCache 同步系统配置
 func SyncSysConfigCache(traceID string) (err error) {
-	db, err := platDB.SysConfigTable.FindOneById(1)
+	db, err := platDB.SysConfigTable.GetOneById(1)
 	if err != nil {
 		log.ErrorTF(traceID, "GetSysConfig Fail . Err Is : %v", err)
 		return

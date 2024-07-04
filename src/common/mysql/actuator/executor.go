@@ -18,40 +18,40 @@ type Executor interface {
 // Table 泛型执行器
 type Table[T Executor] string
 
-// FindAll 查询表所有数据
-func (t Table[T]) FindAll() (res []*T, err error) {
+// GetAll 查询表所有数据
+func (t Table[T]) GetAll() (res []*T, err error) {
 	var exe T
 	r := exe.DataBase().Find(&res)
 	err = r.Error
 	return
 }
 
-// FindOneById 查询表指定ID的数据
-func (t Table[T]) FindOneById(id uint64) (res T, err error) {
+// GetOneById 查询表指定ID的数据
+func (t Table[T]) GetOneById(id uint64) (res T, err error) {
 	var exe T
 	r := exe.DataBase().Where("id = ?", id).First(&res)
 	err = r.Error
 	return
 }
 
-// FindOneByObject 查询表指定对象的数据（传入指针）
-func (t Table[T]) FindOneByObject(req any) (res T, err error) {
+// GetOneByObject 查询表指定对象的数据（传入指针）
+func (t Table[T]) GetOneByObject(req any) (res T, err error) {
 	var exe T
 	r := exe.DataBase().Where(req).First(&res)
 	err = r.Error
 	return
 }
 
-// FindByIds 查询表指定ID的数据集
-func (t Table[T]) FindByIds(ids []uint64) (res []*T, err error) {
+// GetByIds 查询表指定ID的数据集
+func (t Table[T]) GetByIds(ids []uint64) (res []*T, err error) {
 	var exe T
 	r := exe.DataBase().Where("id IN ?", ids).Find(&res)
 	err = r.Error
 	return
 }
 
-// FindByObject 查询表指定对象的数据集
-func (t Table[T]) FindByObject(req any) (res []*T, err error) {
+// GetByObject 查询表指定对象的数据集
+func (t Table[T]) GetByObject(req any) (res []*T, err error) {
 	var exe T
 	r := exe.DataBase().Where(req).Find(&res)
 	err = r.Error
@@ -66,8 +66,8 @@ func (t Table[T]) CountByObject(req any) (res int64, err error) {
 	return
 }
 
-// FindByObjectSort 查询表指定对象，默认使用sort字段排序的数据集
-func (t Table[T]) FindByObjectSort(req any) (res []*T, err error) {
+// GetByObjectSort 查询表指定对象，默认使用sort字段排序的数据集
+func (t Table[T]) GetByObjectSort(req any) (res []*T, err error) {
 	var exe T
 	r := exe.DataBase().Where(req).Order("sort").Find(&res)
 	err = r.Error
@@ -95,7 +95,7 @@ func (t Table[T]) Page(query *Query) (total int64, list []*T, err error) {
 		return
 	}
 	// 开始查询分页数据
-	err = query.findByQuery(exe.DataBase(), &list)
+	err = query.GetByQuery(exe.DataBase(), &list)
 	if err != nil {
 		return
 	}

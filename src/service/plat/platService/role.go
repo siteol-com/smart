@@ -28,6 +28,8 @@ func AddRole(traceID string, req *platModel.RoleAddReq) *baseModel.ResBody {
 		}
 		return baseModel.Fail(constant.RolePermissionNG)
 	}
+	// 同步角色缓存
+	go func() { SyncRoleCache(traceID) }()
 	return baseModel.Success(constant.RoleAddSS, true)
 }
 
@@ -44,7 +46,7 @@ func PageRole(traceID string, req *platModel.RolePageReq) *baseModel.ResBody {
 
 // GetRole 角色详情
 func GetRole(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	res, err := platDB.RoleTable.FindOneById(req.Id)
+	res, err := platDB.RoleTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetRole Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.RoleGetNG)
@@ -58,7 +60,7 @@ func GetRole(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 
 // EditRole 编辑角色
 func EditRole(traceID string, req *platModel.RoleEditReq) *baseModel.ResBody {
-	dbReq, err := platDB.RoleTable.FindOneById(req.Id)
+	dbReq, err := platDB.RoleTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetRole Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.RoleGetNG)
@@ -76,12 +78,14 @@ func EditRole(traceID string, req *platModel.RoleEditReq) *baseModel.ResBody {
 		// 解析数据库错误
 		return checkRoleDBErr(err)
 	}
+	// 同步角色缓存
+	go func() { SyncRoleCache(traceID) }()
 	return baseModel.Success(constant.RoleEditSS, true)
 }
 
 // DelRole 角色封存
 func DelRole(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
-	dbReq, err := platDB.RoleTable.FindOneById(req.Id)
+	dbReq, err := platDB.RoleTable.GetOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetRole Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.RoleGetNG)
@@ -96,11 +100,36 @@ func DelRole(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 	if err != nil {
 		return baseModel.Fail(constant.RolePermissionNG)
 	}
+	// 删除角色关联账号
+	err = platDB.AccountRole{}.DeleteByRoleId(dbReq.Id)
+	if err != nil {
+		log.ErrorTF(traceID, "DeleteAccountRoleByRole %d Fail . Err Is : %v", dbReq.Id, err)
+		return baseModel.Fail(constant.RoleDelNG)
+	}
+	// 删除角色
 	err = platDB.RoleTable.DeleteOne(dbReq.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "DelRole %d Fail . Err Is : %v", dbReq.Id, err)
-		// 解析数据库错误
-		return checkRoleDBErr(err)
+		return baseModel.Fail(constant.RoleDelNG)
 	}
+	// 同步角色缓存
+	go func() { SyncRoleCache(traceID) }()
 	return baseModel.Success(constant.RoleDelSS, true)
+}
+
+// ListRole 角色列表
+func ListRole(traceID string) *baseModel.ResBody {
+	roleMap, err := getRoleCache(traceID)
+	if err != nil {
+		log.ErrorTF(traceID, "GetRoleCache Fail . Err Is : %v", err)
+		return baseModel.Fail(constant.RoleGetNG)
+	}
+	roleList := make([]baseModel.SelectNumRes, 0)
+	for k, v := range roleMap {
+		roleList = append(roleList, baseModel.SelectNumRes{
+			Label: v,
+			Value: k,
+		})
+	}
+	return baseModel.SuccessUnPop(roleList)
 }

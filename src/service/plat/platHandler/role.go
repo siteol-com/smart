@@ -2,6 +2,7 @@ package platHandler
 
 import (
 	"github.com/gin-gonic/gin"
+	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/model/baseModel"
 	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/service"
@@ -107,4 +108,20 @@ func DelRole(c *gin.Context) {
 		// 执行查询
 		service.JsonRes(c, platService.DelRole(traceID, req))
 	}
+}
+
+// ListRole	godoc
+// @id			ListRole 角色下拉列表
+// @Summary		角色列表
+// @Description	角色下拉列表
+// @Router		/plat/role/list [post]
+// @Tags		角色配置
+// @Accept		json
+// @Produce		json
+// @Security	Token
+// @Param		Lang	header		string				false							"语言，不传默认为zh-CN"
+// @Success		200		{object}	baseModel.ResBody{data=[]baseModel.SelectNumRes}	"响应成功"
+func ListRole(c *gin.Context) {
+	traceID := c.GetString(constant.ContextTraceID)
+	service.JsonRes(c, platService.ListRole(traceID))
 }

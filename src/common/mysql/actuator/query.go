@@ -21,6 +21,7 @@ import (
 // MySQL 查询器
 // 整型字段即使传递”也会走索引，因此这里直接通过固定 ”作为值的模板
 const (
+	In        = "`${name}` in ?"    // 包含
 	Eq        = "`${name}` = ?"     // 等于
 	Ne        = "`${name}` != ?"    // 不等于
 	Gt        = "`${name}` > ?"     // 大于
@@ -65,6 +66,11 @@ type Limit struct {
 // InitQuery 初始化空查询
 func InitQuery() *Query {
 	return &Query{}
+}
+
+// In 包含
+func (q *Query) In(name string, value any) {
+	q.makeWhere(In, name, value)
 }
 
 // Eq 等于
@@ -228,8 +234,8 @@ func (q *Query) countByQuery(db *gorm.DB) (int64, error) {
 	return total, r.Error
 }
 
-// FindByQuery 自定义Query结构组装查询
-func (q *Query) findByQuery(db *gorm.DB, res any) error {
+// GetByQuery 自定义Query结构组装查询
+func (q *Query) GetByQuery(db *gorm.DB, res any) error {
 	// 不包含Limit
 	sql, whereArray := q.makeSqlByQuery(false)
 	dbQuery := db.Raw(sql, whereArray...)

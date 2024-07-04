@@ -9,7 +9,7 @@ import (
 // getPermissionRouters 获取权限路由集 withRouter 是否提取路由信息
 func getRolePermissions(traceID string, roleId uint64) (rolePermissions []*platDB.RolePermission, err error) {
 	// 补充查询关联的路由和路由ID
-	rolePermissions, err = platDB.RolePermissionTable.FindByObject(&platDB.RolePermission{RoleId: roleId})
+	rolePermissions, err = platDB.RolePermissionTable.GetByObject(&platDB.RolePermission{RoleId: roleId})
 	if err != nil {
 		log.WarnTF(traceID, "GetPermissionsByRoleId By %d Fail . Err Is : %v", roleId, err)
 	}
@@ -46,7 +46,7 @@ func syncRolePermissions(traceID string, roleId uint64, permissionIds, halfPermi
 			}
 			i++
 		}
-		err = platDB.PermissionRouterTable.InsertBatch(&rolePermissions)
+		err = platDB.RolePermissionTable.InsertBatch(&rolePermissions)
 		if err != nil {
 			log.ErrorTF(traceID, "InsertBatchRolePermissions By RoleId %d Fail . Err Is : %v", roleId, err)
 			return
@@ -54,6 +54,7 @@ func syncRolePermissions(traceID string, roleId uint64, permissionIds, halfPermi
 	}
 	if editFlag {
 		// TODO 如果角色被选择，则反向通知账号需要权限刷新
+		// 先通知，外层进行账号角色关联性删除
 	}
 	return
 }
