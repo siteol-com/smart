@@ -51,16 +51,24 @@ func (r *DeptEditReq) ToDbReq(d *platDB.Dept) {
 
 // DeptGetRes 集团部门 详情响应
 type DeptGetRes struct {
-	Id             uint64 `json:"id" example:"1"`             // 数据ID
-	Name           string `json:"name" example:"demo"`        // 部门名称
-	Pid            uint64 `json:"pid" example:"0"`            // 父级部门ID，租户创建时默认创建根部门，父级ID=0
-	Sort           uint16 `json:"sort" example:"0"`           // 同级部门排序
-	PermissionType string `json:"permissionType" example:"0"` // 权限类型，枚举：0_本部门与子部门 1_本部门 2_个人 3_指定部门 4_指定人 5_全局
-	Mark           string `json:"mark" example:"0"`           // 变更标识，枚举：0_可变更 1_禁止变更
+	Id             uint64              `json:"id" example:"1"`             // 数据ID
+	Name           string              `json:"name" example:"demo"`        // 部门名称
+	Pid            uint64              `json:"pid" example:"0"`            // 父级部门ID，租户创建时默认创建根部门，父级ID=0
+	Sort           uint16              `json:"sort" example:"0"`           // 同级部门排序
+	PermissionType string              `json:"permissionType" example:"0"` // 权限类型，枚举：0_本部门与子部门 1_本部门 2_个人 3_指定部门 4_指定人 5_全局
+	Mark           string              `json:"mark" example:"0"`           // 变更标识，枚举：0_可变更 1_禁止变更
+	Accounts       [][]*DeptAccountRes `json:"accounts"`                   // 部门账号，第1组是领导，第二组是成员
+}
+
+// DeptAccountRes 集团部门 账号响应
+type DeptAccountRes struct {
+	Id      uint64 `json:"id" example:"1"`         // 数据ID
+	Account string `json:"account" example:"demo"` // 账号
+	Name    string `json:"name" example:"demo"`    // 姓名
 }
 
 // ToDeptGetRes 集团部门 数据库转为详情响应
-func ToDeptGetRes(r *platDB.Dept) *DeptGetRes {
+func ToDeptGetRes(r *platDB.Dept, accounts [][]*DeptAccountRes) *DeptGetRes {
 	return &DeptGetRes{
 		Id:             r.Id,
 		Name:           r.Name,
@@ -68,6 +76,7 @@ func ToDeptGetRes(r *platDB.Dept) *DeptGetRes {
 		Sort:           r.Sort,
 		PermissionType: r.PermissionType,
 		Mark:           r.Mark,
+		Accounts:       accounts,
 	}
 }
 
@@ -82,4 +91,11 @@ func ToDeptBroRes(r platDB.DeptArray) []*baseModel.SortRes {
 		}
 	}
 	return res
+}
+
+// DeptToReq 集团部门 迁移请求，模式为：并入&移交
+type DeptToReq struct {
+	Id     uint64 `json:"id" binding:"required" example:"1"`     // 当前部门数据ID
+	ToId   uint64 `json:"toId" binding:"required" example:"1"`   // 目标部门数据ID
+	ToType string `json:"toType" binding:"required" example:"0"` // 迁移模式，枚举：0_并入（子部门形式） 1_移交（部门保留，成员和子部门移交给新部门）
 }

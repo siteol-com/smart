@@ -8,6 +8,7 @@ import (
 	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/platDB"
 	"sort"
+	"time"
 )
 
 // AddDept 创建集团部门
@@ -53,7 +54,13 @@ func GetDept(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 		log.ErrorTF(traceID, "GetDept Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.DeptGetNG)
 	}
-	return baseModel.SuccessUnPop(platModel.ToDeptGetRes(&res))
+	// 获取部门账号
+	accounts, err := getDeptAccounts(res.Id)
+	if err != nil {
+		log.ErrorTF(traceID, "GetDeptAccount %d Fail . Err Is : %v", req.Id, err)
+		return baseModel.Fail(constant.DeptGetNG)
+	}
+	return baseModel.SuccessUnPop(platModel.ToDeptGetRes(&res, accounts))
 }
 
 // EditDept 编辑集团部门
@@ -144,4 +151,44 @@ func SortDept(traceID string, req *[]*baseModel.SortReq) *baseModel.ResBody {
 		return checkDeptDBErr(err)
 	}
 	return baseModel.Success(constant.DeptSortSS, true)
+}
+
+// ToDept 部门迁移
+func ToDept(traceID string, req *platModel.DeptToReq) *baseModel.ResBody {
+	dbReq, err := platDB.DeptTable.GetOneById(req.Id)
+	if err != nil {
+		log.ErrorTF(traceID, "GetDept %d Fail . Err Is : %v", req.Id, err)
+		return baseModel.Fail(constant.DeptGetNG)
+	}
+	_, err = platDB.DeptTable.GetOneById(req.ToId)
+	if err != nil {
+		log.ErrorTF(traceID, "GetToDept %d Fail . Err Is : %v", req.ToId, err)
+		return baseModel.Fail(constant.DeptGetNG)
+	}
+	now := time.Now()
+	// 0_并入（子部门形式），修改本部门的PID即可
+	// 1_移交（部门保留，成员和子部门移交给新部门），修改本部门的直系部门的上级部门、成员所属部门
+	if req.ToType == constant.StatusOpen {
+		dbReq.Pid = req.ToId
+		dbReq.UpdateAt = &now
+		err = platDB.DeptTable.UpdateOne(dbReq)
+		if err != nil {
+			log.ErrorTF(traceID, "DeptToDept %d %d Fail . Err Is : %v", req.Id, req.ToId, err)
+			return baseModel.Fail(constant.DeptToNG)
+		}
+	} else {
+		// 先迁账号
+		err = platDB.Account{}.ToNewDept(req.Id, req.ToId)
+		if err != nil {
+			log.ErrorTF(traceID, "DeptToDept %d %d Account Fail . Err Is : %v", req.Id, req.ToId, err)
+			return baseModel.Fail(constant.DeptToNG)
+		}
+		// 迁子部门
+		err = platDB.Dept{}.ToNewDept(req.Id, req.ToId)
+		if err != nil {
+			log.ErrorTF(traceID, "DeptToDept %d %d SubDept Fail . Err Is : %v", req.Id, req.ToId, err)
+			return baseModel.Fail(constant.DeptToNG)
+		}
+	}
+	return baseModel.Success(constant.DeptToSS, true)
 }

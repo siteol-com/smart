@@ -107,7 +107,7 @@ src/zoom/respCode/make_test.go
 - src/zoom/respCode/response_code.sql
 - src/common/constant/response_code.go
 
-## 国际化生产器
+## 国际化生成器
 
 src/zoom/i18n/i18n.xlsx
 
@@ -131,7 +131,7 @@ src/zoom/i18n/i18n.make.exe
 
 ## 数据权限
 
-部门数据权限体系，支持多维度的数据权限配置，本级与下级、仅本级、仅个人、全部、指定部门、指定人。
+部门数据权限体系，支持多维度的数据权限配置，本级与下级、仅本级、仅个人、全部、指定部门（TODO）、指定人（TODO）。
 
 账号的数据权限可以自由选择，继承部门、本部门、本人、全局。
 

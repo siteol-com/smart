@@ -46,3 +46,14 @@ func (p DeptArray) Less(i, j int) bool {
 func (p DeptArray) Swap(i, j int) {
 	p[i], p[j] = p[j], p[i]
 }
+
+// ToNewDept 迁移到新部门
+func (t Dept) ToNewDept(deptId, newDeptId uint64) (err error) {
+	now := time.Now()
+	r := platDb.Table(t.TableName()).Where("pid = ?", deptId).Updates(map[string]any{
+		"pid":       newDeptId,
+		"update_at": &now,
+	})
+	err = r.Error
+	return
+}

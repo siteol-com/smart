@@ -37,6 +37,7 @@ func (t Account) TableName() string {
 	return "account"
 }
 
+// ResetAccount 重置账号密码
 func (t Account) ResetAccount(id uint64, saltKey, pwdC string) (err error) {
 	now := time.Now()
 	r := platDb.Table(t.TableName()).Where("id = ?", id).Updates(map[string]any{
@@ -44,6 +45,17 @@ func (t Account) ResetAccount(id uint64, saltKey, pwdC string) (err error) {
 		"salt_key":     saltKey,
 		"pwd_exp_time": &now,
 		"update_at":    &now,
+	})
+	err = r.Error
+	return
+}
+
+// ToNewDept 迁移到新部门
+func (t Account) ToNewDept(deptId, newDeptId uint64) (err error) {
+	now := time.Now()
+	r := platDb.Table(t.TableName()).Where("dept_id = ?", deptId).Updates(map[string]any{
+		"dept_id":   newDeptId,
+		"update_at": &now,
 	})
 	err = r.Error
 	return

@@ -147,3 +147,23 @@ func SortDept(c *gin.Context) {
 		service.JsonRes(c, platService.SortDept(traceID, req))
 	}
 }
+
+// ToDept	godoc
+// @id				ToDept 部门迁移
+// @Summary      	部门迁移
+// @Description  	部门以及子部门迁移到新部门
+// @Router       	/plat/dept/to [post]
+// @Tags         	集团部门
+// @Accept      	json
+// @Produce      	json
+// @Security	 	Token
+// @Param        	req body		platModel.DeptToReq		true	"请求"
+// @Success      	200 {object}	baseModel.ResBody{data=bool}	"响应成功"
+func ToDept(c *gin.Context) {
+	traceID, reqObj, err := service.ValidateReqObj(c, &platModel.DeptToReq{})
+	if err == nil {
+		req := reqObj.(*platModel.DeptToReq)
+		// 执行查询
+		service.JsonRes(c, platService.ToDept(traceID, req))
+	}
+}

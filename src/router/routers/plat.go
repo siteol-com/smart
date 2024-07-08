@@ -73,6 +73,7 @@ func PlatRouter(router *gin.Engine) {
 			deptRouter.POST("/del", platHandler.DelDept)
 			deptRouter.POST("/bro", platHandler.BroDept)
 			deptRouter.POST("/sort", platHandler.SortDept)
+			deptRouter.POST("/to", platHandler.ToDept)
 		}
 		// 登陆账号相关
 		accountRouter := platRouter.Group("/account")

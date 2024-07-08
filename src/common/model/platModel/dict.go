@@ -41,8 +41,8 @@ type DictDoReq struct {
 
 // DictAddReq 字典创建请求
 type DictAddReq struct {
-	GroupKey  string `json:"groupKey" binding:"required,max=16" example:"serviceCode"` // 字典分组KEY
-	Val       string `json:"val" binding:"required,max=16" example:"1"`                // 字典值（字符型）
+	GroupKey  string `json:"groupKey" binding:"required,max=32" example:"serviceCode"` // 字典分组KEY
+	Val       string `json:"val" binding:"required,max=32" example:"1"`                // 字典值（字符型）
 	DictDoReq        // 共通引用
 }
 

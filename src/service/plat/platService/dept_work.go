@@ -5,6 +5,7 @@ import (
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/platDB"
 	"sort"
 	"strings"
@@ -77,6 +78,33 @@ func getDeptMapByIds(ids []uint64) (deptMap map[uint64]string, err error) {
 	deptMap = make(map[uint64]string, len(deptS))
 	for _, item := range deptS {
 		deptMap[item.Id] = item.Name
+	}
+	return
+}
+
+// getDeptAccounts 部门账号列表
+func getDeptAccounts(id uint64) (res [][]*platModel.DeptAccountRes, err error) {
+	// 查询部门成员
+	accounts, err := platDB.AccountTable.GetByObject(&platDB.Account{DeptId: id})
+	if err != nil {
+		return
+	}
+	res = make([][]*platModel.DeptAccountRes, 2)
+	for i, _ := range res {
+		res[i] = make([]*platModel.DeptAccountRes, 0)
+	}
+	for _, item := range accounts {
+		// 对于部门领导大于第一组
+		resItem := &platModel.DeptAccountRes{
+			Id:      item.Id,
+			Name:    item.Name,
+			Account: item.Account,
+		}
+		if item.IsLeader == constant.StatusLock {
+			res[0] = append(res[0], resItem)
+		} else {
+			res[1] = append(res[1], resItem)
+		}
 	}
 	return
 }
