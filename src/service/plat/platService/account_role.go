@@ -19,7 +19,7 @@ func getAccountsRolesAndDept(list []*platDB.Account) (rolesIds [][]uint64, deptI
 		deptMap[item.DeptId] = true
 	}
 	deptIds = make([]uint64, 0)
-	for k, _ := range deptMap {
+	for k := range deptMap {
 		deptIds = append(deptIds, k)
 	}
 	return
@@ -29,7 +29,7 @@ func getAccountsRolesAndDept(list []*platDB.Account) (rolesIds [][]uint64, deptI
 func syncAccountRoles(traceID string, accountId uint64, roleIds []uint64, editFlag bool) (err error) {
 	if editFlag {
 		// 移除当前权限的路由
-		err = platDB.AccountRole{}.DeleteByAccountId(accountId)
+		err = platDB.AccountRoleTable.Executor().DeleteByAccountId(accountId)
 		if err != nil {
 			log.ErrorTF(traceID, "DeleteByAccountId By %d Fail . Err Is : %v", accountId, err)
 			return

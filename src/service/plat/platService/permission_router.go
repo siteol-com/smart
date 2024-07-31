@@ -33,7 +33,7 @@ func getPermissionRouters(traceID string, permissionId uint64, withRouter bool) 
 func syncPermissionRouters(traceID string, permissionId uint64, routerIds []uint64, editFlag bool) (err error) {
 	if editFlag {
 		// 移除当前权限的路由
-		err = platDB.PermissionRouter{}.DeleteByPermissionId(permissionId)
+		err = platDB.PermissionRouterTable.Executor().DeleteByPermissionId(permissionId)
 		if err != nil {
 			log.ErrorTF(traceID, "DeleteByPermissionId By %d Fail . Err Is : %v", permissionId, err)
 			return

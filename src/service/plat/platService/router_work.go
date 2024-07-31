@@ -2,13 +2,9 @@ package platService
 
 import (
 	"siteol.com/smart/src/common/constant"
-	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/model/baseModel"
 	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/actuator"
-	"siteol.com/smart/src/common/mysql/platDB"
-	"siteol.com/smart/src/common/redis"
-	"siteol.com/smart/src/common/utils"
 	"strings"
 )
 
@@ -53,39 +49,5 @@ func routerPageQuery(req *platModel.RouterPageReq) (query *actuator.Query) {
 	query.Eq("status", constant.StatusOpen)
 	query.Desc("id")
 	query.LimitByPage(req.Current, req.PageSize)
-	return
-}
-
-// SyncRouterCache 同步响应码配置
-func SyncRouterCache(traceID string) (err error) {
-	allList, err := platDB.RouterTable.GetAll()
-	if err != nil {
-		log.ErrorTF(traceID, "SyncRouterCache GetRouter Fail . Err Is : %v", err)
-		return
-	}
-	if len(allList) == 0 {
-		log.WarnTF(traceID, "SyncRouterCache GetRouter Empty")
-		return
-	}
-	// 组装缓存对象
-	resCacheMap := make(map[string]*baseModel.CacheRouter, 0)
-	for _, res := range allList {
-		// 路由是物理删除
-		cache := &baseModel.CacheRouter{
-			Id:        res.Id,
-			NeedAuth:  utils.StatusBool(res.Type),
-			LogInDb:   utils.StatusBool(res.LogInDb),
-			ReqPrint:  utils.StatusBool(res.ReqLogPrint),
-			ReqSecure: utils.ArrayStr(res.ReqLogSecure),
-			ResPrint:  utils.StatusBool(res.ResLogPrint),
-			ResSecure: utils.ArrayStr(res.ResLogSecure),
-		}
-		resCacheMap[res.Url] = cache
-	}
-	// 写入缓存 无超期
-	err = redis.Set(constant.CacheRouters, resCacheMap, 0)
-	if err != nil {
-		log.InfoTF(traceID, "SyncRouterCache Fail . Err Is : %v", err)
-	}
 	return
 }

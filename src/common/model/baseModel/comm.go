@@ -17,8 +17,8 @@ type SelectRes struct {
 
 // SelectNumRes 通用下拉数值响应
 type SelectNumRes struct {
-	Label string `json:"label" example:"Name"`  // 展示名
-	Value uint64 `json:"value" example:"Value"` // 展示值
+	Label string `json:"label" example:"Name"` // 展示名
+	Value uint64 `json:"value" example:"1"`    // 展示值
 }
 
 // SortReq 排序对象

@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/cacheModel"
 	"siteol.com/smart/src/router/middleware/worker"
 	"strings"
 
@@ -35,16 +36,26 @@ func GetLocal(c *gin.Context) string {
 	return local
 }
 
+// GetAuthUser 从上下文获取授权的用户
+func GetAuthUser(c *gin.Context) *cacheModel.CacheAuth {
+	auth := &cacheModel.CacheAuth{}
+	obj, ok := c.Get(constant.ContextAuthUser)
+	if ok {
+		auth = obj.(*cacheModel.CacheAuth)
+	}
+	return auth
+}
+
 // GetRouterConf 从上下文获取登录用户授权机构体
-func GetRouterConf(c *gin.Context) *baseModel.CacheRouter {
+func GetRouterConf(c *gin.Context) *cacheModel.CacheRouter {
 	obj, ok := c.Get(constant.ContextRouterC)
 	if ok {
-		router := &baseModel.CacheRouter{}
-		router = obj.(*baseModel.CacheRouter)
+		router := &cacheModel.CacheRouter{}
+		router = obj.(*cacheModel.CacheRouter)
 		return router
 	}
 	// 空白对象
-	return baseModel.CacheRouterNormal
+	return cacheModel.CacheRouterNormal
 }
 
 // JsonRes 执行Json响应 包含响应日志处理

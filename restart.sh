@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-export ENV=test
+export ENV=prod
 export NODE=APP01
 app="smart"
 logsFolder="../logs"

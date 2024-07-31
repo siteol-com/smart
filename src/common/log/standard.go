@@ -88,9 +88,9 @@ func (s *Standard) TPrintF(v, l levelIndex, tag string, format string, m ...any)
 	}
 
 	// 测试和研发环境（Test）打印完整文件路径
-	if appRoot != "" && logEnv != Testing {
-		r.File = strings.Replace(r.File, appRoot, "", 1)
-	}
+	//if appRoot != "" && logEnv != Testing {
+	r.File = strings.Replace(r.File, appRoot, "", 1)
+	//}
 
 	var buf []byte
 	if l == StackLevel {
@@ -112,11 +112,11 @@ func (s *Standard) TPrintF(v, l levelIndex, tag string, format string, m ...any)
 		}
 	}()
 
-	s.tpl.Execute(s.out, r)
-	s.out.Write([]byte("\n"))
+	_ = s.tpl.Execute(s.out, r)
+	_, _ = s.out.Write([]byte("\n"))
 
 	if l == StackLevel {
-		s.out.Write(buf)
+		_, _ = s.out.Write(buf)
 	}
 }
 
@@ -160,9 +160,9 @@ func (s *Standard) TPrintTF(v, l levelIndex, tag string, traceID string, format 
 		_, r.File = filepath.Split(r.File)
 	}
 	// 测试和研发环境（Test）打印完整文件路径
-	if appRoot != "" && logEnv != Testing {
-		r.File = strings.Replace(r.File, appRoot, "", 1)
-	}
+	//if appRoot != "" && logEnv != Testing {
+	r.File = strings.Replace(r.File, appRoot, "", 1)
+	//}
 
 	var buf []byte
 	if l == StackLevel {
@@ -184,11 +184,11 @@ func (s *Standard) TPrintTF(v, l levelIndex, tag string, traceID string, format 
 		}
 	}()
 
-	s.tpl.Execute(s.out, r)
-	s.out.Write([]byte("\n"))
+	_ = s.tpl.Execute(s.out, r)
+	_, _ = s.out.Write([]byte("\n"))
 
 	if l == StackLevel {
-		s.out.Write(buf)
+		_, _ = s.out.Write(buf)
 	}
 }
 

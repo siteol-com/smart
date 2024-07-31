@@ -6,7 +6,7 @@ import (
 	"siteol.com/smart/src/common/mysql/platDB"
 )
 
-// getPermissionRouters 获取权限路由集 withRouter 是否提取路由信息
+// getRolePermissions 获取角色的权限对象
 func getRolePermissions(traceID string, roleId uint64) (rolePermissions []*platDB.RolePermission, err error) {
 	// 补充查询关联的路由和路由ID
 	rolePermissions, err = platDB.RolePermissionTable.GetByObject(&platDB.RolePermission{RoleId: roleId})
@@ -20,7 +20,7 @@ func getRolePermissions(traceID string, roleId uint64) (rolePermissions []*platD
 func syncRolePermissions(traceID string, roleId uint64, permissionIds, halfPermissionIds []uint64, editFlag bool) (err error) {
 	if editFlag {
 		// 移除当前角色选定的权限集
-		err = platDB.RolePermission{}.DeleteByRoleId(roleId)
+		err = platDB.RolePermissionTable.Executor().DeleteByRoleId(roleId)
 		if err != nil {
 			log.ErrorTF(traceID, "DeleteByRoleId By %d Fail . Err Is : %v", roleId, err)
 			return

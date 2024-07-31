@@ -37,16 +37,16 @@ func ToSysConfigGetRes(r *platDB.SysConfig) *SysConfigGetRes {
 // SysConfigEditReq 系统配置编辑请求
 type SysConfigEditReq struct {
 	LoginSwitch       string `json:"loginSwitch" binding:"required,oneof='0' '1'" example:"0"`     // 并发限制开关，0限制 1不限制
-	LoginNum          uint16 `json:"loginNum" binding:"numeric" example:"1"`                       // 最大登陆并发量，最小为1
+	LoginNum          uint16 `json:"loginNum" binding:"number" example:"1"`                        // 最大登陆并发量，最小为1
 	LoginFailSwitch   string `json:"loginFailSwitch" binding:"required,oneof='0' '1'" example:"0"` // 登陆失败限制开关，0限制 1不限制
-	LoginFailUnit     string `json:"loginFailUnit" binding:"numeric" example:"1"`                  // 登陆失败限制 1秒 2分 3时 4天
-	LoginFailNum      uint16 `json:"loginFailNum" binding:"numeric" example:"1"`                   // 登陆失败最大尝试次数，最小为1
-	LoginFailLockUnit string `json:"loginFailLockUnit" binding:"numeric" example:"1"`              // 登陆失败锁定 1秒 2分 3时 4天
-	LoginFailLockNum  uint16 `json:"loginFailLockNum" binding:"numeric" example:"1"`               // 登陆失败锁定数量，最小为1
-	LoginFailTryNum   uint16 `json:"loginFailTryNum" binding:"numeric" example:"1"`                // 登陆失败尝试次数
+	LoginFailUnit     string `json:"loginFailUnit" binding:"number" example:"1"`                   // 登陆失败限制 1秒 2分 3时 4天
+	LoginFailNum      uint16 `json:"loginFailNum" binding:"number" example:"1"`                    // 登陆失败限制数，最小为1
+	LoginFailLockUnit string `json:"loginFailLockUnit" binding:"number" example:"1"`               // 登陆失败锁定 1秒 2分 3时 4天
+	LoginFailLockNum  uint16 `json:"loginFailLockNum" binding:"number" example:"1"`                // 登陆失败锁定数量，最小为1
+	LoginFailTryNum   uint16 `json:"loginFailTryNum" binding:"number" example:"1"`                 // 登陆失败尝试次数
 	LogoutSwitch      string `json:"logoutSwitch" binding:"required,oneof='0' '1'" example:"0"`    // 登陆过期开关，0限制 1不限制
-	LogoutUnit        string `json:"logoutUnit" binding:"numeric" example:"1"`                     // 登陆过期单位，1秒 2分 3时 4天
-	LogoutNum         uint16 `json:"logoutNum" binding:"numeric" example:"1"`                      // 登陆过期长度数量，最小为1
+	LogoutUnit        string `json:"logoutUnit" binding:"number" example:"1"`                      // 登陆过期单位，1秒 2分 3时 4天
+	LogoutNum         uint16 `json:"logoutNum" binding:"number" example:"1"`                       // 登陆过期长度数量，最小为1
 }
 
 // ToDbReq 字典更新对象转字典对象

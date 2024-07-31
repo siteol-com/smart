@@ -3,12 +3,10 @@ package platService
 import (
 	"fmt"
 	"siteol.com/smart/src/common/constant"
-	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/model/baseModel"
 	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/actuator"
 	"siteol.com/smart/src/common/mysql/platDB"
-	"siteol.com/smart/src/common/redis"
 	"strings"
 )
 
@@ -60,42 +58,5 @@ func responsePageQuery(req *platModel.ResponsePageReq) (query *actuator.Query) {
 	query.Eq("status", constant.StatusOpen)
 	query.Desc("id")
 	query.LimitByPage(req.Current, req.PageSize)
-	return
-}
-
-// SyncResponseCache 同步响应码配置
-func SyncResponseCache(traceID string) (err error) {
-	allList, err := platDB.ResponseTable.GetAll()
-	if err != nil {
-		log.ErrorTF(traceID, "SyncResponseCache GetResponse Fail . Err Is : %v", err)
-		return
-	}
-	if len(allList) == 0 {
-		log.WarnTF(traceID, "SyncResponseCache GetResponse Empty")
-		return
-	}
-	// 组装缓存对象
-	resCodeCacheMap := make(map[string]map[string]string, 0)
-	for _, res := range allList {
-		if res.Status != constant.StatusOpen {
-			continue
-		}
-		// 遍历支持的语言并写入Map
-		langMap := make(map[string]string, len(constant.TransLangSupport))
-		for _, lang := range constant.TransLangSupport {
-			switch lang {
-			case "en-US":
-				langMap[lang] = res.EnUs
-			case "zh-CN":
-				langMap[lang] = res.ZhCn
-			}
-		}
-		resCodeCacheMap[res.Code] = langMap
-	}
-	// 写入缓存 无超期
-	err = redis.Set(constant.CacheResTrans, resCodeCacheMap, 0)
-	if err != nil {
-		log.InfoTF(traceID, "SyncResponseCache Fail . Err Is : %v", err)
-	}
 	return
 }

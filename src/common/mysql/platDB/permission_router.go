@@ -27,7 +27,14 @@ func (t PermissionRouter) TableName() string {
 
 // GetRouterIds 获取权限对应的路由ID
 func (t PermissionRouter) GetRouterIds(permissionId uint64) (res []uint64, err error) {
-	r := platDb.Table(t.TableName()).Distinct("router_id").Where("permission_id", permissionId).Find(&res)
+	r := platDb.Table(t.TableName()).Distinct("router_id").Where("permission_id = ?", permissionId).Find(&res)
+	err = r.Error
+	return
+}
+
+// GetRouterIdsWithByPermissionIds 获取权限对应的路由ID
+func (t PermissionRouter) GetRouterIdsWithByPermissionIds(ids []uint64) (res []uint64, err error) {
+	r := platDb.Table(t.TableName()).Distinct("router_id").Where("permission_id IN ?", ids).Find(&res)
 	err = r.Error
 	return
 }

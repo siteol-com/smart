@@ -4,6 +4,7 @@ import (
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/cacheModel"
 	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/platDB"
 )
@@ -19,7 +20,7 @@ func AddRouter(traceID string, req *platModel.RouterAddReq) *baseModel.ResBody {
 		return checkRouterDBErr(err)
 	}
 	// 异步更新缓存
-	go func() { _ = SyncRouterCache(traceID) }()
+	go func() { _ = cacheModel.SyncRouterCache(traceID) }()
 	return baseModel.Success(constant.RouterAddSS, true)
 }
 
@@ -60,7 +61,7 @@ func EditRouter(traceID string, req *platModel.RouterEditReq) *baseModel.ResBody
 		return checkRouterDBErr(err)
 	}
 	// 异步更新缓存
-	go func() { _ = SyncRouterCache(traceID) }()
+	go func() { _ = cacheModel.SyncRouterCache(traceID) }()
 	return baseModel.Success(constant.RouterEditSS, true)
 }
 
@@ -91,6 +92,6 @@ func DelRouter(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 		return baseModel.Fail(constant.RouterDelNG)
 	}
 	// 异步更新缓存
-	go func() { _ = SyncRouterCache(traceID) }()
+	go func() { _ = cacheModel.SyncRouterCache(traceID) }()
 	return baseModel.Success(constant.RouterDelSS, true)
 }

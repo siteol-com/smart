@@ -26,9 +26,9 @@ func (t RolePermission) TableName() string {
 	return "role_permission"
 }
 
-// GetPermissionIds 获取权限对应的路由ID
-func (t RolePermission) GetPermissionIds(roleId uint64) (res []uint64, err error) {
-	r := platDb.Table(t.TableName()).Distinct("permission_id").Where("permission_id", roleId).Find(&res)
+// GetPermissionIdsWithRoleIds 获取角色IDS的权限ID集
+func (t RolePermission) GetPermissionIdsWithRoleIds(roleIds []uint64) (res []uint64, err error) {
+	r := platDb.Table(t.TableName()).Distinct("permission_id").Where("role_id IN ? ", roleIds).Find(&res)
 	err = r.Error
 	return
 }

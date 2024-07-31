@@ -11,7 +11,7 @@ import (
 const (
 	DEFAULT_SUFFIX = ".log"
 	DEFAULT_DIR    = "../logs/"
-	Testing        = "test"
+	//Testing        = "test"
 )
 
 var (
@@ -23,7 +23,6 @@ var (
 	splitRule           = ""
 	appRoot             = ""
 	logFormat           = DEFAULT_FORMAT_TRACEID
-	logEnv              = ""
 )
 
 func init() {
@@ -110,7 +109,7 @@ func removeLogFile() {
 	cur := time.Now()
 	curDate := cur.Add(d * 60).Format("20060102")
 
-	filepath.Walk(sPath, func(path string, info os.FileInfo, err error) error {
+	_ = filepath.Walk(sPath, func(path string, info os.FileInfo, err error) error {
 		if (info != nil) && (!info.IsDir()) && (strings.Index(info.Name(), DEFAULT_SUFFIX) > 0) {
 			nameArray := []byte(info.Name())
 			var date []byte

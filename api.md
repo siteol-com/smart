@@ -26,7 +26,7 @@
 
 go install github.com/swaggo/swag/cmd/swag@latest
 
-- 格式化注释代码
+- 格式化注释代码 (选用)
 
 swag fmt
 
@@ -34,10 +34,9 @@ swag fmt
 
 swag init
 
-- 如果像本工程一样依赖了api.md文件描述项目
+- 如果像本工程一样依赖了api.md和独立的api.go文件描述项目（推荐，后续持续使用）
 
-swag init --md .
-
+swag init -g api.go --md .
 
 - 删除多余的生成
 
@@ -45,10 +44,10 @@ rm .\docs\docs.go
 
 删除docs.go是因为本项目中并未采用下述依赖来集成。
 
-而是通过HTML模板+JS+YAML引入集成，移除docs.go用于避免依赖编译报错。
-
 - github.com/swaggo/swag
 - github.com/swaggo/gin-swagger
 - github.com/swaggo/files
+
+而是通过HTML模板+JS+YAML引入集成，移除docs.go用于避免依赖编译报错。
 
 源帮助页：[https://github.com/swaggo/swag/blob/master/README_zh-CN.md](https://github.com/swaggo/swag/blob/master/README_zh-CN.md)

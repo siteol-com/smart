@@ -4,6 +4,7 @@ import (
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/cacheModel"
 	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/platDB"
 )
@@ -29,7 +30,7 @@ func AddRole(traceID string, req *platModel.RoleAddReq) *baseModel.ResBody {
 		return baseModel.Fail(constant.RolePermissionNG)
 	}
 	// 同步角色缓存
-	go func() { SyncRoleCache(traceID) }()
+	go func() { _ = cacheModel.SyncRoleCache(traceID) }()
 	return baseModel.Success(constant.RoleAddSS, true)
 }
 
@@ -79,7 +80,7 @@ func EditRole(traceID string, req *platModel.RoleEditReq) *baseModel.ResBody {
 		return checkRoleDBErr(err)
 	}
 	// 同步角色缓存
-	go func() { SyncRoleCache(traceID) }()
+	go func() { _ = cacheModel.SyncRoleCache(traceID) }()
 	return baseModel.Success(constant.RoleEditSS, true)
 }
 
@@ -113,15 +114,14 @@ func DelRole(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 		return baseModel.Fail(constant.RoleDelNG)
 	}
 	// 同步角色缓存
-	go func() { SyncRoleCache(traceID) }()
+	go func() { _ = cacheModel.SyncRoleCache(traceID) }()
 	return baseModel.Success(constant.RoleDelSS, true)
 }
 
 // ListRole 角色列表
 func ListRole(traceID string) *baseModel.ResBody {
-	roleMap, err := getRoleCache(traceID)
+	roleMap, err := cacheModel.GetRoleCache(traceID)
 	if err != nil {
-		log.ErrorTF(traceID, "GetRoleCache Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.RoleGetNG)
 	}
 	roleList := make([]baseModel.SelectNumRes, 0)

@@ -4,6 +4,7 @@ import (
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/cacheModel"
 	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/platDB"
 	"siteol.com/smart/src/common/utils"
@@ -54,9 +55,8 @@ func PageAccount(traceID string, req *platModel.AccountPageReq) *baseModel.ResBo
 		return baseModel.Fail(constant.AccountGetNG)
 	}
 	// 查询角色Map
-	roleMap, err := getRoleCache(traceID)
+	roleMap, err := cacheModel.GetRoleCache(traceID)
 	if err != nil {
-		log.ErrorTF(traceID, "GetRoleCache Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.AccountGetNG)
 	}
 	return baseModel.SuccessUnPop(baseModel.SetPageRes(platModel.ToAccountPageRes(list, rolesLists, roleMap, deptMap), total))
@@ -82,9 +82,8 @@ func GetAccount(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 		return baseModel.Fail(constant.AccountGetNG)
 	}
 	// 查询角色Map
-	roleMap, err := getRoleCache(traceID)
+	roleMap, err := cacheModel.GetRoleCache(traceID)
 	if err != nil {
-		log.ErrorTF(traceID, "GetRoleCache Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.AccountGetNG)
 	}
 	return baseModel.SuccessUnPop(platModel.ToAccountGetRes(&res, roleIds, roleMap, deptMap))
@@ -126,7 +125,7 @@ func DelAccount(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 		log.ErrorTF(traceID, "GetAccount Fail . Err Is : %v", err)
 		return baseModel.Fail(constant.AccountGetNG)
 	}
-	// 登陆账号禁止刪除
+	// 特殊账号禁止刪除
 	if dbReq.Mark == constant.StatusLock {
 		log.ErrorTF(traceID, "DelAccount %d Fail . Can not Edit", dbReq.Id)
 		return baseModel.Fail(constant.AccountMarkNG)
@@ -162,7 +161,7 @@ func ResetAccount(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 		return baseModel.Fail(constant.AccountResetNG)
 	}
 	// 重置密码
-	err = platDB.Account{}.ResetAccount(req.Id, saltKey, pwdC)
+	err = platDB.AccountTable.Executor().ResetAccount(req.Id, saltKey, pwdC, false)
 	if err != nil {
 		log.ErrorTF(traceID, "ResetAccount %d Fail . Err Is : %v", req.Id, err)
 		return baseModel.Fail(constant.AccountResetNG)

@@ -8,7 +8,7 @@ import (
 
 // PlatRouter 平台业务路由
 func PlatRouter(router *gin.Engine) {
-	platRouter := router.Group("/plat", middleware.CommMiddleWare) // TODO 授权中间件
+	platRouter := router.Group("/plat", middleware.CommMiddleWare)
 	{
 		// 字典相关
 		dictRouter := platRouter.Group("/dict")

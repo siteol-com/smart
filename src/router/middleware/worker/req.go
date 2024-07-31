@@ -2,14 +2,12 @@ package worker
 
 import (
 	"bytes"
-	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"io"
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
-	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/cacheModel"
 	"siteol.com/smart/src/common/mysql/platDB"
-	"siteol.com/smart/src/common/redis"
 	"siteol.com/smart/src/common/utils/security"
 	"siteol.com/smart/src/config"
 	"strings"
@@ -31,30 +29,21 @@ func SetLang(c *gin.Context) {
 }
 
 // SetRouter 设置路由上下文
-func SetRouter(c *gin.Context, url, traceID string) (router *baseModel.CacheRouter, ng bool) {
-	router = baseModel.CacheRouterNormal
+func SetRouter(c *gin.Context, url, traceID string) (router *cacheModel.CacheRouter, ng bool) {
+	router = cacheModel.CacheRouterNormal
 	// 尝试读取缓存
 	cacheGet := false
-	str, err := redis.Get(constant.CacheRouters)
+	resCacheMap, err := cacheModel.GetRouterCache(traceID)
 	if err == nil {
-		resCacheMap := make(map[string]*baseModel.CacheRouter, 0)
-		err = json.Unmarshal([]byte(str), &resCacheMap)
-		if err == nil {
-			// 取得实际的配置
-			routerGet, ok := resCacheMap[url]
-			if !ok {
-				log.WarnTF(traceID, "Get %s RouterCache Empty", url)
-			} else {
-				cacheGet = true
-				router = routerGet
-			}
+		// 取得实际的配置
+		routerGet, ok := resCacheMap[url]
+		if !ok {
+			log.WarnTF(traceID, "Get %s RouterCache Empty", url)
 		} else {
-			log.ErrorTF(traceID, "Unmarshal RouterCache Fail . Err Is : %v", err)
+			cacheGet = true
+			router = routerGet
 		}
-	} else {
-		log.ErrorTF(traceID, "Get RouterCache Fail . Err Is : %v", err)
 	}
-
 	c.Set(constant.ContextRouterC, router)
 	// 缓存未取得且未启动Debug（测试环境数据库可以不配置路由）
 	if !cacheGet && !config.JsonConfig.Server.Debug {
@@ -66,8 +55,24 @@ func SetRouter(c *gin.Context, url, traceID string) (router *baseModel.CacheRout
 	return
 }
 
+// SetAuthUser 设置授权用户信息
+func SetAuthUser(c *gin.Context, traceID string) (authUser *cacheModel.CacheAuth, token string, ng bool) {
+	ng = true
+	token = c.GetHeader(constant.HeaderToken)
+	if token == "" || token == "null" {
+		return
+	}
+	authUser, err := cacheModel.GetAuthCache(traceID, token)
+	if err != nil {
+		return
+	}
+	c.Set(constant.ContextAuthUser, authUser)
+	ng = false
+	return
+}
+
 // SetReq 处理请求 请求日志、入库等
-func SetReq(c *gin.Context, router *baseModel.CacheRouter, url, traceID string) (ng bool) {
+func SetReq(c *gin.Context, router *cacheModel.CacheRouter, url, traceID string) (ng bool) {
 	origReq, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		log.ErrorTF(traceID, "Req Read Fail . Err Is : %v", err)

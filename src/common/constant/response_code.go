@@ -12,23 +12,27 @@ package constant
 const (
 	CodeFmt = "%s%s%02d" // 成功码Format
 
-	Success  = "S000" // 处理成功（默认）
-	Fail     = "F000" // 处理失败（默认）
-	Error    = "E000" // 系统异常（默认）
-	ValidErr = "E001" // 参数非法（默认）（免翻译）
-	LoginErr = "E002" // 尚未登陆（默认）
-	AuthErr  = "E003" // 无权访问（默认）
-	PathErr  = "E004" // 路径不存在（默认）
+	Error           = "E000" // 系统异常（默认）
+	ValidErr        = "E001" // 参数非法（默认）（免翻译）
+	LoginErr        = "E002" // 尚未登陆（默认）
+	AuthErr         = "E003" // 无权访问（默认）
+	PathErr         = "E004" // 路径不存在（默认）
+	Success         = "S000" // 处理成功（默认）
+	AuthLoginSS     = "S001" // 登陆成功
+	AuthResetSS     = "S002" // 密码重置成功
+	Fail            = "F000" // 处理失败（默认）
+	AuthLoginNG     = "F001" // 登陆失败，请联系管理员
+	AuthLoginRuleNG = "F002" // 异常登陆，请联系管理员
+	AuthResetNG     = "F003" // 密码重置失败，请联系管理员
 
-	DictAddSS      = "S100" // 字典创建成功
-	DictEditSS     = "S101" // 字典编辑成功
-	DictSortSS     = "S102" // 字典排序成功
-	DictDelSS      = "S103" // 字典封存成功
-	DictGroupGetNG = "F100" // 字典分组查询失败
-	DictGetNG      = "F101" // 字典查询失败
-	DictUniNG      = "F102" // 字典分组下字典值唯一
-	DictMarkNG     = "F103" // 内置字典禁止刪除
-	DictSortNG     = "F104" // 字典排序失败
+	DictAddSS  = "S100" // 字典创建成功
+	DictEditSS = "S101" // 字典编辑成功
+	DictSortSS = "S102" // 字典排序成功
+	DictDelSS  = "S103" // 字典封存成功
+	DictGetNG  = "F100" // 字典查询失败
+	DictUniNG  = "F101" // 字典分组下字典值唯一
+	DictMarkNG = "F102" // 内置字典禁止刪除
+	DictSortNG = "F103" // 字典排序失败
 
 	ResponseAddSS    = "S200" // 响应码创建成功
 	ResponseAddSSWNC = "S201" // 响应码创建成功,实际响应码为{{code}}
@@ -50,7 +54,7 @@ const (
 	PermissionAddSS      = "S400" // 权限创建成功
 	PermissionEditSS     = "S401" // 权限编辑成功
 	PermissionDelSS      = "S402" // 权限删除成功
-	PermissionSortSS     = "S403" // 权限删除成功
+	PermissionSortSS     = "S403" // 权限排序成功
 	PermissionGetNG      = "F400" // 权限查询失败
 	PermissionUniAliasNG = "F401" // 权限别名全局唯一
 	PermissionUniNameNG  = "F402" // 权限名称全局唯一
@@ -65,6 +69,7 @@ const (
 	RoleMarkNG       = "F501" // 内置角色禁止编辑
 	RoleNameUniNG    = "F502" // 角色名全局唯一
 	RolePermissionNG = "F503" // 角色权限配置失败
+	RoleDelNG        = "F504" // 角色删除失败
 
 	DeptAddSS        = "S600" // 集团部门创建成功
 	DeptEditSS       = "S601" // 集团部门编辑成功

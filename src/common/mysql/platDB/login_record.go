@@ -13,7 +13,10 @@ type LoginRecord struct {
 	LoginType uint8      `json:"loginType"` // 登陆类型 1平台账号登录
 	LoginTime *time.Time `json:"loginTime"` // 登陆时间
 	Token     string     `json:"token"`     // 登陆Token
-	Common
+	Mark      string     `json:"mark"`      // 变更标识 0登陆成功 1主动登出 2被动登出
+	Status    string     `json:"status"`    // 状态 0正常 1锁定 2封存
+	CreateAt  *time.Time `json:"createAt"`  // 创建时间
+	UpdateAt  *time.Time `json:"updateAt"`  // 更新时间
 }
 
 // LoginRecordTable 登陆记录泛型造器
@@ -27,4 +30,11 @@ func (t LoginRecord) DataBase() *gorm.DB {
 // TableName 实现自定义表名
 func (t LoginRecord) TableName() string {
 	return "login_record"
+}
+
+// GetOutRangeRecords 获取限制外的登陆记录
+func (t LoginRecord) GetOutRangeRecords(accountId uint64, limit uint64) (res []*LoginRecord, err error) {
+	db := t.DataBase().Raw("SELECT * FROM `login_record` WHERE mark = 0 AND account_id = ? ORDER BY login_time DESC LIMIT ?,9999", accountId, limit).Scan(&res)
+	err = db.Error
+	return
 }

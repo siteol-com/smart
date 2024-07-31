@@ -20,6 +20,11 @@ func SaltKey() string {
 	return RandStr(16, false)
 }
 
+// Token 生成32位随机登陆Token
+func Token() string {
+	return RandStr(32, false)
+}
+
 // RandStr 生成指定位数的随机字符
 // f=true:大写英文字母 =false:大小英数字
 func RandStr(length int, f bool) string {

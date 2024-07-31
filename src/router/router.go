@@ -18,8 +18,8 @@ func NewRouter() *gin.Engine {
 	router.Use(middleware.Recover)
 	// API文档（示例文档）
 	routers.DocsRouter(router)
-	//// 开放路由
-	//subRouter2.OpenRouter(router)
+	// 授权路由
+	routers.AuthRouter(router)
 	// 平台路由
 	routers.PlatRouter(router)
 	return router

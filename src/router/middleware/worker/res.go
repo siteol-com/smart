@@ -8,15 +8,15 @@ import (
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/cacheModel"
 	"siteol.com/smart/src/common/mysql/platDB"
-	"siteol.com/smart/src/common/redis"
 	"siteol.com/smart/src/common/utils/security"
 	"strings"
 	"time"
 )
 
 // ReturnMsgTrans 执行响应码 => 响应文言 翻译
-func ReturnMsgTrans(res *baseModel.ResBody, c *gin.Context, router *baseModel.CacheRouter, traceID string) {
+func ReturnMsgTrans(res *baseModel.ResBody, c *gin.Context, router *cacheModel.CacheRouter, traceID string) {
 	// 语言类型
 	lang := c.GetString(constant.ContextLang)
 	// 非400校验错误执行翻译
@@ -63,19 +63,9 @@ func ReturnMsgTrans(res *baseModel.ResBody, c *gin.Context, router *baseModel.Ca
 
 // tableMsgTrans 执行Msg翻译
 func tableMsgTrans(res *baseModel.ResBody, lang, traceID string) {
-	// 读取缓存
-	tranStr, err := redis.Get(constant.CacheResTrans)
+	// 出错不翻译
+	transMap, err := cacheModel.GetResponseCache(traceID)
 	if err != nil {
-		log.WarnTF(traceID, "GetTransLangCacheMap Fail . Err Is : %v", err)
-		// 出错不翻译
-		return
-
-	}
-	transMap := make(map[string]map[string]string)
-	err = json.Unmarshal([]byte(tranStr), &transMap)
-	if err != nil {
-		log.ErrorTF(traceID, "JsonUnmarshal TransMap Fail . Err Is : %v", err)
-		// 出错不翻译
 		return
 	}
 	// 读取配置

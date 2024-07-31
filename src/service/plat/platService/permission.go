@@ -4,6 +4,7 @@ import (
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/cacheModel"
 	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/platDB"
 	"sort"
@@ -29,6 +30,7 @@ func AddPermission(traceID string, req *platModel.PermissionAddReq) *baseModel.R
 		}
 		return baseModel.Fail(constant.PermissionRouterNG)
 	}
+	go func() { _ = cacheModel.SyncPermissionCache(traceID) }()
 	return baseModel.Success(constant.PermissionAddSS, true)
 }
 
@@ -87,6 +89,7 @@ func EditPermission(traceID string, req *platModel.PermissionEditReq) *baseModel
 		// 解析数据库错误
 		return checkPermissionDBErr(err)
 	}
+	go func() { _ = cacheModel.SyncPermissionCache(traceID) }()
 	return baseModel.Success(constant.PermissionEditSS, true)
 }
 
@@ -108,7 +111,7 @@ func DelPermission(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 		return baseModel.Fail(constant.PermissionRouterNG)
 	}
 	// 删除权限关联角色
-	err = platDB.RolePermission{}.DeleteByPermissionId(req.Id)
+	err = platDB.RolePermissionTable.Executor().DeleteByPermissionId(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "DelRolePermissionByPermission %d Fail . Err Is : %v", dbReq.Id, err)
 		return baseModel.Fail(constant.PermissionDelNG)
@@ -119,6 +122,7 @@ func DelPermission(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 		log.ErrorTF(traceID, "DelPermission %d Fail . Err Is : %v", dbReq.Id, err)
 		return baseModel.Fail(constant.PermissionDelNG)
 	}
+	go func() { _ = cacheModel.SyncPermissionCache(traceID) }()
 	return baseModel.Success(constant.PermissionDelSS, true)
 }
 

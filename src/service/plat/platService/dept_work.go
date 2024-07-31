@@ -1,13 +1,10 @@
 package platService
 
 import (
-	"fmt"
 	"siteol.com/smart/src/common/constant"
-	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/model/baseModel"
 	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/platDB"
-	"sort"
 	"strings"
 )
 
@@ -25,45 +22,6 @@ func checkDeptDBErr(err error) *baseModel.ResBody {
 	}
 	// 默认业务异常
 	return baseModel.ResFail
-}
-
-// 递归部门树
-func recursionDeptTree(traceID string, treeNode *baseModel.Tree) (err error) {
-	// 没有子级了
-	if treeNode.Level == "3" {
-		return
-	}
-	// 查询子集
-	var deptList platDB.DeptArray
-	deptList, err = platDB.DeptTable.GetByObject(&platDB.Dept{Pid: treeNode.Id})
-	if err != nil {
-		log.WarnTF(traceID, "RecursionDeptTree Fail . PID %d . Err is : %s", treeNode.Id, err)
-		return
-	}
-	if len(deptList) == 0 {
-		// 沒有子集推出
-		return
-	}
-	// 数据排序
-	sort.Sort(deptList)
-	treeNode.Children = make([]*baseModel.Tree, 0)
-	// 组装子集
-	for _, item := range deptList {
-		// 节点对象
-		treeChild := &baseModel.Tree{
-			Title:    item.Name,
-			Key:      fmt.Sprintf("%d", item.Id),
-			Children: nil,
-			Expand:   item.Name,
-			Level:    constant.StatusLock, // 可以移动
-			Id:       item.Id,
-		}
-		// 递归子集
-		recursionDeptTree(traceID, treeChild)
-		// 加入子集
-		treeNode.Children = append(treeNode.Children, treeChild)
-	}
-	return
 }
 
 // getDeptMapByIds 根据ID获取部门MAP
@@ -90,7 +48,7 @@ func getDeptAccounts(id uint64) (res [][]*platModel.DeptAccountRes, err error) {
 		return
 	}
 	res = make([][]*platModel.DeptAccountRes, 2)
-	for i, _ := range res {
+	for i := range res {
 		res[i] = make([]*platModel.DeptAccountRes, 0)
 	}
 	for _, item := range accounts {

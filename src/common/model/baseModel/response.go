@@ -29,6 +29,10 @@ var (
 	SysErr = jsonResult(http.StatusInternalServerError, constant.Error, "", nil, false)
 	// PathErr Json 404 默认路由异常
 	PathErr = jsonResult(http.StatusNotFound, constant.PathErr, "", nil, false)
+	// LoginErr Json 401 默认尚未登陆
+	LoginErr = jsonResult(http.StatusUnauthorized, constant.LoginErr, "", nil, false)
+	// AuthErr Json 403 默认授权异常
+	AuthErr = jsonResult(http.StatusForbidden, constant.AuthErr, "", nil, false)
 )
 
 // ResBody 响应Body

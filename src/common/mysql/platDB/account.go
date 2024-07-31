@@ -38,12 +38,16 @@ func (t Account) TableName() string {
 }
 
 // ResetAccount 重置账号密码
-func (t Account) ResetAccount(id uint64, saltKey, pwdC string) (err error) {
+func (t Account) ResetAccount(id uint64, saltKey, pwdC string, self bool) (err error) {
 	now := time.Now()
+	exp := now
+	if self {
+		exp = now.Add(90 * 24 * time.Hour)
+	}
 	r := platDb.Table(t.TableName()).Where("id = ?", id).Updates(map[string]any{
 		"encryption":   pwdC,
 		"salt_key":     saltKey,
-		"pwd_exp_time": &now,
+		"pwd_exp_time": &exp,
 		"update_at":    &now,
 	})
 	err = r.Error

@@ -18,6 +18,12 @@ type Executor interface {
 // Table 泛型执行器
 type Table[T Executor] string
 
+// Executor 返回执行本体
+func (t Table[T]) Executor() T {
+	var exe T
+	return exe
+}
+
 // GetAll 查询表所有数据
 func (t Table[T]) GetAll() (res []*T, err error) {
 	var exe T
@@ -122,6 +128,14 @@ func (t Table[T]) InsertBatch(req any) (err error) {
 func (t Table[T]) UpdateOne(req any) (err error) {
 	var exe T
 	r := exe.DataBase().Save(req)
+	err = r.Error
+	return
+}
+
+// UpdateByIds 更新多条数据（保持一致的更新）
+func (t Table[T]) UpdateByIds(ids []uint64, req any) (err error) {
+	var exe T
+	r := exe.DataBase().Table(exe.TableName()).Where("id IN ?", ids).Updates(req)
 	err = r.Error
 	return
 }

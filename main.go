@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"siteol.com/smart/src/service/plat/platService"
+	"siteol.com/smart/src/common/model/cacheModel"
 	"syscall"
 	"time"
 
@@ -18,28 +18,8 @@ import (
 	"siteol.com/smart/src/router"
 )
 
-// @title					smart
-// @version					1.0
-// @description.markdown
-// @contact.name			smart
-// @contact.url				https://smart.siteol.com
-// @contact.email			dev@siteol.com
-// @host					localhost:8000
-// @BasePath				/
-// @accept					json
-
-// @securityDefinitions.apikey	Token
-// @in							header
-// @name						Token
-
-// @x-logo	{"url" :"/docs/file/logo.png","altText":"smart"}
-
-// @tag.name		开放接口
-// @tag.description	基础开发接口
-
-// @x-tagGroups	[{ "name": "基础", "tags": ["开放接口"]},{ "name": "平台", "tags": ["租户管理","集团部门","角色配置","登陆账号","访问权限","路由接口","响应配置","数据字典"]}]
-
 // 主函数
+// API注释位于api.go
 func main() {
 	traceId := fmt.Sprintf("%s%s", config.SysNode, "INIT")
 	// 初始化数据库
@@ -83,32 +63,46 @@ func serviceInit(traceId string) {
 	// 主服务进行响应码初始化
 	if config.SysNode == "APP01" {
 		// 系统配置初始化
-		err := platService.SyncSysConfigCache(traceId)
+		err := cacheModel.SyncSysConfigCache(traceId)
 		if err != nil {
 			log.ErrorTF(traceId, "InitSysConfigCache Fail . Err Is : %v", err)
 			os.Exit(1)
 		}
 		log.InfoTF(traceId, "InitSysConfigCache success")
 		// 响应码配置初始化
-		err = platService.SyncResponseCache(traceId)
+		err = cacheModel.SyncResponseCache(traceId)
 		if err != nil {
 			log.ErrorTF(traceId, "InitResponseCache Fail . Err Is : %v", err)
 			os.Exit(1)
 		}
 		log.InfoTF(traceId, "InitResponseCache success")
 		// 路由配置初始化
-		err = platService.SyncRouterCache(traceId)
+		err = cacheModel.SyncRouterCache(traceId)
 		if err != nil {
 			log.ErrorTF(traceId, "InitRouterCache Fail . Err Is : %v", err)
 			os.Exit(1)
 		}
 		log.InfoTF(traceId, "InitRouterCache success")
+		// 权限配置初始化
+		err = cacheModel.SyncPermissionCache(traceId)
+		if err != nil {
+			log.ErrorTF(traceId, "InitPermissionCache Fail . Err Is : %v", err)
+			os.Exit(1)
+		}
+		log.InfoTF(traceId, "InitPermissionCache success")
 		// 角色初始化
-		err = platService.SyncRoleCache(traceId)
+		err = cacheModel.SyncRoleCache(traceId)
 		if err != nil {
 			log.ErrorTF(traceId, "InitRoleCache Fail . Err Is : %v", err)
 			os.Exit(1)
 		}
 		log.InfoTF(traceId, "InitRoleCache success")
+		// 部门初始化
+		err = cacheModel.SyncDeptTreeCache(traceId)
+		if err != nil {
+			log.ErrorTF(traceId, "InitDeptTreeCache Fail . Err Is : %v", err)
+			os.Exit(1)
+		}
+		log.InfoTF(traceId, "InitDeptTreeCache success")
 	}
 }

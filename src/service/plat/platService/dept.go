@@ -1,10 +1,10 @@
 package platService
 
 import (
-	"fmt"
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/model/baseModel"
+	"siteol.com/smart/src/common/model/cacheModel"
 	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/platDB"
 	"sort"
@@ -21,28 +21,16 @@ func AddDept(traceID string, req *platModel.DeptAddReq) *baseModel.ResBody {
 		// 解析数据库错误
 		return checkDeptDBErr(err)
 	}
+	go func() { _ = cacheModel.SyncDeptTreeCache(traceID) }()
 	return baseModel.Success(constant.DeptAddSS, true)
 }
 
 // TreeDept 查询集团树
 func TreeDept(traceID string) *baseModel.ResBody {
-	// 查询根节点
-	rootPerm, err := platDB.DeptTable.GetOneById(1)
+	treeNode, err := cacheModel.GetDeptTreeCache(traceID)
 	if err != nil {
-		log.ErrorTF(traceID, "TreeDept GetRoot Fail . Err Is : %s", err)
 		return baseModel.Fail(constant.DeptGetNG)
 	}
-	// 创建树节点
-	treeNode := &baseModel.Tree{
-		Title:    rootPerm.Name,
-		Key:      fmt.Sprintf("%d", rootPerm.Id),
-		Children: nil,
-		Expand:   rootPerm.Name,
-		Level:    constant.StatusOpen, // 跟层不可移动
-		Id:       rootPerm.Id,
-	}
-	// 递归部门树
-	_ = recursionDeptTree(traceID, treeNode)
 	trees := []*baseModel.Tree{treeNode}
 	return baseModel.SuccessUnPop(trees)
 }
@@ -78,6 +66,7 @@ func EditDept(traceID string, req *platModel.DeptEditReq) *baseModel.ResBody {
 		// 解析数据库错误
 		return checkDeptDBErr(err)
 	}
+	go func() { _ = cacheModel.SyncDeptTreeCache(traceID) }()
 	return baseModel.Success(constant.DeptEditSS, true)
 }
 
@@ -118,6 +107,7 @@ func DelDept(traceID string, req *baseModel.IdReq) *baseModel.ResBody {
 		log.ErrorTF(traceID, "DelDept %d Fail . Err Is : %v", dbReq.Id, err)
 		return baseModel.Fail(constant.DeptDelNG)
 	}
+	go func() { _ = cacheModel.SyncDeptTreeCache(traceID) }()
 	return baseModel.Success(constant.DeptDelSS, true)
 }
 
@@ -150,6 +140,7 @@ func SortDept(traceID string, req *[]*baseModel.SortReq) *baseModel.ResBody {
 		// 解析数据库错误
 		return checkDeptDBErr(err)
 	}
+	go func() { _ = cacheModel.SyncDeptTreeCache(traceID) }()
 	return baseModel.Success(constant.DeptSortSS, true)
 }
 
@@ -178,17 +169,18 @@ func ToDept(traceID string, req *platModel.DeptToReq) *baseModel.ResBody {
 		}
 	} else {
 		// 先迁账号
-		err = platDB.Account{}.ToNewDept(req.Id, req.ToId)
+		err = platDB.AccountTable.Executor().ToNewDept(req.Id, req.ToId)
 		if err != nil {
 			log.ErrorTF(traceID, "DeptToDept %d %d Account Fail . Err Is : %v", req.Id, req.ToId, err)
 			return baseModel.Fail(constant.DeptToNG)
 		}
 		// 迁子部门
-		err = platDB.Dept{}.ToNewDept(req.Id, req.ToId)
+		err = platDB.DeptTable.Executor().ToNewDept(req.Id, req.ToId)
 		if err != nil {
 			log.ErrorTF(traceID, "DeptToDept %d %d SubDept Fail . Err Is : %v", req.Id, req.ToId, err)
 			return baseModel.Fail(constant.DeptToNG)
 		}
 	}
+	go func() { _ = cacheModel.SyncDeptTreeCache(traceID) }()
 	return baseModel.Success(constant.DeptToSS, true)
 }

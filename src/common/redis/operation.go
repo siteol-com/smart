@@ -15,7 +15,7 @@ var ErrNotFound = errors.New("not found")
 var DuplicateKeys = errors.New("Duplicate Keys")
 
 // Set 基础的缓存设置 超时为0表示永不超时
-func Set(key string, obj any, millisecond int) (err error) {
+func Set(key string, obj any, millisecond uint64) (err error) {
 	var value string
 	switch v := obj.(type) {
 	case string:
@@ -38,7 +38,7 @@ func Set(key string, obj any, millisecond int) (err error) {
 }
 
 // SetNX 分布式设值 超时为0表示永不超时
-func SetNX(key string, obj any, millisecond int) (err error) {
+func SetNX(key string, obj any, millisecond uint64) (err error) {
 	var value string
 	switch v := obj.(type) {
 	case string:

@@ -27,7 +27,7 @@ func (t AccountRole) TableName() string {
 
 // GetRoleIds 获取权限对应的路由ID
 func (t AccountRole) GetRoleIds(accountId uint64) (res []uint64, err error) {
-	r := platDb.Table(t.TableName()).Distinct("role_id").Where("account_id", accountId).Find(&res)
+	r := platDb.Table(t.TableName()).Distinct("role_id").Where("account_id = ?", accountId).Find(&res)
 	err = r.Error
 	return
 }
