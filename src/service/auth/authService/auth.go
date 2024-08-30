@@ -1,13 +1,16 @@
 package authService
 
 import (
+	"fmt"
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/model/baseModel"
 	"siteol.com/smart/src/common/model/cacheModel"
 	"siteol.com/smart/src/common/mysql/platDB"
+	"siteol.com/smart/src/common/redis"
 	"siteol.com/smart/src/common/utils"
 	"siteol.com/smart/src/common/utils/security"
+	"time"
 )
 
 // AuthLogin 账号密码登陆
@@ -60,6 +63,31 @@ func AuthLogin(traceID string, req *baseModel.AccountLoginReq) *baseModel.ResBod
 	return baseModel.Success(constant.AuthLoginSS, &baseModel.AccountLoginRes{
 		Tk: token,
 		Re: cacheAuth.NeedResetPwd,
+	})
+}
+
+// AuthLogout 账号登出
+func AuthLogout(traceID, token string) {
+	// 删除登陆缓存
+	err := redis.Del(fmt.Sprintf(constant.CacheAuth, token))
+	if err != nil {
+		log.WarnTF(traceID, "AuthLogout DelToken Fail . Err Is : %v", err)
+	}
+	// 修改登陆记录
+	records, err := platDB.LoginRecordTable.Executor().GetLoginRecordByToken(token)
+	if err != nil {
+		log.WarnTF(traceID, "AuthLogout GetLoginRecordByToken %s Fail . Err Is : %v", token, err)
+	}
+	now := time.Now()
+	// 遍历数据，批量更新
+	ids := make([]uint64, len(records))
+	for i, item := range records {
+		ids[i] = item.Id
+	}
+	// 批量更新（理论上只有1条数据）
+	err = platDB.LoginRecordTable.UpdateByIds(ids, map[string]any{
+		"mark":      constant.StatusLock, // 主动登出
+		"update_at": &now,
 	})
 }
 

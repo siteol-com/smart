@@ -4,6 +4,7 @@ import (
 	"siteol.com/smart/src/common/constant"
 	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/mysql/platDB"
+	"siteol.com/smart/src/service/auth/authService"
 )
 
 // getRolePermissions 获取角色的权限对象
@@ -16,7 +17,7 @@ func getRolePermissions(traceID string, roleId uint64) (rolePermissions []*platD
 	return
 }
 
-// syncRolePermissions 编辑路由对应的权限
+// syncRolePermissions 编辑角色对应的权限
 func syncRolePermissions(traceID string, roleId uint64, permissionIds, halfPermissionIds []uint64, editFlag bool) (err error) {
 	if editFlag {
 		// 移除当前角色选定的权限集
@@ -53,8 +54,15 @@ func syncRolePermissions(traceID string, roleId uint64, permissionIds, halfPermi
 		}
 	}
 	if editFlag {
-		// TODO 如果角色被选择，则反向通知账号需要权限刷新
-		// 先通知，外层进行账号角色关联性删除
+		go func() {
+			// 如果角色被选择，则反向通知账号需要权限刷新
+			accountIds, err := platDB.AccountRoleTable.Executor().GetAccountIds(roleId)
+			if err != nil {
+				log.WarnTF(traceID, "RefreshAuthCache By RoleId %d Fail . Err Is : %v", roleId, err)
+			}
+			// 通知账号权限有刷新
+			authService.RefreshAuthCacheByAccounts(traceID, accountIds)
+		}()
 	}
 	return
 }

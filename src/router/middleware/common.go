@@ -47,7 +47,7 @@ func CommMiddleWare(c *gin.Context) {
 			return
 		}
 		// 授权时间续杯
-		err := cacheModel.RefreshAuthCache(traceID, token, authUser)
+		err := cacheModel.RefreshAuthCache(traceID, token)
 		if err != nil {
 			c.Abort()
 			service.JsonRes(c, baseModel.SysErr)

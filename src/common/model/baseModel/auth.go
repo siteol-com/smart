@@ -17,3 +17,11 @@ type AccountResetReq struct {
 	Pwd    string `json:"pwd" binding:"required" example:"demo"`                // 登陆密码
 	PwdCfm string `json:"pwdCfm" binding:"required,eqfield=Pwd" example:"demo"` // 登陆密码确认
 }
+
+// AuthMineRes 权限信息
+type AuthMineRes struct {
+	AccountId      uint64   `json:"accountId" example:"1"`              // 账号ID，当数据权限为个人时，账号ID将进行数据过滤
+	Name           string   `json:"name" example:"admin"`               // 账号ID
+	RoleNames      []string `json:"roleNames" example:"admin,test"`     // 角色名列表
+	PermissionKeys []string `json:"permissions" example:"Center,Index"` // 权限KEY列表（前端使用）
+}

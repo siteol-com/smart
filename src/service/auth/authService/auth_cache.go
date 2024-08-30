@@ -11,8 +11,63 @@ import (
 	"time"
 )
 
+// RefreshAuthCacheByAccounts 刷新受影响的账号权限
+func RefreshAuthCacheByAccounts(traceID string, accountIds []uint64) {
+	if len(accountIds) == 0 {
+		return
+	}
+	log.InfoTF(traceID, "RefreshAuthCacheByAccounts By %vStart", accountIds)
+	accounts, err := platDB.AccountTable.GetByIds(accountIds)
+	if err != nil {
+		log.WarnTF(traceID, "RefreshAuthCacheByAccounts By %v Fail . Err Is : %v", accountIds, err)
+		return
+	}
+	// 获取账号的登陆信息
+	for _, account := range accounts {
+		// 检索出历史存活的登陆数据
+		records, err := platDB.LoginRecordTable.Executor().GetOutRangeRecords(account.Id, 0)
+		if err != nil {
+			log.WarnTF(traceID, "RefreshAuthCacheByAccounts GetLoginRecords Fail . Err Is : %v", err)
+			continue
+		}
+		outIds := make([]uint64, 0)
+		// 遍历可能得在线记录
+		for _, record := range records {
+			// 尝试获取数据
+			outTime, err := redis.GetTTL(fmt.Sprintf(constant.CacheAuth, record.Token))
+			// 账号状态被关闭
+			if err != nil || account.Status != constant.StatusOpen {
+				// 踢出登陆
+				outIds = append(outIds, record.Id)
+				continue
+			}
+			// 以剩余时间更新授权缓存
+			_, err = makeAuthCacheByOutTime(traceID, record.Token, *account, nil, &outTime)
+			if err != nil {
+				log.WarnTF(traceID, "RefreshAuthCacheByAccounts MakeAuthCache Fail . Err Is : %v", err)
+			}
+		}
+		// 如果存在需要下线的Token
+		now := time.Now()
+		// 批量更新
+		err = platDB.LoginRecordTable.UpdateByIds(outIds, map[string]any{
+			"mark":      constant.StatusClose, // 被动登出
+			"update_at": &now,
+		})
+		if err != nil {
+			log.WarnTF(traceID, "RefreshAuthCacheByAccounts UpdateLoginRecords Fail . Err Is : %v", err)
+		}
+	}
+	log.InfoTF(traceID, "RefreshAuthCacheByAccounts By %v Done", accountIds)
+}
+
 // makeAuthCache 生成授权缓存
 func makeAuthCache(traceID, token string, account platDB.Account, conf *cacheModel.CacheSysConfig) (cacheAuth *cacheModel.CacheAuth, err error) {
+	return makeAuthCacheByOutTime(traceID, token, account, conf, nil)
+}
+
+// makeAuthCacheByOutTime 生成授权缓存
+func makeAuthCacheByOutTime(traceID, token string, account platDB.Account, conf *cacheModel.CacheSysConfig, outTime *time.Duration) (cacheAuth *cacheModel.CacheAuth, err error) {
 	needReset := false
 	if account.PwdExpTime != nil {
 		needReset = time.Now().After(*account.PwdExpTime)
@@ -31,13 +86,18 @@ func makeAuthCache(traceID, token string, account platDB.Account, conf *cacheMod
 	setCacheRouter(traceID, cacheAuth)
 	// 数据权限处理，如果是部门&子部门需要递归子部门列表
 	setCacheDataPermission(traceID, account, cacheAuth)
-	// 根据配置，写入Redis
-	outTime := uint64(0)
-	if conf.LogoutSwitch {
-		outTime = conf.LogoutLimit
+	// 指定超时时间
+	if outTime != nil {
+		err = redis.SetByTimeDuration(fmt.Sprintf(constant.CacheAuth, token), cacheAuth, *outTime)
+	} else if conf != nil {
+		// 根据配置，写入Redis
+		outMs := uint64(0)
+		if conf.LogoutSwitch {
+			outMs = conf.LogoutLimit
+		}
+		// 写入缓存
+		err = redis.Set(fmt.Sprintf(constant.CacheAuth, token), cacheAuth, outMs)
 	}
-	// 写入缓存
-	err = redis.Set(fmt.Sprintf(constant.CacheAuth, token), cacheAuth, outTime)
 	return
 }
 

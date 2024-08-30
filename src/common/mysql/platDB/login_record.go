@@ -38,3 +38,10 @@ func (t LoginRecord) GetOutRangeRecords(accountId uint64, limit uint64) (res []*
 	err = db.Error
 	return
 }
+
+// GetLoginRecordByToken 获取处于登陆状态的数据
+func (t LoginRecord) GetLoginRecordByToken(token string) (res []*LoginRecord, err error) {
+	db := t.DataBase().Raw("SELECT * FROM `login_record` WHERE token = ? AND mark = 0", token).Scan(&res)
+	err = db.Error
+	return
+}

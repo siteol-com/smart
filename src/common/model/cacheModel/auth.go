@@ -40,7 +40,7 @@ func GetAuthCache(traceID, token string) (authCache *CacheAuth, err error) {
 }
 
 // RefreshAuthCache 根据配置刷新授权时间
-func RefreshAuthCache(traceID, token string, authCache *CacheAuth) (err error) {
+func RefreshAuthCache(traceID, token string) (err error) {
 	sysConf, err := GetSysConfigCache(traceID)
 	if err != nil {
 		return
@@ -50,8 +50,8 @@ func RefreshAuthCache(traceID, token string, authCache *CacheAuth) (err error) {
 	if sysConf.LogoutSwitch {
 		outTime = sysConf.LogoutLimit
 	}
-	// 写入缓存
-	err = redis.Set(fmt.Sprintf(constant.CacheAuth, token), authCache, outTime)
+	// 写入缓存，刷新过期时间
+	err = redis.SetTTL(fmt.Sprintf(constant.CacheAuth, token), outTime)
 	if err != nil {
 		log.ErrorTF(traceID, "RefreshAuthCache Fail. Err Is : %v", err)
 	}

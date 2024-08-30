@@ -26,10 +26,10 @@ var dbName = "smart"
 var packName = "plat"
 
 // 计划生成的表名
-var tableArray = []string{"demo"}
+var tableArray = []string{"login_record"}
 
 // 计划生成的文件控制 DB文件 Model文件 Handle文件/Service文件/Constant示例/Router示例
-var flagArray = []bool{true, true, true}
+var flagArray = []bool{true, false, false}
 
 // TestGen
 func TestGen(t *testing.T) {

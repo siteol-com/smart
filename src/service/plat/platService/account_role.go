@@ -3,6 +3,7 @@ package platService
 import (
 	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/mysql/platDB"
+	"siteol.com/smart/src/service/auth/authService"
 )
 
 // getAccountsRolesAndDept 获取账号列表的角色列表
@@ -51,8 +52,10 @@ func syncAccountRoles(traceID string, accountId uint64, roleIds []uint64, editFl
 		}
 	}
 	if editFlag {
-		// TODO 通知账号产生变化
-
+		go func() {
+			// 通知账号权限有刷新
+			authService.RefreshAuthCacheByAccounts(traceID, []uint64{accountId})
+		}()
 	}
 	return
 }

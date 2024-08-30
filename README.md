@@ -1,5 +1,7 @@
 # smart
 
+![](http://101.132.76.203/static/img/logo.png)
+
 ## 介绍
 
 轻量易用的授权基座smart，提供一个RBAC授权模型的基础开箱即用中台管理服务。
@@ -12,11 +14,19 @@
 
 系统技术栈：Golang、VueNext、MySQL、Redis、Gin、ArcoDesign
 
+Demo地址：[http://101.132.76.203/](http://101.132.76.203/)
+
+Demo账密：admin  123456
+
+接口文档提供Swagger[支持调试]和ReDoc[阅读增强]两个版本。
+
+[Swagger[支持调试]：http://101.132.76.203/docs/swagger/index.html](http://101.132.76.203/docs/swagger/index.html)
+
+[ReDoc[阅读增强]：http://101.132.76.203/docs/redoc/index.html](http://101.132.76.203/docs/redoc/index.html)
+
 ## 当前说明
 
-工程尚在构建阶段，仓库未提供数据库初始化脚本。
-
-请耐心等待1.0版本完成。
+数据库初始化脚本位于：init目录下
 
 ## 启动准备
 
@@ -72,15 +82,6 @@ rm .\docs\docs.go
 而是通过HTML模板+JS+YAML引入集成，移除docs.go用于避免依赖编译报错。
 
 源帮助页：[https://github.com/swaggo/swag/blob/master/README_zh-CN.md](https://github.com/swaggo/swag/blob/master/README_zh-CN.md)
-
-## API文档地址
-
-该接口文档提供Swagger[支持调试]和ReDoc[阅读增强]两个版本。
-
-[Swagger[支持调试]：http://localhost:8000/docs/swagger/index.html](http://localhost:8000/docs/swagger/index.html) 
-
-[ReDoc[阅读增强]：http://localhost:8000/docs/redoc/index.html](http://localhost:8000/docs/redoc/index.html)
-
 
 # 本地工具
 

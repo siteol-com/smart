@@ -33,6 +33,13 @@ func (t RolePermission) GetPermissionIdsWithRoleIds(roleIds []uint64) (res []uin
 	return
 }
 
+// GetRoleIds 获取权益ID对应的角色
+func (t RolePermission) GetRoleIds(permissionId uint64) (res []uint64, err error) {
+	r := platDb.Table(t.TableName()).Distinct("role_id").Where("permission_id = ?", permissionId).Find(&res)
+	err = r.Error
+	return
+}
+
 // DeleteByRoleId 根据路由ID移除权限
 func (t RolePermission) DeleteByRoleId(roleId uint64) (err error) {
 	r := platDb.Where("role_id = ?", roleId).Delete(&t)

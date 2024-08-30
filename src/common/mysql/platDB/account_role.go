@@ -32,6 +32,20 @@ func (t AccountRole) GetRoleIds(accountId uint64) (res []uint64, err error) {
 	return
 }
 
+// GetAccountIds 获取角色ID对应的账号
+func (t AccountRole) GetAccountIds(roleId uint64) (res []uint64, err error) {
+	r := platDb.Table(t.TableName()).Distinct("account_id").Where("role_id = ?", roleId).Find(&res)
+	err = r.Error
+	return
+}
+
+// GetAccountIdsWithRoleIds 获取角色IDS的账号ID集
+func (t AccountRole) GetAccountIdsWithRoleIds(roleIds []uint64) (res []uint64, err error) {
+	r := platDb.Table(t.TableName()).Distinct("account_id").Where("role_id IN ? ", roleIds).Find(&res)
+	err = r.Error
+	return
+}
+
 // DeleteByAccountId 根据账号ID删除角色
 func (t AccountRole) DeleteByAccountId(accountId uint64) (err error) {
 	r := platDb.Where("account_id = ?", accountId).Delete(&t)

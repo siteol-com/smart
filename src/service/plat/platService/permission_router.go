@@ -4,6 +4,7 @@ import (
 	"siteol.com/smart/src/common/log"
 	"siteol.com/smart/src/common/model/platModel"
 	"siteol.com/smart/src/common/mysql/platDB"
+	"siteol.com/smart/src/service/auth/authService"
 )
 
 // getPermissionRouters 获取权限路由集 withRouter 是否提取路由信息
@@ -55,8 +56,24 @@ func syncPermissionRouters(traceID string, permissionId uint64, routerIds []uint
 		}
 	}
 	if editFlag {
-		// TODO 如果权益被绑定，则反向通知权限需要权限刷新
-
+		go func() {
+			// 获取权限绑定的角色
+			roleIds, err := platDB.RolePermissionTable.Executor().GetRoleIds(permissionId)
+			if err != nil {
+				log.WarnTF(traceID, "RefreshAuthCache By permissionId %d Fail . Err Is : %v", permissionId, err)
+			}
+			// 获取角色关联的账号
+			if len(roleIds) == 0 {
+				return
+			}
+			// 如果角色被选择，则反向通知账号需要权限刷新
+			accountIds, err := platDB.AccountRoleTable.Executor().GetAccountIdsWithRoleIds(roleIds)
+			if err != nil {
+				log.WarnTF(traceID, "RefreshAuthCache By RoleIds %v Fail . Err Is : %v", roleIds, err)
+			}
+			// 通知账号权限有刷新
+			authService.RefreshAuthCacheByAccounts(traceID, accountIds)
+		}()
 	}
 	return
 }
