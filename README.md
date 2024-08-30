@@ -1,6 +1,6 @@
 # smart
 
-![](http://101.132.76.203/static/img/logo.png)
+![](https://gitee.com/siteol-com/smart/raw/master/docs/logo.png)
 
 ## 介绍
 
