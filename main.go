@@ -18,7 +18,6 @@ import (
 	"siteol.com/smart/src/router"
 )
 
-// 主函数
 // API注释位于api.go
 func main() {
 	traceId := fmt.Sprintf("%s%s", config.SysNode, "INIT")

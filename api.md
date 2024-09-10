@@ -51,3 +51,5 @@ rm .\docs\docs.go
 而是通过HTML模板+JS+YAML引入集成，移除docs.go用于避免依赖编译报错。
 
 源帮助页：[https://github.com/swaggo/swag/blob/master/README_zh-CN.md](https://github.com/swaggo/swag/blob/master/README_zh-CN.md)
+
+# V1.0Fixed

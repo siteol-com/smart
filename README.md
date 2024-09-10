@@ -26,7 +26,7 @@ Demo账密：admin  123456
 
 ## 当前说明
 
-数据库初始化脚本位于：init目录下
+数据库初始化脚本位于：config/smart_init.sql
 
 ## 启动准备
 
